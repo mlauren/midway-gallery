@@ -14,3 +14,14 @@
 		</ul>
 	</div>
 </nav>
+
+<nav class="navbar navbar-default" role="navigation">
+	<div class="container">
+		<ul class="nav navbar-nav">
+			<li><a href="{{ URL::route('account') }}">Home </a></li>
+			@if(Auth::check())
+				<li><a href="{{ URL::route('exhibits-add') }}">Add an Exhibit</a></li>
+			@endif
+		</ul>
+	</div>
+</nav>

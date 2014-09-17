@@ -1,11 +1,9 @@
 @extends('layout.main')
 
 @section('content')
-
 	@if (Session::has('error'))
 	  {{ trans(Session::get('reason')) }}
 	@endif
-	 
 	{{ Form::open(array('route' => array('account-password-update', $token), 'method' => 'post', 'class'=>'form-signup form-horizontal')) }}
  
 		<div class="form-group {{ $errors->has('email') ? 'has-error' : '' }}">
@@ -41,13 +39,4 @@
 		<p>{{ Form::submit('Submit', array('class'=>'btn btn-default btn-block')) }}</p>
 	 
 	{{ Form::close() }}
-
-	<!--
-	<form action="{{ action('PasswordController@postUpdatePwdWithToken') }}" method="POST">
-	    <input type="hidden" name="token" value="{{ $token }}">
-	    <input type="email" name="email">
-	    <input type="password" name="password">
-	    <input type="password" name="password_confirmation">
-	    <input type="submit" value="Reset Password">
-	</form> -->
 @stop

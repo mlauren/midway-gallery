@@ -10,11 +10,14 @@
 	<body>
 		<div class="container">
 			@include('layout.navigation')
-
-			@if(Session::has('global'))
+			<div class="col-md-4">
+				@include('layout.sidebar')
+			</div>
+			<div class="col-md-8">
+				@if(Session::has('global'))
 					{{ Session::get('global') }}
-			@endif
-
+				@endif
+			</div>
 			<div class="col-md-8">
 				@yield('content')
 			</div>

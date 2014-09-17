@@ -14,7 +14,7 @@ class PasswordController extends BaseController {
             $message->subject('Password Reminder');
         });
         return Redirect::to('/account')
-                ->with('global', '<div class="alert alert-success" role="alert">Check your email.</div>');
+                ->with('global', '<div class="alert alert-success" role="alert">An email with password reset has been sent.</div>');
 
     }
 
@@ -49,15 +49,15 @@ class PasswordController extends BaseController {
             switch ($response)
             {
                 case Password::INVALID_PASSWORD:
-                    return Redirect::back()->with('global', '<div class="alert alert-error">' . Lang::get($response)) . '</div>';
+                    return Redirect::back()->with('global', '<div class="alert alert-danger" role="alert">' . Lang::get($response)) . '</div>';
                 case Password::INVALID_TOKEN:
-                    return Redirect::back()->with('global', '<div class="alert alert-error">' . Lang::get($response)) . '</div>';
+                    return Redirect::back()->with('global', '<div class="alert alert-danger" role="alert">' . Lang::get($response)) . '</div>';
                 case Password::INVALID_USER:
-                    return Redirect::back()->with('global', '<div class="alert alert-error">' . Lang::get($response)) . '</div>';
+                    return Redirect::back()->with('global', '<div class="alert alert-danger" role="alert">' . Lang::get($response)) . '</div>';
 
                 case Password::PASSWORD_RESET:
                     return Redirect::to('/account/login')
-                        ->with('global', '<div class="alert alert-success">Your password has been reset</div>');
+                        ->with('global', '<div class="alert alert-success" role="alert">Your password has been reset</div>');
             }
         }
 

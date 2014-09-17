@@ -12,15 +12,32 @@
 */
 
 Route::get('/', array(
-	'as' => 'home',
-	'uses' => 'HomeController@home'
-	));
+    'as' => 'home',
+    'uses' => 'HomeController@home'
+    ));
 /*
 | View account section (GET)
 */
 Route::get('/account', array(
-	'as' => 'account',
-	'uses' => 'AccountController@getAccount'
+    'as' => 'account',
+    'uses' => 'AccountController@getAccount'
+));
+
+
+
+/*
+|
+|
+| Exhibit Related GET Routes:
+|
+|
+*/
+/*
+| Show single exhibit
+*/
+Route::get('/exhibits/{name}', array(
+    'as' => 'exhibits-show-single',
+    'uses' => 'ExhibitController@single'
 ));
 
 /*
@@ -29,35 +46,78 @@ Route::get('/account', array(
 Route::group(array('before' => 'auth'), function() {
 
 
-	/*
-	| CSRF protection
-	*/
-	Route::group(array('before' => 'csrf'), function() {
+    /*
+    | CSRF protection
+    */
+    Route::group(array('before' => 'csrf'), function() {
 
-		/*
-		| Change Password (POST)
-		*/
-		Route::post('/account/change-pwd', array(
-			'as' => 'account-change-pwd-post',
-			'uses' => 'AccountController@postChangePwd'
-		));
-	});
+        /*
+        | Change Password (POST)
+        */
+        Route::post('/account/change-pwd', array(
+            'as' => 'account-change-pwd-post',
+            'uses' => 'AccountController@postChangePwd'
+        ));
 
-	/*
-	| Get Change Password Form
-	*/
-	Route::get('/account/change-pwd', array(
-		'as' => 'account-change-pwd',
-		'uses' => 'AccountController@getChangePwd'
-	));
+        /*
+        |
+        |
+        | Exhibit Related POST Routes:
+        |
+        |
+        */
+        Route::post('/exhibit-add', array(
+            'as' => 'exhibits-add-post',
+            'uses' => 'ExhibitController@postAdd'
+        ));
 
-	/*
-	| Logout
-	*/
-	Route::get('/account/logout', array(
-		'as' => 'account-logout',
-		'uses' => 'AccountController@getLogout'
-	));
+        /*
+        | Form to add exhibit
+        */
+        Route::post('/exhibits/{id}/edit', array(
+            'as' => 'exhibits-edit-single-post',
+            'uses' => 'ExhibitController@postEditSingle'
+        ));
+    });
+
+    /*
+    | Get Change Password Form
+    */
+    Route::get('/account/change-pwd', array(
+        'as' => 'account-change-pwd',
+        'uses' => 'AccountController@getChangePwd'
+    ));
+
+    /*
+    | Logout
+    */
+    Route::get('/account/logout', array(
+        'as' => 'account-logout',
+        'uses' => 'AccountController@getLogout'
+    ));
+
+    /*
+    |
+    |
+    | Exhibit Related GET Routes:
+    |
+    |
+    */
+    /*
+    | Form to add exhibit
+    */
+    Route::get('/exhibit-add', array(
+        'as' => 'exhibits-add',
+        'uses' => 'ExhibitController@getAdd'
+    ));
+    /*
+    | Form to add exhibit
+    */
+    Route::get('/exhibits/{id}/edit', array(
+        'as' => 'exhibits-edit-single',
+        'uses' => 'ExhibitController@editSingle'
+    ));
+
 
 });
 
@@ -68,77 +128,77 @@ Route::group(array('before' => 'auth'), function() {
 */
 Route::group(array('before' => 'guest'), function() {
 
-	/*
-	| CSRF protection
-	*/
-	Route::group(array('before' => 'csrf'), function() {
-		/*
-		| Create account (POST)
-		*/
-		Route::post('/account/create', array(
-			'as' => 'account-create-post',
-			'uses' => 'AccountController@postCreate'
-		));
-		/*
-		| Login (POST)
-		*/
-		Route::post('/account/login', array(
-			'as' => 'account-login-post',
-			'uses' => 'AccountController@postLogin'
-		));
-	});
+    /*
+    | CSRF protection
+    */
+    Route::group(array('before' => 'csrf'), function() {
+        /*
+        | Create account (POST)
+        */
+        Route::post('/account/create', array(
+            'as' => 'account-create-post',
+            'uses' => 'AccountController@postCreate'
+        ));
+        /*
+        | Login (POST)
+        */
+        Route::post('/account/login', array(
+            'as' => 'account-login-post',
+            'uses' => 'AccountController@postLogin'
+        ));
 
-	/*
-	| Reset Password (POST)
-	*/
-	Route::post('/account/password-reset', array(
-		'as' => 'account-password-reset-post',
-		'uses' => 'PasswordController@postRemind'
-	));
+        /*
+        | Reset Password (POST)
+        */
+        Route::post('/account/password-reset', array(
+            'as' => 'account-password-reset-post',
+            'uses' => 'PasswordController@postRemind'
+        ));
 
-	/*
-	| Reset Password Page With Token (GET)
-	*/
-	Route::get('/account/password-reset/{token}', array(
-		'as' => 'account-password-reset-token',
-		'uses' => 'PasswordController@getRemindToken'
-	));
-	
+        /*
+        | Post Reset Password Page With Token (GET)
+        */
+        Route::post('/account/password-reset/{token}', array(
+            'as' => 'account-password-update',
+            'uses' => 'PasswordController@postUpdatePwdWithToken'
+        ));
 
-	/*
-	| Reset Password Page With Token (GET)
-	*/
-	Route::post('/account/password-reset/{token}', array(
-		'as' => 'account-password-update',
-		'uses' => 'PasswordController@postUpdatePwdWithToken'
-	));
+    });
 
-	/*
-	| Reset Password Page (GET)
-	*/
-	Route::get('/account/password-reset', array(
-		'as' => 'account-password-reset',
-		'uses' => 'PasswordController@remind'
-	));
+    /*
+    | Reset Password Page With Token (GET)
+    */
+    Route::get('/account/password-reset/{token}', array(
+        'as' => 'account-password-reset-token',
+        'uses' => 'PasswordController@getRemindToken'
+    ));
 
-	/*
-	| Create account (GET)
-	*/
-	Route::get('/account/create', array(
-		'as' => 'account-create',
-		'uses' => 'AccountController@getCreate'
-	));
+    /*
+    | Reset Password Page (GET)
+    */
+    Route::get('/account/password-reset', array(
+        'as' => 'account-password-reset',
+        'uses' => 'PasswordController@remind'
+    ));
 
-	/*
-	| Login (GET)
-	*/
-	Route::get('/account/login', array(
-		'as' => 'account-login',
-		'uses' => 'AccountController@getLogin'
-	));
+    /*
+    | Create account (GET)
+    */
+    Route::get('/account/create', array(
+        'as' => 'account-create',
+        'uses' => 'AccountController@getCreate'
+    ));
 
-	Route::get('/account/activate/{code}', array(
-		'as' => 'account-activate',
-		'uses' => 'AccountController@getActivate'
-	));
+    /*
+    | Login (GET)
+    */
+    Route::get('/account/login', array(
+        'as' => 'account-login',
+        'uses' => 'AccountController@getLogin'
+    ));
+
+    Route::get('/account/activate/{code}', array(
+        'as' => 'account-activate',
+        'uses' => 'AccountController@getActivate'
+    ));
 });
