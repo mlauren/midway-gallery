@@ -123,7 +123,8 @@ return array(
 		'Illuminate\Workbench\WorkbenchServiceProvider',
 		'Intervention\Image\ImageServiceProvider',
 		'Way\Generators\GeneratorsServiceProvider',
-		'Intervention\Image\ImageServiceProvider'
+		'Intervention\Image\ImageServiceProvider',
+		'Laracasts\Utilities\UtilitiesServiceProvider'
 	),
 
 	/*

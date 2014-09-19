@@ -9,8 +9,9 @@ class Media extends Eloquent {
 		'published'=>'required'
 	);
 	*/
+	
 	protected $fillable = array(
-		'user_id', 'img_min', 'img_big'
+		'user_id', 'img_min', 'img_big', 'mediable_id', 'mediable_type'
 	);
 
 	/**

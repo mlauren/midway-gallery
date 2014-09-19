@@ -3,7 +3,7 @@
 	<head>
 		<title>Authentication System</title>
 		{{ HTML::style('https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css')}}
-	    {{ HTML::style('css/main.css')}}
+	    {{ HTML::style('/packages/css/styles.css') }}
 	    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js') }}
 	    {{ HTML::script('https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js') }}
 	</head>
@@ -22,5 +22,6 @@
 				@yield('content')
 			</div>
 		</div>
+		@include('layout.footer')
 	</body>
 </html>

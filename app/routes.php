@@ -75,7 +75,7 @@ Route::group(array('before' => 'auth'), function() {
         | Form to add exhibit
         */
         Route::post('/exhibits/{id}/edit', array(
-            'as' => 'exhibits-edit-single-post',
+            'as' => 'exhibits-edit-post',
             'uses' => 'ExhibitController@postEditSingle'
         ));
     });
@@ -95,6 +95,28 @@ Route::group(array('before' => 'auth'), function() {
         'as' => 'account-logout',
         'uses' => 'AccountController@getLogout'
     ));
+    /*
+    |
+    |
+    | Media Related AJAX Routes:
+    |
+    |
+    */
+    /*
+    | Media removes media and detaches it from parent:
+    */
+    Route::get('/media/{id}/remove', array(
+        'as' => 'media-remove-unlink',
+        'uses' => 'MediaController@postRemoveMedia'
+    ));
+    /*
+    | Media adds media and attaches it to parent id:
+    */
+    Route::post('/media-add', array(
+        'as' => 'media-add-link',
+        'uses' => 'MediaController@postAddMedia'
+    ));
+
 
     /*
     |

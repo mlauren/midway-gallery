@@ -10,6 +10,18 @@ class Exhibit extends Eloquent {
 		'user_id', 'title', 'permalink', 'details', 'video', 'media', 'published'
 	);
 
+	public static function makeEditValidator($title, $video) {
+		return Validator::make(
+            array(
+                'title' => $title,
+                'video' => $video,
+            ), array(
+                'title'=>'required|min:3|max:50',
+                'video'=>'url'
+            )
+        );
+	}
+
 	public static function permalink($title) 
 	{
 		$clean = preg_replace("/[^a-zA-Z0-9\/_|+ -]/", '', $title);
