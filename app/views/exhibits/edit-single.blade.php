@@ -4,7 +4,7 @@
 
 {{ HTML::link('', 'XXXDelete') }}
 
-{{ Form::open(array('route'=>array('exhibits-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
+{{ Form::open(array('route'=>array('exhibits-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal', 'id' => 'exhibit-edit')) }}
     <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
         {{ Form::label('title', 'Exhibit Title', array('class' => 'control-label')); }}
         {{ Form::text('title', $exhibit->title, array('class'=>'form-control')) }}
@@ -42,9 +42,11 @@
     <div class="form-group {{ $errors->has('file') || $errors->has('media') ? 'has-error' : '' }}">
         {{ Form::label('file[]', 'Edit Files', array('class' => 'control-label')); }}
         <p class="help-block">Add additional files.</p>
-        <div id="image-preview"></div>
         {{ Form::file('file[]', ['multiple' => true], ['class' => 'field']) }}
         <p class="help-block">Upload some images associated with the exhibit.</p>
+        {{-- Adds an ajaxable image preview element --}}
+        <ul id="image-list">
+        </ul>
         @if($errors->has('file'))
             @foreach($errors->get('file') as $error)
                 <p class="help-block">
@@ -52,9 +54,7 @@
                 </p>
             @endforeach
         @endif
-        <div id="response"></div>
-        <ul id="image-list">
-        </ul>
+
         <div id="image-preview-exists">
             @foreach($imageGroup as $image)
                 <div class="img-min-preview">
@@ -74,4 +74,12 @@
     {{ Form::submit('Submit', array('class'=>'btn btn-large btn-default btn-block')) }}
 {{ Form::close() }}
 
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('/packages/custom_javascripts/media-add.js') }}
+    {{ HTML::script('/packages/custom_javascripts/media-remove.js') }}
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
+    {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
 @stop

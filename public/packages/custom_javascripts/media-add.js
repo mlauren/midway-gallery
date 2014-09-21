@@ -56,6 +56,28 @@ document.getElementById('file[]').addEventListener('change', handleFileSelect, f
     list.appendChild(li);
   }
 
+  function suckInUploadedItem(source, alt, id) {
+    var parentDiv = document.getElementById("image-preview-exists"),
+        div = document.createElement("div"),
+        img = document.createElement("img"),
+        link = document.createElement("a");
+    img.src = source;
+    img.alt = alt;
+    link.className = 'media-remove';
+    div.className = 'img-min-preview';
+    link.innerHTML = 'X';
+    link.href = '/media/' + id + '/remove';
+    div.appendChild(img);
+    div.appendChild(link);
+    parentDiv.insertBefore(div, parentDiv.firstChild);
+  }
+
+  function resetForm(formid) {
+    $(':input', '#' + formid)
+      .find(':file')
+      .val('');
+  }
+
   if (input.addEventListener) {
     // Add event listener
     input.addEventListener("change", function() {
@@ -65,19 +87,18 @@ document.getElementById('file[]').addEventListener('change', handleFileSelect, f
           reader,
           file;
 
-      document.getElementById("response").innerHTML = "Uploading";
-
       for (var i = 0; i < len; i++)
       {
         file = this.files[i];
 
-        if (!!file.type.match(/image.*/)) {
-
+        // if (!!file.type.match(/image.*/)) {
+          // @todo add this functionality to other events & 
+          // artists that have SINGLE file images
           if ( window.FileReader ) {
             reader = new FileReader();
             reader.onloadend = function(event) {
               // console.log(event.target.result);
-              showUploadedItem(event.target.result);
+              // showUploadedItem(event.target.result);
             };
             reader.readAsDataURL(file);
           }
@@ -101,17 +122,42 @@ document.getElementById('file[]').addEventListener('change', handleFileSelect, f
               contentType: false,
               success: function (response) {
                 // Log the success if it is a success
-                console.log(response.success);
+                console.log(response);
                 console.log(response.img_min_dest);
+                if (response.success == true) {
+                  suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
+                  $('form :file').val('');
+                }
+
+                // Call the media remove script again to allow another request if asked
+                /*$('.media-remove').on('click', function(e) {
+                  e.preventDefault();
+                  var el = $(this),
+                    url = el.attr('href');
+
+                    $.ajax({
+                        type: "GET",
+                        cache: false,
+                        dataType: 'json',
+                        url : url,
+                        success: function(data) {
+                            el.parent('.img-min-preview').fadeOut();
+                        }
+                    })
+                    .fail(function(jqXHR, ajaxOptions, thrownError) {
+                        alert('Something went wrong :X');
+                    });
+                });*/
               },
               error: function() {
-                alert('something went wrong');
-              }
+                alert('something went wrong :X');
+              },
+              async: true
             });
           }
-        }
+        //}
       }
-      // console.log(formdata);
+
 
     }, false);
   }

@@ -12,7 +12,8 @@ $(document).ready(function() {
             url : url,
             success: function(data) {
                 el.parent('.img-min-preview').fadeOut();
-            }
+            },
+            async: true
         })
         .fail(function(jqXHR, ajaxOptions, thrownError) {
             alert('Something went wrong :X');

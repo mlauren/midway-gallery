@@ -10,18 +10,20 @@
 	<body>
 		<div class="container">
 			@include('layout.navigation')
-			<div class="col-md-4">
-				@include('layout.sidebar')
-			</div>
-			<div class="col-md-8">
+
+			<div class="col-md-12">
 				@if(Session::has('global'))
 					{{ Session::get('global') }}
 				@endif
+			</div>
+			<div class="col-md-4">
+				@include('layout.sidebar')
 			</div>
 			<div class="col-md-8">
 				@yield('content')
 			</div>
 		</div>
+		@yield('scripts')
 		@include('layout.footer')
 	</body>
 </html>

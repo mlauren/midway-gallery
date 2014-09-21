@@ -167,7 +167,7 @@ class ExhibitController extends BaseController {
                     $imageMin = Image::make($imgOrigDestination)->crop(250, 250, 10, 10)->save($imageMinDestination);                    
 
                     // Saves the media and adds the appropriate foreign keys for the exhibit
-                    $media = $exhibit->media()->create([
+                    $media = $exhibit->media()->firstOrNew([
                         'user_id' => $user_id,
                         'img_min' => $imageMinDestination,
                         'img_big' => $imgOrigDestination

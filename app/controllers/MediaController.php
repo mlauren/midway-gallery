@@ -35,20 +35,26 @@ class MediaController extends BaseController {
         // var_dump(Input::all());
 
         if (Input::hasFile('file')) {
-            $files = Input::file('file');            
+
+            // Validate images if they are present
+            $files = Input::file('file');
             foreach($files as $file) {
-                $validator = Validator::make(
-                    array('file' => $file), 
-                    array('file' => 'mimes:png,gif,jpeg|max:20000')
-                );
-            
-                if ($validator->fails())
-                {
-                    return Response::json(array(
-                        'success' => false,
-                        'error' => $validator->errors()->toArray()
-                    ));
+                if ($file->isValid()) {
+                    $validator = Validator::make(
+                        array('file' => $file), 
+                        array('file' => 'mimes:png,gif,jpeg|max:20000')
+                    );
+                    if ($validator->fails()) {
+                        return Response::json(array(
+                            'success' => false,
+                            'error' => $file->isValid()
+                        ));
+                    }
                 }
+            }
+
+            foreach($files as $file) {
+                
 
                 $exhibit = Exhibit::find((int)$parentId);
                 $user_id = Auth::user()->id;
@@ -79,7 +85,8 @@ class MediaController extends BaseController {
                 else {
                     return Response::json(array(
                         'success' => true,
-                        'img_min_dest' => $imageMinDestination
+                        'img_min_dest' => $imageMinDestination,
+                        'media_id' => $media->id
                     )); 
                 }
             }
