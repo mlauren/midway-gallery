@@ -12,4 +12,9 @@
 	@foreach($imageGroup as $image)
 		{{ HTML::image($image->img_big, $exhibit->title) }}
 	@endforeach
+	@if(isset($assignedGroup))
+		@foreach ($assignedGroup as $image)
+			{{ HTML::image($image->img_big, $exhibit->title) }}
+		@endforeach
+	@endif
 @stop

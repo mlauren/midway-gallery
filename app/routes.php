@@ -105,7 +105,7 @@ Route::group(array('before' => 'auth'), function() {
     /*
     | Media removes media and detaches it from parent:
     */
-    Route::get('/media/{id}/remove', array(
+    Route::post('/media/{id}/remove', array(
         'as' => 'media-remove-unlink',
         'uses' => 'MediaController@postRemoveMedia'
     ));
@@ -115,6 +115,14 @@ Route::group(array('before' => 'auth'), function() {
     Route::post('/media-add', array(
         'as' => 'media-add-link',
         'uses' => 'MediaController@postAddMedia'
+    ));
+
+    /*
+    | Media adds media and attaches it to parent id:
+    */
+    Route::post('/media-add-id-order', array(
+        'as' => 'media-add-id-order',
+        'uses' => 'MediaController@postUpdateMediaIDsOrder'
     ));
 
 
