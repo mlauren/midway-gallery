@@ -32,11 +32,10 @@
                     @endforeach
                 </label>
             @endif
-  			{{ Form::password('password_confirmation', array('class'=>'form-control', 'placeholder'=>'Confirm Password')) }}
-	 	</div>
+			{{ Form::password('password_confirmation', array('class'=>'form-control', 'placeholder'=>'Confirm Password')) }}
+        </div>
 		{{ Form::hidden('token', $token) }}
 
 		<p>{{ Form::submit('Submit', array('class'=>'btn btn-default btn-block')) }}</p>
-	 
 	{{ Form::close() }}
 @stop

@@ -7,7 +7,7 @@ class Exhibit extends Eloquent {
 	);
 
 	protected $fillable = array(
-		'user_id', 'title', 'permalink', 'details', 'video', 'media', 'published'
+		'user_id', 'title', 'permalink', 'details', 'video', 'media_ids', 'published'
 	);
 
 	public static function makeEditValidator($title, $video) {

@@ -14,17 +14,33 @@ class ExhibitController extends BaseController {
      */
     public function editSingle($id) {
         $exhibit = Exhibit::find($id);
-
+        $mediaIDs = json_decode($exhibit->media_ids);
+        $assignedImageGroup = DB::table('media')
+            ->where('mediable_id', '=', $id)
+            ->where('mediable_type', '=', 'Exhibit')
+            ->orderBy('updated_at', 'desc')
+            ->get();
+        $assignedGroup = array();
+        $imageGroup = array();
         if ($exhibit->count()) {
-            $imageGroup = DB::table('media')
-                            ->where('mediable_id', '=', $id)
-                            ->where('mediable_type', '=', 'Exhibit')
-                            ->orderBy('updated_at', 'desc')
-                            ->get();
+            if (!empty($mediaIDs)) {
+                foreach ($mediaIDs as $mediaID) {
+                    $media = Media::find($mediaID);
+                    $imageGroup[] = $media;
+                }
+            }
+            if (!empty($mediaIDs) && !empty($assignedImageGroup)) {
+                foreach ($assignedImageGroup as $image) {
+                    if (!in_array($image->id, $mediaIDs)) {
+                        $assignedGroup[] = $image;
+                    }
+                }
+            }
             return  View::make('exhibits.edit-single')
-                    ->with('id', $id)
-                    ->with('exhibit', $exhibit)
-                    ->with('imageGroup', $imageGroup);
+                ->with('id', $id)
+                ->with('exhibit', $exhibit)
+                ->with('imageGroup', $imageGroup)
+                ->with('assignedGroup', $assignedGroup);
         }
         return App::abort(404);
 
@@ -40,7 +56,7 @@ class ExhibitController extends BaseController {
                 ->withErrors($validator)
                 ->withInput();
         }
-        // Validate images if they are present
+        // Validate images if they are present and ajax hasn't run
         if (Input::hasFile('file')) {
             $files = Input::file('file');
             foreach($files as $file) {
@@ -149,6 +165,8 @@ class ExhibitController extends BaseController {
                 'published'=> (bool)Input::get('published')
             )
         );
+        $mediaIDs = array();
+
         if ($exhibit) {
             $exhibit->save();
             foreach($files as $file) {
@@ -167,19 +185,34 @@ class ExhibitController extends BaseController {
                     $imageMin = Image::make($imgOrigDestination)->crop(250, 250, 10, 10)->save($imageMinDestination);                    
 
                     // Saves the media and adds the appropriate foreign keys for the exhibit
-                    $media = $exhibit->media()->firstOrNew([
+                    $media = $exhibit->media()->create([
                         'user_id' => $user_id,
                         'img_min' => $imageMinDestination,
                         'img_big' => $imgOrigDestination
                     ]);
                     $exhibit->media()->save($media);
+                    $mediaIDs[] = $media->id;
 
                 }
             }
+            $exhibit->media_ids = json_encode($mediaIDs);
+            $exhibit->save();
             return Redirect::route('exhibits-show-single', $exhibit->permalink)
                 ->with('status', 'alert-success')
                 ->with('global', 'You have successfully created an exhibit.');
         }
+    }
+
+    /**
+     * Remove a single exhibit.
+     */
+    public function postRemoveSingle($id) {
+        $exhibit = Exhibit::find($id);
+        $name = $exhibit->title;
+        $exhibit->delete();
+        return Redirect::route('account')
+            ->with('status', 'alert-success')
+            ->with('global', 'You just deleted ' . $name);
     }
 
     /**
@@ -188,15 +221,33 @@ class ExhibitController extends BaseController {
     public function single($name) {
         $exhibit = Exhibit::where('permalink', '=', $name);
         if ($exhibit->count()) {
-            $exhibit = $exhibit->first();            
-            $imageGroup = DB::table('media')
-                            ->where('mediable_id', '=', $exhibit->id)
-                            ->where('mediable_type', '=', 'Exhibit')
-                            ->orderBy('updated_at', 'desc')
-                            ->get();
+            $exhibit = $exhibit->first();
+
+            $mediaIDs = json_decode($exhibit->media_ids);
+            $assignedImageGroup = DB::table('media')
+                ->where('mediable_id', '=', $exhibit->id)
+                ->where('mediable_type', '=', 'Exhibit')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+            $assignedGroup = array();
+            $imageGroup = array();
+            if (!empty($mediaIDs)) {
+                foreach ($mediaIDs as $mediaID) {
+                    $media = Media::find($mediaID);
+                    $imageGroup[] = $media;
+                }
+            }
+            if (!empty($mediaIDs) && !empty($assignedImageGroup)) {
+                foreach ($assignedImageGroup as $image) {
+                    if (!in_array($image->id, $mediaIDs)) {
+                        $assignedGroup[] = $image;
+                    }
+                }
+            }
             return  View::make('exhibits.show-single')
-                    ->with('exhibit', $exhibit)
-                    ->with('imageGroup', $imageGroup);
+                ->with('exhibit', $exhibit)
+                ->with('imageGroup', $imageGroup)
+                ->with('assignedGroup', $assignedGroup);
         }
         return App::abort(404);
     }

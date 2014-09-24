@@ -1,10 +1,16 @@
 @extends('layout.main')
 
 @section('content')
-	Account
 	@if(Auth::check())
-		<p>Hello, {{ Auth::user()->username }}.</p>
-	@else
-		<p>Not Signed in</p>
+		<h2><small>Hello, {{ Auth::user()->username }}.</small></h2>
+		<div class="col-md-4">
+			@include('layout.sidebar')
+		</div>
+		<div class="col-md-4">
+			@include('layout.sidebar')
+		</div>
+		<div class="col-md-4">
+			@include('layout.sidebar')
+		</div>
 	@endif
 @stop
