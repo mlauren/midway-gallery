@@ -60,6 +60,14 @@ Route::group(array('before' => 'auth'), function() {
         ));
 
         /*
+        | Change Password (POST)
+        */
+        Route::post('/account/change-pwd', array(
+            'as' => 'account-change-pwd-post',
+            'uses' => 'AccountController@postChangePwd'
+        ));
+
+        /*
         |
         |
         | Exhibit Related POST Routes:
@@ -147,7 +155,13 @@ Route::group(array('before' => 'auth'), function() {
         'as' => 'exhibits-edit-single',
         'uses' => 'ExhibitController@editSingle'
     ));
-
+    /*
+    | Link to remove exhibit
+    */
+    Route::get('/exhibits/{id}/remove', array(
+        'as' => 'exhibits-remove-single',
+        'uses' => 'ExhibitController@postRemoveSingle'
+    ));
 
 });
 
