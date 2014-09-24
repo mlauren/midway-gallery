@@ -1,7 +1,13 @@
 @extends('layout.main')
 
-@section('content')
+@section('sidebar')
+	<div class="col-md-4">
+		@include('layout.sidebar')
+	</div>
+@stop
 
+@section('content')
+<div class="col-md-8">
 {{ Form::open(array('url'=>URL::route('exhibits-add-post'), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
 	<div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
 		{{ Form::label('title', 'Exhibit Title', array('class' => 'control-label')); }}

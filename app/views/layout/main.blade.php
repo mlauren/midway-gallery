@@ -20,15 +20,13 @@
 
 			<div class="col-md-12">
 				@if(Session::has('global'))
-					{{ Session::get('global') }}
+					<div class="alert {{ Session::get('status') }}">
+						{{ Session::get('global') }}
+					</div>
 				@endif
 			</div>
-			<div class="col-md-4">
-				@include('layout.sidebar')
-			</div>
-			<div class="col-md-8">
+				@yield('sidebar')
 				@yield('content')
-			</div>
 		</div>
 		@yield('scripts')
 		@include('layout.footer')
