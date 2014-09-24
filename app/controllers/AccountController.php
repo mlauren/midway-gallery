@@ -16,7 +16,8 @@ class AccountController extends BaseController {
 	public function getLogout() {
 		Auth::logout();
 		return Redirect::route('account')
-			->with('global', '<div class="alert alert-success" role="alert">You have been logged out.</div>');
+			->with('status', 'alert-success')
+			->with('global', 'You have been logged out.');
 	}
 
 	public function postLogin() {
@@ -40,11 +41,14 @@ class AccountController extends BaseController {
 				echo '<pre>';
 				print_r($auth);
 				echo '</pre>';
-				return Redirect::route('account-login')->with('global', '<div class="alert alert-danger" role="alert"> There was a problem with your username/ password. Have you activated your account?</div>');
+				return Redirect::route('account-login')
+					->with('status', 'alert-danger')
+					->with('global', 'There was a problem with your username / password. Have you activated your account?');
 			}
 		}
 		return Redirect::route('account-login')
-			->with('global', '<div class="alert alert-danger" role="alert"> There was a problem >.< Have you activated your account?</div>');
+			->with('status', 'alert-danger')
+			->with('global', 'There was a problem >.< Have you activated your account?');
 	}
 
 	public function postCreate() {
@@ -82,7 +86,9 @@ class AccountController extends BaseController {
 								->subject('Activate your account');
 					});
 
-				return Redirect::route('account')->with('global', '<div class="alert alert-success" role="alert">Your account has been created. Please check your email. </div>');
+				return Redirect::route('account')
+					->with('status', 'alert-success')
+					->with('global', 'Your account has been created. Please check your email.');
 			}
 		}
 	}
@@ -99,11 +105,15 @@ class AccountController extends BaseController {
 			$user->active = 1;
 			$user->code = '';
 			if ($user->save()) {
-				return  Redirect::route('account')->with('global', 'Activated. You can now sign in.');
+				return  Redirect::route('account')
+					->with('status', 'alert-success')
+					->with('global', 'Activated. You can now sign in.');
 			}	
 		}
 		// If code is not correct, redirect.
-		return  Redirect::route('account')->with('global', '<div class="alert alert-warning" role="alert"> Something went wrong! >.< Please try to activate your account again </div>');
+		return  Redirect::route('account')
+			->with('status', 'alert-warning')
+			->with('global', 'Something went wrong! >.< Please try again.');
 	}
 
 	public function getChangePwd() {
@@ -133,19 +143,23 @@ class AccountController extends BaseController {
 				// Just check to make sure they arn't being dumb
 				if (Hash::check($new_pwd, Auth::user()->password)) {
 					return Redirect::route('account')
-						->with('global', '<div class="alert alert-warning" role="alert">It appears this is already your password. </div>');
+						->with('status', 'alert-warning')
+						->with('global', 'It appears this is already your password.');
 				}
 				$user->password = Hash::make($new_pwd);
 				$user->save();
 				return Redirect::route('account')
-					->with('global', '<div class="alert alert-success" role="alert">Your password has been saved. </div>');
+					->with('status', 'alert-success')
+					->with('global', 'Your password has been saved.');
 			}
 			else {
 				return Redirect::route('account-change-pwd')
-				->with('global', '<div class="alert alert-warning" role="alert"> You entered the wrong password </div>');
+				->with('status', 'alert-warning')
+				->with('global', 'You entered the wrong password.');
 			}
 			return Redirect::route('account-change-pwd')
-				->with('global', '<div class="alert alert-warning" role="alert"> Your password could not be changed :/ </div>');
+				->with('status', 'alert-warning')
+				->with('global', 'Your password could not be changed :/');
 		}
 	}
 }
