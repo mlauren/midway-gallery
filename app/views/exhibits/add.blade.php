@@ -44,6 +44,7 @@
 	        @endforeach
         @endif
 	</div>
+	<div id="image-list" class="row"></div>
 	<div class="form-group {{ $errors->has('file') || $errors->has('media') ? 'has-error' : '' }}">
 		{{ Form::label('file[]', 'Image Files', array('class' => 'control-label')); }}
 		{{ Form::file('file[]', array('multiple' => true, 'class' => 'field')) }}
@@ -70,6 +71,6 @@
 @section('scripts')
     @parent
     {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
+    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 
-    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

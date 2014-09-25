@@ -10,7 +10,7 @@
 					{{ Form::label('email', 'Email', array('class' => 'control-label')); }}
 					{{ Form::text('email', null, array('class'=>'form-control', 'placeholder'=>'Email Address')) }}
 					</div>
-					{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default'))}} 
+					{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default'))}}
 				{{ Form::close() }}
 			</div>
 		</div>

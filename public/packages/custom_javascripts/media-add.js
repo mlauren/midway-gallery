@@ -17,7 +17,6 @@
             reader,
             file;
         addLoadIcon("image-preview-exists");
-        
 
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
