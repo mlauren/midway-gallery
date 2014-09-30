@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.backend')
 
 @section('sidebar')
     <div class="col-md-4">
@@ -16,6 +16,17 @@
             {{ Form::text('title', $exhibit->title, array('class'=>'form-control')) }}
             @if($errors->has('title'))
                 @foreach($errors->get('title') as $error)
+                    <p class="help-block">
+                        <strong>{{ $error }}</strong>
+                    </p>
+                @endforeach
+            @endif
+        </div>
+        <div class="form-group">
+            {{ Form::label('created_at', 'Created At', array('class' => 'control-label')); }}
+            {{ Form::text('created_at', date_format($exhibit->created_at, 'm/d/Y g:i A'), array('class'=>'form-control', 'id'=>'datetimepicker6')) }}
+            @if($errors->has('created_at'))
+                @foreach($errors->get('created_at') as $error)
                     <p class="help-block">
                         <strong>{{ $error }}</strong>
                     </p>
@@ -62,18 +73,23 @@
             @endif
 
             <div id="image-preview-exists" data-ex-id="{{ $id }}">
-                @foreach($imageGroup as $image)
-                    <div class="img-min-preview" data-id="{{ $image->id }}">
-                        {{ HTML::image($image->img_min, $exhibit->title) }}
-                        {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
-                    </div>
-                @endforeach
-                @foreach ($assignedGroup as $image)
-                    <div class="img-min-preview" data-id="{{ $image->id }}">
-                        {{ HTML::image($image->img_min, $exhibit->title) }}
-                        {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
-                    </div>
-                @endforeach
+                @if(!empty($imageGroup))
+                    @foreach($imageGroup as $image)
+                        <div class="img-min-preview" data-id="{{ $image->id }}">
+                            {{ HTML::image($image->img_min, $exhibit->title) }}
+                            {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
+                        </div>
+                    @endforeach
+                @endif
+                @if(!empty($assignedGroup))
+                    @foreach($assignedGroup as $image)
+                        <div class="img-min-preview" data-id="{{ $image->id }}">
+                            {{ HTML::image($image->img_min, $exhibit->title) }}
+                            {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
+                        </div>
+                    @endforeach
+                @endif
+            
             </div>
         </div>
 
@@ -90,9 +106,14 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('/packages/custom_javascripts/media-add.js') }}
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
+
+    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 
     {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
+
+
 @stop

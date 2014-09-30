@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.backend')
 
 @section('sidebar')
 	<div class="col-md-4">
@@ -56,13 +56,15 @@
 	            </p>
 	        @endforeach
 	    @endif
+	    <div id="image-preview-exists" data-ex-id="">
+		</div>
 	</div>
 
 	<div class="form-group">
 		{{ Form::checkbox('published', 'true', true) }} {{ Form::label('file', 'Published??', array('class' => 'control-label')); }}
 		<p class="help-block">Un-check this if you do not want to display this content.</p>
 	</div>
-
+	{{ Form::hidden('id') }}
 	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}
 {{ Form::close() }}
 </div>
@@ -71,6 +73,8 @@
 @section('scripts')
     @parent
     {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
+
     {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

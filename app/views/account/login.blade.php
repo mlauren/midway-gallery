@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.backend')
 
 @section('content')
 	<!-- Using the Form helper class automatically generates a CSRF token -->

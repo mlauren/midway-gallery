@@ -15,24 +15,25 @@ class ExhibitController extends BaseController {
     public function editSingle($id) {
         $exhibit = Exhibit::find($id);
         $mediaIDs = json_decode($exhibit->media_ids);
-        $assignedImageGroup = DB::table('media')
-            ->where('mediable_id', '=', $id)
-            ->where('mediable_type', '=', 'Exhibit')
-            ->orderBy('updated_at', 'desc')
-            ->get();
         $assignedGroup = array();
         $imageGroup = array();
         if ($exhibit->count()) {
-            if (!empty($mediaIDs)) {
+            // Get the order of media_ids and pass it in to assigned image group
+            if (!is_null($mediaIDs)) {
                 foreach ($mediaIDs as $mediaID) {
                     $media = Media::find($mediaID);
                     $imageGroup[] = $media;
                 }
             }
-            if (!empty($mediaIDs) && !empty($assignedImageGroup)) {
-                foreach ($assignedImageGroup as $image) {
-                    if (!in_array($image->id, $mediaIDs)) {
-                        $assignedGroup[] = $image;
+            $assignedImageGroup = DB::table('media')
+                ->where('mediable_id', '=', $exhibit->id)
+                ->where('mediable_type', '=', 'Exhibit')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+            if (isset($assignedImageGroup) && !is_null($mediaIDs)){
+                foreach ($assignedImageGroup as $media){
+                    if (!in_array($media->id, $mediaIDs)) {
+                        $assignedGroup[] = $media;
                     }
                 }
             }
@@ -71,6 +72,9 @@ class ExhibitController extends BaseController {
                 }
             }
         }
+        //2014-09-30 15:19:05
+        $created_at = strtotime(Input::get('created_at'));
+        $created_at = date('Y-m-d H:i:s', $created_at);
 
         $user_id = Auth::user()->id;
         $cleanTitle = Exhibit::permalink(Input::get('title'));
@@ -79,6 +83,7 @@ class ExhibitController extends BaseController {
                 'user_id' => $user_id,
                 'title' => Input::get('title'),
                 'permalink'=>$cleanTitle,
+                'created_at'=>$created_at,
                 'details' => Input::get('details'),
                 'video' => Input::get('video'),
                 'published'=> (bool)Input::get('published')
@@ -117,7 +122,6 @@ class ExhibitController extends BaseController {
             }
         }
         return Redirect::route('exhibits-show-single', $exhibit->permalink)
-            ->with('status', 'alert-success')
             ->with('global', 'You have successfully updated ' . $exhibit->title . '.');
 
     }
@@ -128,6 +132,9 @@ class ExhibitController extends BaseController {
      */
     public function postAdd() {
         // Validate form fields
+        $exhibit = Exhibit::find(Input::get('id'));
+
+
         $validator = Validator::make(
             array(
                 'title' => Input::get('title'),
@@ -135,64 +142,78 @@ class ExhibitController extends BaseController {
             ), Exhibit::$rules
         );
         if ( $validator->fails() ) {
-            return Redirect::route('exhibits-add')
-                ->withErrors($validator)
-                ->withInput();
-        }
-        // Validate images
-        $files = Input::file('file');
-        foreach($files as $file) {
-            $rules = array(
-               'file' => 'required|mimes:png,gif,jpeg|max:20000'
-            );
-            $validator = Validator::make(array('file' => $file), $rules);
-            if ($validator->fails()) {
+            if (!count($exhibit)) {
                 return Redirect::route('exhibits-add')
                     ->withErrors($validator)
                     ->withInput();
+            }
+            else {
+                return Redirect::to('exhibits/' . $exhibit->id . '/edit')
+                    ->withErrors($validator)
+                    ->withInput();
+            }
+        }
+        // Validate images
+        if (Input::hasFile('file')) {
+            $files = Input::file('file');
+            foreach($files as $file) {
+                $rules = array(
+                   'file' => 'mimes:png,gif,jpeg|max:20000'
+                );
+                $validator = Validator::make(array('file' => $file), $rules);
+                if ($validator->fails()) {
+                    return Redirect::route('exhibits-add')
+                        ->withErrors($validator)
+                        ->withInput();
+                }
             }
         }
         $user_id = Auth::user()->id;
         $cleanTitle = Exhibit::permalink(Input::get('title'));
         
-        $exhibit = Exhibit::create(
+        $exhibit = Exhibit::findOrCreate(Input::get('id'));
+        $exhibit->update(
             array(
                 'user_id' => $user_id,
                 'title' => Input::get('title'),
                 'permalink'=>$cleanTitle,
                 'details' => Input::get('details'),
                 'video' => Input::get('video'),
-                'published'=> (bool)Input::get('published')
+                'published' => (bool)Input::get('published'),
+                'autodraft' => false
             )
         );
         $mediaIDs = array();
 
         if ($exhibit) {
             $exhibit->save();
-            foreach($files as $file) {
-                $currentMo = date('Y_M');
-                $destination = "uploads/$currentMo";
-                $filename = $file->getClientOriginalName();
-                // $cleanFilename = Exhibit::permalink($filename);
-                // Move the new file into the uploads directory
-                $uploadSuccess = $file->move($destination, "$filename");
-                $imgOrigDestination = $destination . '/' . $filename;
+            if (Input::hasFile('file')) {
+                $files = Input::file('file');
+                foreach($files as $file) {
+                    $currentMo = date('Y_M');
+                    $destination = "uploads/$currentMo";
+                    $filename = $file->getClientOriginalName();
+                    // $cleanFilename = Exhibit::permalink($filename);
+                    // Move the new file into the uploads directory
+                    $uploadSuccess = $file->move($destination, "$filename");
+                    $imgOrigDestination = $destination . '/' . $filename;
 
-                // Check to make sure that upload was successful and add the content
-                if($uploadSuccess) 
-                {
-                    $imageMinDestination = $destination . '/min_' . $filename;
-                    $imageMin = Image::make($imgOrigDestination)->crop(250, 250, 10, 10)->save($imageMinDestination);                    
+                    // Check to make sure that upload was successful and add the content
+                    if($uploadSuccess) 
+                    {
+                        $imageMinDestination = $destination . '/min_' . $filename;
+                        $imageMin = Image::make($imgOrigDestination)->crop(250, 250, 10, 10)->save($imageMinDestination);                    
 
-                    // Saves the media and adds the appropriate foreign keys for the exhibit
-                    $media = $exhibit->media()->create([
-                        'user_id' => $user_id,
-                        'img_min' => $imageMinDestination,
-                        'img_big' => $imgOrigDestination
-                    ]);
-                    $exhibit->media()->save($media);
-                    $mediaIDs[] = $media->id;
+                        // Saves the media and adds the appropriate foreign keys for the exhibit
+                        $media = $exhibit->media()->create([
+                            'user_id' => $user_id,
+                            'img_min' => $imageMinDestination,
+                            'img_big' => $imgOrigDestination
+                        ]);
+                        $exhibit->media()->save($media);
+                        $mediaIDs[] = $media->id;
 
+                    }
                 }
             }
             $exhibit->media_ids = json_encode($mediaIDs);
@@ -220,36 +241,61 @@ class ExhibitController extends BaseController {
      */
     public function single($name) {
         $exhibit = Exhibit::where('permalink', '=', $name);
-        if ($exhibit->count()) {
             $exhibit = $exhibit->first();
-
             $mediaIDs = json_decode($exhibit->media_ids);
-            $assignedImageGroup = DB::table('media')
-                ->where('mediable_id', '=', $exhibit->id)
-                ->where('mediable_type', '=', 'Exhibit')
-                ->orderBy('updated_at', 'desc')
-                ->get();
             $assignedGroup = array();
             $imageGroup = array();
-            if (!empty($mediaIDs)) {
+            if ($exhibit->count()) {
+            // Get the order of media_ids and pass it in to assigned image group
+            if (!is_null($mediaIDs)) {
                 foreach ($mediaIDs as $mediaID) {
                     $media = Media::find($mediaID);
                     $imageGroup[] = $media;
                 }
             }
-            if (!empty($mediaIDs) && !empty($assignedImageGroup)) {
-                foreach ($assignedImageGroup as $image) {
-                    if (!in_array($image->id, $mediaIDs)) {
-                        $assignedGroup[] = $image;
+            $assignedImageGroup = DB::table('media')
+                ->where('mediable_id', '=', $exhibit->id)
+                ->where('mediable_type', '=', 'Exhibit')
+                ->orderBy('updated_at', 'desc')
+                ->get();
+            if (isset($assignedImageGroup) && !is_null($mediaIDs)){
+                foreach ($assignedImageGroup as $media){
+                    if (!in_array($media->id, $mediaIDs)) {
+                        $assignedGroup[] = $media;
                     }
                 }
             }
+            if (isset($exhibit->video)){
+                $videoEmbed = array();
+                $re = "/(?:http:\\/\\/|https:\\/\\/)(?:www.)?(vimeo|youtube).com\\/(?:watch\\?v=)?(.*?)(?:\\z|&)/"; 
+                preg_match($re, $exhibit->video, $out);
+                if (isset($out[1])) {
+                    $videoEmbed['source'] = $out[1];
+                    $videoEmbed['id'] = $out[2];
+                }
+            }
             return  View::make('exhibits.show-single')
+                ->with('videoEmbed', $videoEmbed)
                 ->with('exhibit', $exhibit)
                 ->with('imageGroup', $imageGroup)
                 ->with('assignedGroup', $assignedGroup);
-        }
+            }
         return App::abort(404);
+    }
+
+    public function exhibitAddEmpty() {
+        $exhibit = Exhibit::create(
+            array(
+                'published' => false,
+                'autodraft' => true
+            )
+        );
+        return Response::json(
+                array(
+                    'success' => true,
+                    'id' => $exhibit->id
+                )
+            );
     }
 
 }

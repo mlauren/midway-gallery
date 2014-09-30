@@ -18,6 +18,10 @@
             file;
         addLoadIcon("image-preview-exists");
 
+        if ($('[name="id"]').val() != '') {
+          formdata.append("id", $('[name="id"]').val());
+        }
+
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
           if (formdata) {
@@ -25,7 +29,6 @@
             // Make sure to add the count into the file[i] array
             formdata.append("file", this.files[i]);
           }
-          formdata.append("id", $('[name="id"]').val());
 
           // @todo take this out of the loop.
           if ( formdata ) {
@@ -154,7 +157,7 @@
 
 
 // update the mediable elements on page load
-mediable.updateOrder()
+mediable.updateOrder();
 mediable.remove();
 mediable.add();
 mediable.sortable();

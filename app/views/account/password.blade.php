@@ -1,4 +1,4 @@
-@extends('layout.main')
+@extends('layout.backend')
 
 @section('content')
     <div class="panel panel-default">

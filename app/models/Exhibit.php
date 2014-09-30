@@ -7,7 +7,7 @@ class Exhibit extends Eloquent {
 	);
 
 	protected $fillable = array(
-		'user_id', 'title', 'permalink', 'details', 'video', 'media_ids', 'published'
+		'user_id', 'title', 'permalink', 'details', 'video', 'media_ids', 'published', 'autodraft', 'created_at'
 	);
 
 	public static function makeEditValidator($title, $video) {
@@ -20,6 +20,11 @@ class Exhibit extends Eloquent {
                 'video'=>'url'
             )
         );
+	}
+	public static function findOrCreate($id)
+	{
+	    $obj = static::find($id);
+	    return $obj ?: new static;
 	}
 
 	public static function permalink($title) 

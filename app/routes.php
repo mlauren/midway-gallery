@@ -33,6 +33,15 @@ Route::get('/account', array(
 |
 */
 /*
+| Show All the exhibits
+*/
+Route::get('/exhibits', function() {
+    $recent_exhibit = DB::table('exhibits')->orderBy('created_at', 'desc')->first();
+    var_dump($recent_exhibit);
+
+    return Redirect::to('/exhibits/' . $recent_exhibit->permalink);
+});
+/*
 | Show single exhibit
 */
 Route::get('/exhibits/{name}', array(
@@ -133,6 +142,17 @@ Route::group(array('before' => 'auth'), function() {
         'uses' => 'MediaController@postUpdateMediaIDsOrder'
     ));
 
+    /*
+    |
+    |
+    | Exhibit Related POST AJAX:
+    | Post an exhibit that is empty and autosave
+    |
+    */
+    Route::post('/exhibit-add-empty', array(
+        'as' => 'exhibit-add-empty',
+        'uses' => 'ExhibitController@exhibitAddEmpty'
+    ));
 
     /*
     |

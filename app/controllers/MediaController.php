@@ -31,6 +31,7 @@ class MediaController extends BaseController {
         $isAjax = Request::ajax();
         $parentId = Input::get('id');
         $exhibit = Exhibit::find((int)$parentId);
+        $exhibit->save();
 
         if (Input::hasFile('file')) {
 
@@ -78,7 +79,8 @@ class MediaController extends BaseController {
                 array(
                     'success' => true,
                     'img_min_dest' => $imageMinDestination,
-                    'media_id' => $media->id
+                    'media_id' => $media->id,
+                    'exhibit_id' => $exhibit->id
                 )
             );
         }
