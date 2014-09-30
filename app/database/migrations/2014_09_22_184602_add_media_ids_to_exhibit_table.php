@@ -15,7 +15,7 @@ class AddMediaIdsToExhibitTable extends Migration {
 		Schema::table('exhibits', function($table)
 		{
 		    $table->string('media_ids');
-		});	
+		});
 	}
 
 	/**
