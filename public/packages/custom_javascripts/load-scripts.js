@@ -2,7 +2,7 @@
  * Load dependent libraries.
  */
 (function ($) {
-  $('#details').wysihtml5({
+  $('.details-wysi').wysihtml5({
     "stylesheets": []
   });
   if (typeof datetimepicker == 'function') {

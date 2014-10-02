@@ -59,6 +59,7 @@
         $currentMo = date('Y_M');
         $destination = "uploads/$currentMo";
         $filename = $file->getClientOriginalName();
+        $filename = Exhibit::string_convert($filename);
 
         $uploadSuccess = $file->move($destination, "$filename");
         $imgOrigDestination = $destination . '/' . $filename;

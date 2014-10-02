@@ -99,7 +99,8 @@
           $currentMo = date('Y_M');
           $destination = "uploads/$currentMo";
           $filename = $file->getClientOriginalName();
-          // $cleanFilename = Exhibit::permalink($filename);
+          $filename = Exhibit::string_convert($filename);
+            // $cleanFilename = Exhibit::permalink($filename);
           // Move the new file into the uploads directory
           $uploadSuccess = $file->move($destination, "$filename");
           $imgOrigDestination = $destination . '/' . $filename;
@@ -126,7 +127,6 @@
       }
       return Redirect::route('exhibits-show-single', $exhibit->permalink)
         ->with('global', 'You have successfully updated ' . $exhibit->title . '.');
-
     }
 
     /**
@@ -196,6 +196,7 @@
             $currentMo = date('Y_M');
             $destination = "uploads/$currentMo";
             $filename = $file->getClientOriginalName();
+            $filename = Exhibit::string_convert($filename);
             // $cleanFilename = Exhibit::permalink($filename);
             // Move the new file into the uploads directory
             $uploadSuccess = $file->move($destination, "$filename");

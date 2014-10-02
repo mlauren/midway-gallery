@@ -35,7 +35,7 @@
         </div>
         <div class="form-group {{ $errors->has('details') ? 'has-error' : '' }}">
             {{ Form::label('details', 'Exhibit Details', array('class' => 'control-label')); }}
-            {{ Form::textarea('details', $exhibit->details, array('class'=>'form-control textarea-wysiwyg')) }}
+            {{ Form::textarea('details', $exhibit->details, array('class'=>'form-control details-wysi')) }}
             @if($errors->has('details'))
                 @foreach($errors->get('details') as $error)
                     <p class="help-block">
