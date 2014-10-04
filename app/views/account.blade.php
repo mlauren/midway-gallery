@@ -13,4 +13,5 @@
 			@include('layout.sidebar')
 		</div>
 	@endif
+
 @stop

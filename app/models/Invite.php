@@ -19,9 +19,21 @@ class Invite extends Eloquent {
 
   public function getValidInviteByCode($code)
   {
-    return $this->model->where('code', '=', $code)
-                       ->where('claimed_at', '=', null)
-                       ->first();
+    return $this->where('code', '=', $code)
+                ->where('claimed_at', '=', null)
+                ->first();
+  }
+
+  /**
+   * Create
+   *
+   * @param array $data
+   * @return Illuminate\Database\Eloquent\Model
+   */
+  public function create(array $data)
+  {
+    $data['code'] = bin2hex(openssl_random_pseudo_bytes(16));
+    return $this->model->create($data);
   }
  
 }

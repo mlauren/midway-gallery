@@ -196,6 +196,16 @@ Route::group(array('before' => 'guest'), function() {
     | CSRF protection
     */
     Route::group(array('before' => 'csrf'), function() {
+        /**
+         * Invite
+         *
+         * The route to create a new Invite
+         */
+        Route::post('invite', array(
+          'uses' => 'InviteController@account',
+          'as' => 'invite-account'
+        ));
+
         /*
         | Create account (POST)
         */
