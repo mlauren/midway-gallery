@@ -22,7 +22,7 @@ class Media extends Eloquent {
         return $this->morphTo();
     }
 
-  public function addMedia($fileName, $objType, $user_id) {
+  public function addMedia($fileName, $objType, $user_id, $route) {
 		$file = Input::file($fileName);
     $currentMo = date('Y_M');
     $destination = "uploads/$currentMo";
@@ -48,7 +48,12 @@ class Media extends Eloquent {
       return $media->id;
     }
     else {
-    	return Redirect::route('partner-add')
+      if ( $route == 'back' ) {
+        return Redirect::back()
+          ->with('status', 'alert-error')
+          ->with('global', 'Something went wrong with uploading your photos.');
+      }
+      return Redirect::route($route)
         ->with('status', 'alert-error')
         ->with('global', 'Something went wrong with uploading your photos.');
     }

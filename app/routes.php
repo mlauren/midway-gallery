@@ -79,17 +79,33 @@
   /*
   |
   |
+  | News Related GET Routes:
+  |
+  |
+  */
+  /*
+  | Show All the news
+  */
+  Route::get('/news', array(
+    'as' => 'news',
+    'uses' => 'NewsController@showAll'
+  ));
+
+  /*
+  |
+  |
   | Event Related GET Routes:
   |
   |
   */
   /*
-  | Show All the exhibits
-  */
+  | Show All the events
+
   Route::get('/events', array(
     'as' => 'events',
     'uses' => 'EventController@showAll'
   ));
+  */
   /*
   |
   |
@@ -143,7 +159,12 @@
         'as' => 'partner-add-post',
         'uses' => 'ArtistController@postAddArtist'
       ));
-
+      /*
+      Route::post('/partner-add', array(
+        'as' => 'partner-add-post',
+        'uses' => 'ArtistController@postAddArtist'
+      ));
+      */
 
       /*
       |
@@ -163,6 +184,27 @@
       Route::post('/exhibits/{id}/edit', array(
         'as' => 'exhibits-edit-post',
         'uses' => 'ExhibitController@postEditSingle'
+      ));
+      /*
+       |
+       |
+       | News Related POST Routes:
+       |
+       |
+      */
+      /*
+      | Form to edit artist
+      */
+      Route::post('/news-add', array(
+        'as' => 'news-add-post',
+        'uses' => 'NewsController@postAdd'
+      ));
+      /*
+      | Form to edit artist
+      */
+      Route::post('/news/{id}/edit', array(
+        'as' => 'news-edit-post',
+        'uses' => 'NewsController@postEdit'
       ));
     });
 
@@ -253,6 +295,29 @@
     Route::get('/partner/{id}/edit', array(
       'as' => 'partner-edit',
       'uses' => 'ArtistController@getEditArtist'
+    ));
+
+
+    /*
+    |
+    |
+    | News Related GET Routes:
+    |
+    |
+    */
+    /*
+    | Form to add artist
+    */
+    Route::get('/news-add', array(
+      'as' => 'news-add',
+      'uses' => 'NewsController@getAdd'
+    ));
+    /*
+    | Form to edit artist
+    */
+    Route::get('/news/{id}/edit', array(
+      'as' => 'news-edit',
+      'uses' => 'NewsController@getEdit'
     ));
 
     /*
