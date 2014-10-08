@@ -1,0 +1,137 @@
+0 info it worked if it ends with ok
+1 verbose cli [ 'node', '/usr/local/bin/npm', 'install', 'composer', '-g' ]
+2 info using npm@1.4.28
+3 info using node@v0.10.32
+4 verbose cache add [ 'composer', null ]
+5 verbose cache add name=undefined spec="composer" args=["composer",null]
+6 verbose parsed url { protocol: null,
+6 verbose parsed url   slashes: null,
+6 verbose parsed url   auth: null,
+6 verbose parsed url   host: null,
+6 verbose parsed url   port: null,
+6 verbose parsed url   hostname: null,
+6 verbose parsed url   hash: null,
+6 verbose parsed url   search: null,
+6 verbose parsed url   query: null,
+6 verbose parsed url   pathname: 'composer',
+6 verbose parsed url   path: 'composer',
+6 verbose parsed url   href: 'composer' }
+7 silly lockFile 874ad8df-composer composer
+8 verbose lock composer /Users/Lauren/.npm/874ad8df-composer.lock
+9 silly lockFile 874ad8df-composer composer
+10 silly lockFile 874ad8df-composer composer
+11 verbose addNamed [ 'composer', '' ]
+12 verbose addNamed [ null, '*' ]
+13 silly lockFile 4ad94c20-composer composer@
+14 verbose lock composer@ /Users/Lauren/.npm/4ad94c20-composer.lock
+15 silly addNameRange { name: 'composer', range: '*', hasData: false }
+16 verbose request where is /composer
+17 verbose request registry https://registry.npmjs.org/
+18 verbose request id fa0a9c354c5a0d41
+19 verbose url raw /composer
+20 verbose url resolving [ 'https://registry.npmjs.org/', './composer' ]
+21 verbose url resolved https://registry.npmjs.org/composer
+22 verbose request where is https://registry.npmjs.org/composer
+23 info trying registry request attempt 1 at 16:47:06
+24 http GET https://registry.npmjs.org/composer
+25 http 200 https://registry.npmjs.org/composer
+26 silly registry.get cb [ 200,
+26 silly registry.get   { date: 'Tue, 30 Sep 2014 21:47:07 GMT',
+26 silly registry.get     server: 'CouchDB/1.5.0 (Erlang OTP/R16B03)',
+26 silly registry.get     etag: '"5CDHARK413YVGAC7VHWVISWAX"',
+26 silly registry.get     'content-type': 'application/json',
+26 silly registry.get     'cache-control': 'max-age=60',
+26 silly registry.get     'content-length': '1059',
+26 silly registry.get     'accept-ranges': 'bytes',
+26 silly registry.get     via: '1.1 varnish',
+26 silly registry.get     age: '0',
+26 silly registry.get     'x-served-by': 'cache-dfw1824-DFW',
+26 silly registry.get     'x-cache': 'MISS',
+26 silly registry.get     'x-cache-hits': '0',
+26 silly registry.get     'x-timer': 'S1412113627.684088,VS0,VE44',
+26 silly registry.get     vary: 'Accept',
+26 silly registry.get     'keep-alive': 'timeout=10, max=50',
+26 silly registry.get     connection: 'Keep-Alive' } ]
+27 silly addNameRange number 2 { name: 'composer', range: '*', hasData: true }
+28 silly addNameRange versions [ 'composer', [ '0.1.2' ] ]
+29 verbose addNamed [ 'composer', '0.1.2' ]
+30 verbose addNamed [ '0.1.2', '0.1.2' ]
+31 silly lockFile 1811354f-composer-0-1-2 composer@0.1.2
+32 verbose lock composer@0.1.2 /Users/Lauren/.npm/1811354f-composer-0-1-2.lock
+33 silly lockFile a02a9547--org-composer-composer-0-1-2-tgz https://registry.npmjs.org/composer/-/composer-0.1.2.tgz
+34 verbose lock https://registry.npmjs.org/composer/-/composer-0.1.2.tgz /Users/Lauren/.npm/a02a9547--org-composer-composer-0-1-2-tgz.lock
+35 verbose addRemoteTarball [ 'https://registry.npmjs.org/composer/-/composer-0.1.2.tgz',
+35 verbose addRemoteTarball   'ed241153ace31aa5240734a63a93bb5bb2a41af1' ]
+36 info retry fetch attempt 1 at 16:47:07
+37 verbose fetch to= /var/folders/6v/bq5l0xf14qzbs5ptfz3xvyr00000gn/T/npm-4265-j5f2wk99/registry.npmjs.org/composer/-/composer-0.1.2.tgz
+38 http GET https://registry.npmjs.org/composer/-/composer-0.1.2.tgz
+39 http 200 https://registry.npmjs.org/composer/-/composer-0.1.2.tgz
+40 silly lockFile a02a9547--org-composer-composer-0-1-2-tgz https://registry.npmjs.org/composer/-/composer-0.1.2.tgz
+41 silly lockFile a02a9547--org-composer-composer-0-1-2-tgz https://registry.npmjs.org/composer/-/composer-0.1.2.tgz
+42 silly lockFile 1811354f-composer-0-1-2 composer@0.1.2
+43 silly lockFile 1811354f-composer-0-1-2 composer@0.1.2
+44 silly lockFile 4ad94c20-composer composer@
+45 silly lockFile 4ad94c20-composer composer@
+46 silly resolved [ { name: 'composer',
+46 silly resolved     description: 'Visually describe functionality, and then execute it',
+46 silly resolved     version: '0.1.2',
+46 silly resolved     keywords: [ 'visual programming', 'control/data flow' ],
+46 silly resolved     maintainers: [ [Object] ],
+46 silly resolved     contributors: [ [Object] ],
+46 silly resolved     licenses: [ 'MIT' ],
+46 silly resolved     repositories: { type: 'git', url: 'http://github.com//composer.git' },
+46 silly resolved     dependencies:
+46 silly resolved      { conductor: '>=0.2.0',
+46 silly resolved        cider: '>=0.1.1',
+46 silly resolved        carena: '>=0.1.1',
+46 silly resolved        'socket.io': '>=0.5.0' },
+46 silly resolved     _id: 'composer@0.1.2',
+46 silly resolved     engines: { node: '*' },
+46 silly resolved     _nodeSupported: true,
+46 silly resolved     _npmVersion: '0.2.7-2',
+46 silly resolved     _nodeVersion: 'v0.3.1-pre',
+46 silly resolved     dist:
+46 silly resolved      { tarball: 'http://registry.npmjs.org/composer/-/composer-0.1.2.tgz',
+46 silly resolved        shasum: 'ed241153ace31aa5240734a63a93bb5bb2a41af1' },
+46 silly resolved     directories: {},
+46 silly resolved     _shasum: 'ed241153ace31aa5240734a63a93bb5bb2a41af1',
+46 silly resolved     _from: 'composer@',
+46 silly resolved     _resolved: 'https://registry.npmjs.org/composer/-/composer-0.1.2.tgz' } ]
+47 info install composer@0.1.2 into /usr/local/lib
+48 info installOne composer@0.1.2
+49 verbose lib/node_modules/composer unbuild
+50 verbose tar unpack /Users/Lauren/.npm/composer/0.1.2/package.tgz
+51 silly lockFile 375a7706--local-lib-node-modules-composer tar:///usr/local/lib/node_modules/composer
+52 verbose lock tar:///usr/local/lib/node_modules/composer /Users/Lauren/.npm/375a7706--local-lib-node-modules-composer.lock
+53 silly lockFile 727cb6b9-n-npm-composer-0-1-2-package-tgz tar:///Users/Lauren/.npm/composer/0.1.2/package.tgz
+54 verbose lock tar:///Users/Lauren/.npm/composer/0.1.2/package.tgz /Users/Lauren/.npm/727cb6b9-n-npm-composer-0-1-2-package-tgz.lock
+55 silly gunzTarPerm modes [ '755', '644' ]
+56 error Error: EACCES, mkdir '/usr/local/lib/node_modules/composer'
+56 error  { [Error: EACCES, mkdir '/usr/local/lib/node_modules/composer']
+56 error   errno: 3,
+56 error   code: 'EACCES',
+56 error   path: '/usr/local/lib/node_modules/composer',
+56 error   fstream_type: 'Directory',
+56 error   fstream_path: '/usr/local/lib/node_modules/composer',
+56 error   fstream_class: 'DirWriter',
+56 error   fstream_stack:
+56 error    [ '/usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23',
+56 error      '/usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53',
+56 error      'Object.oncomplete (fs.js:107:15)' ] }
+57 error Please try running this command again as root/Administrator.
+58 error System Darwin 13.4.0
+59 error command "node" "/usr/local/bin/npm" "install" "composer" "-g"
+60 error cwd /Users/Lauren/Documents/workspace/turbo-spice
+61 error node -v v0.10.32
+62 error npm -v 1.4.28
+63 error path /usr/local/lib/node_modules/composer
+64 error fstream_path /usr/local/lib/node_modules/composer
+65 error fstream_type Directory
+66 error fstream_class DirWriter
+67 error code EACCES
+68 error errno 3
+69 error stack Error: EACCES, mkdir '/usr/local/lib/node_modules/composer'
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/fstream/lib/dir-writer.js:36:23
+70 error fstream_stack /usr/local/lib/node_modules/npm/node_modules/mkdirp/index.js:46:53
+70 error fstream_stack Object.oncomplete (fs.js:107:15)
+71 verbose exit [ 3, true ]

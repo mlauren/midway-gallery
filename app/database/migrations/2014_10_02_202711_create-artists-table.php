@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateExhibitsTable extends Migration {
+class CreateArtistsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,15 +12,14 @@ class CreateExhibitsTable extends Migration {
 	 */
 	public function up()
 	{
-		//
-		Schema::create('exhibits', function($table)
+		Schema::create('artists', function($table)
 		{
 			$table->increments('id');
-			$table->integer('user_id');
-			$table->string('title');
-			$table->string('details');
-			$table->string('video');
-			$table->string('media');
+			$table->string('name', 50)->unique();
+			$table->string('cover_image', 1000);
+			$table->string('credentials', 500);
+			$table->string('description', 1000);
+			$table->string('inside_image', 1000);
 			$table->timestamps();
 		});
 	}
@@ -32,7 +31,7 @@ class CreateExhibitsTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('exhibits');
+		Schema::drop('artists');
 	}
 
 }

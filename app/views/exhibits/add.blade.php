@@ -22,7 +22,7 @@
 	</div>
 	<div class="form-group {{ $errors->has('details') ? 'has-error' : '' }}">
 		{{ Form::label('details', 'Exhibit Details', array('class' => 'control-label')); }}
-		{{ Form::textarea('details', null, array('class'=>'form-control')) }}
+		{{ Form::textarea('details', null, array('class'=>'form-control details-wysi')) }}
 		
 		@if($errors->has('details'))
 			@foreach($errors->get('details') as $error)
@@ -72,7 +72,7 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
 
     {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 

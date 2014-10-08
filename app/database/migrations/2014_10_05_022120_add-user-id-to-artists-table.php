@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermalinksToExhibits extends Migration {
+class AddUserIdToArtistsTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,9 +12,11 @@ class AddPermalinksToExhibits extends Migration {
 	 */
 	public function up()
 	{
-		Schema::table('exhibits', function($table)
+		Schema::table('artists', function($table)
 		{
+		    $table->integer('user_id');
 		    $table->string('permalink');
+		    $table->boolean('affiliate');
 		});
 	}
 
@@ -25,10 +27,12 @@ class AddPermalinksToExhibits extends Migration {
 	 */
 	public function down()
 	{
-		Schema::table('exhibits', function($table)
+		Schema::table('artists', function($table)
 		{
+		    $table->dropColumn('user_id');
 		    $table->dropColumn('permalink');
-		});	
+		    $table->dropColumn('affiliate');
+		});
 	}
 
 }

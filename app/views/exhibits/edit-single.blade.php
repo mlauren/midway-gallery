@@ -1,5 +1,5 @@
 @extends('layout.backend')
-
+{{snake_case('helloThere.png')}}
 @section('sidebar')
     <div class="col-md-4">
         @include('layout.sidebar')
@@ -8,7 +8,7 @@
 
 @section('content')
 <div class="col-md-8">
-    <h4><span class="label label-default pull-right"><i class="fa fa-times"></i>{{ HTML::link('/exhibits/' . $id . '/remove', '  Delete') }}
+    <h4><span class="label label-default pull-right"><i class="fa fa-times"></i>{{ link_to_route('exhibits-remove-single', 'Delete', $parameters = array('id' => $id)) }}
     </span></h4>
     {{ Form::open(array('route'=>array('exhibits-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal', 'id' => 'exhibit-edit')) }}
         <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
@@ -35,7 +35,7 @@
         </div>
         <div class="form-group {{ $errors->has('details') ? 'has-error' : '' }}">
             {{ Form::label('details', 'Exhibit Details', array('class' => 'control-label')); }}
-            {{ Form::textarea('details', $exhibit->details, array('class'=>'form-control textarea-wysiwyg')) }}
+            {{ Form::textarea('details', $exhibit->details, array('class'=>'form-control details-wysi')) }}
             @if($errors->has('details'))
                 @foreach($errors->get('details') as $error)
                     <p class="help-block">

@@ -1,9 +1,7 @@
 <?php
 
 class InviteController extends BaseController {
- 
-  
- 
+
   /**
    * Create a new invite
    *
@@ -15,3 +13,4 @@ class InviteController extends BaseController {
   }
  
 }
+

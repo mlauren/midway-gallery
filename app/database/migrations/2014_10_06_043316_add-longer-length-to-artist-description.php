@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UpdateColumnLengthAgain extends Migration {
+class AddLongerLengthToArtistDescription extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,7 +12,7 @@ class UpdateColumnLengthAgain extends Migration {
 	 */
 	public function up()
 	{
-		DB::update('alter table exhibits modify details varchar(3000)');
+		DB::update('alter table artists modify description varchar(5000)');
 	}
 
 	/**
@@ -22,7 +22,7 @@ class UpdateColumnLengthAgain extends Migration {
 	 */
 	public function down()
 	{
-	    DB::update('alter table exhibits modify details varchar(700)');
+	    DB::update('alter table artists modify description varchar(700)');
 	}
 
 }
