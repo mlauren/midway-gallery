@@ -7,7 +7,7 @@
 			@include('layout.sidebar')
 		</div>
 		<div class="col-md-4">
-			@include('layout.sidebar')
+			@include('layout.sidebar-artists-edit')
 		</div>
 		<div class="col-md-4">
 			@include('layout.sidebar')

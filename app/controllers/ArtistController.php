@@ -2,14 +2,15 @@
 class ArtistController extends BaseController {
 
   public function getArtists() {
-    return View::make('artist');
+    $artists = Artist::all();
+    return View::make('artist')
+      ->with('artists', $artists);
   }
 
   public function getArtist($name) {
     $artist = Artist::where('permalink', '=', $name);
     $artist = $artist->first();
     $inside_image = Media::find($artist->inside_image);
-    var_dump($artist->inside_image);
     return View::make('artists.single')
           ->with('artist', $artist)
           ->with('inside_image', $inside_image);

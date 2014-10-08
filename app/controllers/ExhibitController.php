@@ -304,6 +304,12 @@
       );
     }
 
+    public function showAll() {
+      $exhibits = DB::table('exhibits')->where('published', '=', 1)->get();
+      return View::make('exhibits.all')
+        ->with('exhibits', $exhibits);
+    }
+
   }
 
 ?>

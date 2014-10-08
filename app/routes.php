@@ -50,12 +50,10 @@
   /*
   | Show All the exhibits
   */
-  Route::get('/exhibits', function () {
-    $recent_exhibit = DB::table('exhibits')->orderBy('created_at', 'desc')->first();
-    var_dump($recent_exhibit);
-
-    return Redirect::to('/exhibits/' . $recent_exhibit->permalink);
-  });
+  Route::get('/exhibits', array(
+    'as' => 'exhibits',
+    'uses' => 'ExhibitController@showAll'
+  ));
   /*
   | Show single exhibit
   */
@@ -64,11 +62,47 @@
     'uses' => 'ExhibitController@single'
   ));
   /*
+  |
+  |
+  | Artists Related GET Routes:
+  |
+  |
+  */
+  /*
   | Show a single artists profile
   */
   Route::get('/artists/{name}', array(
     'as' => 'artists-show-single',
     'uses' => 'ArtistController@getArtist'
+  ));
+
+  /*
+  |
+  |
+  | Event Related GET Routes:
+  |
+  |
+  */
+  /*
+  | Show All the exhibits
+  */
+  Route::get('/events', array(
+    'as' => 'events',
+    'uses' => 'EventController@showAll'
+  ));
+  /*
+  |
+  |
+  | News Related GET Routes:
+  |
+  |
+  */
+  /*
+  | Show All the exhibits
+  */
+  Route::get('/news', array(
+    'as' => 'news',
+    'uses' => 'NewsController@showAll'
   ));
 
   /*

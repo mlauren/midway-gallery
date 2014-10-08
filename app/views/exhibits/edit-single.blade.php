@@ -1,5 +1,4 @@
 @extends('layout.backend')
-{{snake_case('helloThere.png')}}
 @section('sidebar')
     <div class="col-md-4">
         @include('layout.sidebar')
