@@ -52,19 +52,20 @@
   |
   */
   /*
-  | Show a single artists profile
-  */
-  Route::get('/artists/{name}', array(
-    'as' => 'artists-show-single',
-    'uses' => 'ArtistController@getArtist'
-  ));
-  /*
   | Show All the artists
   */
   Route::get('/artists', array(
     'as' => 'artists-show-all',
     'uses' => 'ArtistController@getArtists'
   ));
+  /*
+  | Show a single artists profile
+  */
+  Route::get('/artists/{name}', array(
+    'as' => 'artists-show-single',
+    'uses' => 'ArtistController@getArtist'
+  ));
+
 
   /*
   |
@@ -290,9 +291,9 @@
     /*
     | Form to edit artist
     */
-    Route::post('/partner/{id}/delete', array(
+    Route::get('/partner/{id}/delete', array(
       'as' => 'partner-delete',
-      'uses' => 'ArtistController@postRemoveArtist'
+      'uses' => 'ArtistController@removeArtist'
     ));
 
 
@@ -316,6 +317,13 @@
     Route::get('/news/{id}/edit', array(
       'as' => 'news-edit',
       'uses' => 'NewsController@getEdit'
+    ));
+    /*
+    | Delete artist
+    */
+    Route::get('/news/{id}/delete', array(
+      'as' => 'news-delete',
+      'uses' => 'NewsController@removeNews'
     ));
 
     /*

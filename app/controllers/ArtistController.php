@@ -64,9 +64,9 @@ class ArtistController extends BaseController {
           'inside_image' => $inside_image
       ));
     $artist->save();
-    return Redirect::route('artists/' . $artist->permalink)
-        ->with('status', 'alert-success')
-        ->with('global', 'You have successfully added a new artist/partner.');
+    return Redirect::route('artists-show-single', $artist->permalink)
+      ->with('status', 'alert-success')
+      ->with('global', 'You have successfully added a new artist/partner.');
   }
 
   public function postEditArtist($id) {
@@ -115,18 +115,16 @@ class ArtistController extends BaseController {
     $artist->save();
     return Redirect::route('artists-show-single', $artist->permalink)
       ->with('status', 'alert-success')
-      ->with('global', 'You have successfully added a new artist/partner.');
-
+      ->with('global', 'You have successfully updated' . $artist->name);
   }
 
-  public function postRemoveArtist($id) {
+  public function removeArtist($id) {
     $artist = Artist::find($id);
-    $name = $artist->title;
+    $name = $artist->name;
     $artist->delete();
-    return Redirect::route('home')
+    return Redirect::route('account')
       ->with('status', 'alert-success')
       ->with('global', 'You just deleted ' . $name);
-
   }
 
 }

@@ -10,7 +10,7 @@
 <div class="col-md-8">
 	<h4>
 		<span class="label label-default pull-right">
-			<i class="fa fa-times"></i>{{ link_to_route('partner-delete', 'Delete', $parameters = array('id' => $artist->id)) }}
+			<i class="fa fa-times"></i><a href="{{ URL::route('partner-delete', $artist->id)  }}">Delete</a>
 		</span>
 	</h4>
 	{{ Form::open(array('url'=>URL::route('partner-edit-post', $artist->id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}

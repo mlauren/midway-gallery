@@ -9,6 +9,8 @@
 @section('content')
 
     <div class="col-md-8">
+    <h4><span class="label label-default pull-right"><i class="fa fa-times"></i>{{ link_to_route('news-delete', 'Delete', $parameters = array('id' => $id)) }}
+    </span></h4>
     {{ Form::open(array('url'=>URL::route('news-edit-post', $news->id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
     <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
         {{ Form::label('title', 'Title of News Story', array('class' => 'control-label')); }}

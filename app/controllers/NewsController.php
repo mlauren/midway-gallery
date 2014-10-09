@@ -55,7 +55,8 @@
       $news = News::find($id);
       return View::make('news.edit')
         ->with('news', $news)
-        ->with('page_title', 'Edit ' . $news->title);
+        ->with('page_title', 'Edit ' . $news->title)
+        ->with('id', $id);
     }
 
     public function postEdit() {
@@ -94,5 +95,13 @@
       return Redirect::route('news')
         ->with('status', 'alert-success')
         ->with('global', 'You have successfully added a new artist/partner.');
+    }
+    public function removeNews($id) {
+      $news = News::find($id);
+      $name = $news->title;
+      $news->delete();
+      return Redirect::route('account')
+        ->with('status', 'alert-success')
+        ->with('global', 'You just deleted ' . $name);
     }
   }
