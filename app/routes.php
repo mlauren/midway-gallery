@@ -160,11 +160,12 @@
         'uses' => 'ArtistController@postAddArtist'
       ));
       /*
-      Route::post('/partner-add', array(
-        'as' => 'partner-add-post',
-        'uses' => 'ArtistController@postAddArtist'
-      ));
+      | Form to edit artist
       */
+      Route::post('/partner/{id}/edit', array(
+        'as' => 'partner-edit-post',
+        'uses' => 'ArtistController@postEditArtist'
+      ));
 
       /*
       |

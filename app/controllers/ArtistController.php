@@ -66,7 +66,63 @@ class ArtistController extends BaseController {
         ->with('global', 'You have successfully added a new artist/partner.');
   }
 
-  public function postEditArtist() {
+  public function postEditArtist($id) {
+    $artist = Artist::find($id);
+    $validator = Validator::make(
+      Input::all(), array(
+        'name'=>'required|min:3|max:50',
+        'cover_image'=>'required|mimes:jpeg,bmp,png|between:0,4000',
+        'inside_image'=>'required|mimes:jpeg,bmp,png|between:0,10000',
+        'credentials'=>'min:3|max:70'
+      )
+    );
+    if ($validator->fails()) {
+      return Redirect::back()
+        ->withErrors($validator)
+        ->withInput();
+    }
+    $user_id = Auth::user()->id;
+    $created_at = strtotime(Input::get('created_at'));
+    $created_at = date('Y-m-d H:i:s', $created_at);
+
+    $artist->update(
+      array(
+        'name' => Input::get('name'),
+        'credentials' => Input::get('credentials'),
+        'description' => Input::get('description'),
+        'created_at' => $created_at,
+        'user_id' => $user_id,
+        'permalink' => Tools::permalink(Input::get('name'))
+      )
+    );
+    if (Input::hasFile('cover_image')) {
+      $media = new Media;
+      $cover_image = $media->addMedia('cover_image', $artist, $user_id, 'partner-add');
+    }
+    if (Input::hasFile('inside_image')) {
+      $media = new Media;
+      $inside_image = $media->addMedia('inside_image', $artist, $user_id, 'partner-add');
+    }
+    $artist
+      ->update(
+        array(
+          'cover_image' => $cover_image,
+          'inside_image' => $inside_image
+        ));
+    $artist->save();
+    return Redirect::route('artists-show-single', $artist->permalink)
+      ->with('status', 'alert-success')
+      ->with('global', 'You have successfully added a new artist/partner.');
+
+  }
+
+  public function postRemoveArtist($id) {
+    $artist = Artist::find($id);
+    $name = $artist->title;
+    $artist->delete();
+    return Redirect::route('home')
+      ->with('status', 'alert-success')
+      ->with('global', 'You just deleted ' . $name);
 
   }
 
