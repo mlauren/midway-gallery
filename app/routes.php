@@ -91,12 +91,11 @@
   */
   /*
   | Show All the events
-
+  */
   Route::get('/events', array(
     'as' => 'events',
-    'uses' => 'EventController@showAll'
+    'uses' => 'EventController@viewAll'
   ));
-  */
   /*
   |
   |
@@ -177,6 +176,26 @@
         'as' => 'exhibits-edit-post',
         'uses' => 'ExhibitController@postEditSingle'
       ));
+
+      /*
+      |
+      |
+      | Exhibit Related POST Routes:
+      |
+      |
+      */
+      Route::post('/event-add', array(
+        'as' => 'event-add-post',
+        'uses' => 'EventController@postAdd'
+      ));
+      /*
+      | Form to add exhibit
+      */
+      Route::post('/events/{id}/edit', array(
+        'as' => 'event-edit-post',
+        'uses' => 'EventController@postEdit'
+      ));
+
       /*
       |
       |
@@ -324,6 +343,35 @@
     Route::get('/news/{id}/delete', array(
       'as' => 'news-delete',
       'uses' => 'NewsController@removeNews'
+    ));
+
+    /*
+    |
+    |
+    | Events Related GET Routes:
+    |
+    |
+    */
+    /*
+    | Form to add artist
+    */
+    Route::get('/event-add', array(
+      'as' => 'news-add',
+      'uses' => 'EventController@add'
+    ));
+    /*
+    | Form to edit artist
+    */
+    Route::get('/events/{id}/edit', array(
+      'as' => 'events-edit',
+      'uses' => 'EventController@edit'
+    ));
+    /*
+    | Delete artist
+    */
+    Route::get('/events/{id}/delete', array(
+      'as' => 'events-delete',
+      'uses' => 'EventController@delete'
     ));
 
     /*
