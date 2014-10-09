@@ -1,12 +1,14 @@
 @extends('layout.backend')
 
 @section('sidebar')
-
+	<div class="col-md-4">
+		@include('layout.sidebar-artists-edit')
+	</div>
 @stop
 
 @section('content')
 <div class="col-md-8">
-{{ Form::open(array('url'=>URL::route('partner-add-post'), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
+{{ Form::open(array('url'=>URL::route('partner-edit-post', $artist->id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
 	<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
 		{{ Form::label('name', 'Name or Title', array('class' => 'control-label')); }}
 		{{ Form::text('name', $artist->name, array('class'=>'form-control')) }}
@@ -17,6 +19,17 @@
 	            </p>
 	        @endforeach
         @endif
+	</div>
+	<div class="form-group">
+		{{ Form::label('created_at', 'Created At', array('class' => 'control-label')); }}
+		{{ Form::text('created_at', date_format($artist->created_at, 'm/d/Y g:i A'), array('class'=>'form-control', 'id'=>'datetimepicker6')) }}
+		@if($errors->has('created_at'))
+			@foreach($errors->get('created_at') as $error)
+				<p class="help-block">
+					<strong>{{ $error }}</strong>
+				</p>
+			@endforeach
+		@endif
 	</div>
 	<div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
 		{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
@@ -62,7 +75,7 @@
             @endforeach
         @endif
     </div>
-	{{ Form::hidden('id') }}
+    {{ Form::hidden('id', $artist->id) }}
 	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}
 {{ Form::close() }}
 </div>
