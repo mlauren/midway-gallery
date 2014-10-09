@@ -8,7 +8,8 @@
      */
     public function getAdd()
     {
-      return View::make('exhibits.add');
+      return View::make('exhibits.add')
+        ->with('page_title', 'Add an Exhibit');
     }
 
     /**
@@ -44,7 +45,8 @@
           ->with('id', $id)
           ->with('exhibit', $exhibit)
           ->with('imageGroup', $imageGroup)
-          ->with('assignedGroup', $assignedGroup);
+          ->with('assignedGroup', $assignedGroup)
+          ->with('page_title', 'Edit ' . $exhibit->title);
       }
       return App::abort(404);
 
@@ -283,7 +285,8 @@
           ->with('videoEmbed', $videoEmbed)
           ->with('exhibit', $exhibit)
           ->with('imageGroup', $imageGroup)
-          ->with('assignedGroup', $assignedGroup);
+          ->with('assignedGroup', $assignedGroup)
+          ->with('page_title', 'Add Exhibits');
       }
       return App::abort(404);
     }

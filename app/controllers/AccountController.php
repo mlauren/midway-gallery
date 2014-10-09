@@ -2,11 +2,13 @@
 
 class AccountController extends BaseController {
 	public function getAccount() {
-		return View::make('account');
+		return View::make('account')
+			->with('page_title', 'Home');
 	}
 
 	public function getCreate() {
-		return View::make('account.create');
+		return View::make('account.create')
+			->with('page_title', 'Create Account!');
 	}
 
 	public function getLogin() {
@@ -117,7 +119,8 @@ class AccountController extends BaseController {
 	}
 
 	public function getChangePwd() {
-		return View::make('account.password');
+		return View::make('account.password')
+			->with('page_title', 'Change your password.');;
 	}
 
 	public function postChangePwd() {

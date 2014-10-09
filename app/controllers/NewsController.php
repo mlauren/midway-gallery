@@ -6,11 +6,13 @@
       $news = News::all();
 
       return View::make('news.show-all')
-        ->with('news', $news);
+        ->with('news', $news)
+        ->with('page_title', 'News');
     }
 
     public function getAdd() {
-      return View::make('news.add');
+      return View::make('news.add')
+        ->with('page_title', 'Add a News Item');
     }
 
     public function postAdd() {
@@ -52,7 +54,8 @@
     public function getEdit($id) {
       $news = News::find($id);
       return View::make('news.edit')
-        ->with('news', $news);
+        ->with('news', $news)
+        ->with('page_title', 'Edit ' . $news->title);
     }
 
     public function postEdit() {

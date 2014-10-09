@@ -9,7 +9,8 @@
 
     public function home()
     {
-      return View::make('home');
+      return View::make('home')
+        ->with('page_title', 'Home');
     }
 
   }

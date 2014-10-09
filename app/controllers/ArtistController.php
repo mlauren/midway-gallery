@@ -4,7 +4,8 @@ class ArtistController extends BaseController {
   public function getArtists() {
     $artists = Artist::all();
     return View::make('artist')
-      ->with('artists', $artists);
+      ->with('artists', $artists)
+      ->with('page_title', 'Artists and Partners');
   }
 
   public function getArtist($name) {
@@ -17,13 +18,15 @@ class ArtistController extends BaseController {
   }
 
   public function getAddArtist() {
-    return View::make('artists.add');
+    return View::make('artists.add')
+      ->with('page_title', 'Add an Artist');
   }
 
   public function getEditArtist($id) {
     $artist = Artist::find($id);
     return View::make('artists.edit')
-      ->with('artist', $artist);
+      ->with('artist', $artist)
+      ->with('page_title', 'Edit ' . $artist->title);
   }
 
   public function postAddArtist() {
