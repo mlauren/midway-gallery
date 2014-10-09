@@ -1,7 +1,9 @@
-@extends('layout.main')
+@extends('layout.backend')
 
 @section('sidebar')
-
+    <div class="col-md-4">
+        @include('layout.sidebar-news-edit')
+    </div>
 @stop
 
 @section('content')

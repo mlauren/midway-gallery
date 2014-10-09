@@ -10,7 +10,7 @@
 			@include('layout.sidebar-artists-edit')
 		</div>
 		<div class="col-md-4">
-			@include('layout.sidebar')
+			@include('layout.sidebar-news-edit')
 		</div>
 	@endif
 

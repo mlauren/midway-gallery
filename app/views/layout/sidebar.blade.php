@@ -1,5 +1,5 @@
 @if(Auth::check())
-	<h3>Exhibits <a href="/exhibit-add"><span class="badge">+New</span></a></h3>
+	<h3>Exhibits <a href="/exhibit-add"><span class="badge pull-right">+New</span></a></h3>
 	<ul class="list-group">
 	<h5>Published:</h5>
 	@foreach(DB::table('exhibits')->where('published', '=', 1)->get() as $exhibit)
