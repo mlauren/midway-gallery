@@ -23,23 +23,6 @@
     'uses' => 'AccountController@getAccount'
   ));
 
-    /*
-    |
-    |
-    | Artist Related GET Routes:
-    |
-    |
-    */
-    /*
-    | Show All the artists
-    */
-    Route::get('/artists', array(
-      'as' => 'artists-show-all',
-      'uses' => 'ArtistController@getArtists'
-    ));
-
-
-
   /*
   |
   |
@@ -74,6 +57,13 @@
   Route::get('/artists/{name}', array(
     'as' => 'artists-show-single',
     'uses' => 'ArtistController@getArtist'
+  ));
+  /*
+  | Show All the artists
+  */
+  Route::get('/artists', array(
+    'as' => 'artists-show-all',
+    'uses' => 'ArtistController@getArtists'
   ));
 
   /*
@@ -187,11 +177,11 @@
         'uses' => 'ExhibitController@postEditSingle'
       ));
       /*
-       |
-       |
-       | News Related POST Routes:
-       |
-       |
+      |
+      |
+      | News Related POST Routes:
+      |
+      |
       */
       /*
       | Form to edit artist
@@ -296,6 +286,13 @@
     Route::get('/partner/{id}/edit', array(
       'as' => 'partner-edit',
       'uses' => 'ArtistController@getEditArtist'
+    ));
+    /*
+    | Form to edit artist
+    */
+    Route::post('/partner/{id}/delete', array(
+      'as' => 'partner-delete',
+      'uses' => 'ArtistController@postRemoveArtist'
     ));
 
 
