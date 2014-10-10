@@ -8,7 +8,9 @@ class ExhibitController extends BaseController
 
   public function add()
   {
-
+    $states = Tools::displayUSStates();
+    return View::make('add-edit')
+      ->with('states', $states);
   }
 
   public function postAdd()
@@ -18,7 +20,7 @@ class ExhibitController extends BaseController
 
   public function edit()
   {
-
+    return View::make('add-edit');
   }
 
   public function postEdit()

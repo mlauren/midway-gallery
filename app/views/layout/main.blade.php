@@ -8,6 +8,7 @@
 
 	    {{ HTML::style('/packages/css/styles.css') }}
 	    {{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css') }}
+
 	</head>
 	<body>
 		<header>
