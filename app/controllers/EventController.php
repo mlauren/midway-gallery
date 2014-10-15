@@ -1,5 +1,5 @@
 <?php
-class ExhibitController extends BaseController
+class EventController extends BaseController
 {
   public function viewAll()
   {
@@ -8,8 +8,9 @@ class ExhibitController extends BaseController
 
   public function add()
   {
+
     $states = Tools::displayUSStates();
-    return View::make('add-edit')
+    return View::make('events.add-edit')
       ->with('states', $states);
   }
 
@@ -33,6 +34,9 @@ class ExhibitController extends BaseController
 
   }
 
+  public function setPostVarIfExists() {
+    // $address = ;
+  }
 
 
 }
