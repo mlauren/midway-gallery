@@ -21,6 +21,7 @@ class Tools {
 	public static function displayUSStates()
 	{
 		return $state_list = ARRAY(
+			'null' => "Select State",
 			'AL'=>"Alabama",
 			'AK'=>"Alaska",
 			'AZ'=>"Arizona",
@@ -72,6 +73,14 @@ class Tools {
 			'WV'=>"West Virginia",
 			'WI'=>"Wisconsin",
 			'WY'=>"Wyoming");
+	}
+
+	public static function displayAllPubExhibits() {
+		$exhibits = array();
+		foreach(DB::table('exhibits')->where('published', '=', 1)->get() as $exhibit) {
+			$exhibits[$exhibit->id] = $exhibit->title;
+		}
+		return $exhibits;
 	}
 
 }

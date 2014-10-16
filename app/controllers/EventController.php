@@ -8,10 +8,11 @@ class EventController extends BaseController
 
   public function add()
   {
-
+    $exhibits = Tools::displayAllPubExhibits();
     $states = Tools::displayUSStates();
-    return View::make('events.add-edit')
-      ->with('states', $states);
+    return View::make('events.add')
+      ->with('states', $states)
+      ->with('exhibits', $exhibits);
   }
 
   public function postAdd()
@@ -19,9 +20,12 @@ class EventController extends BaseController
 
   }
 
-  public function edit()
+  public function edit($id)
   {
-    return View::make('add-edit');
+    $states = Tools::displayUSStates();
+    return View::make('events.edit')
+      ->with('states', $states)
+      ->with('id', $id);
   }
 
   public function postEdit()
