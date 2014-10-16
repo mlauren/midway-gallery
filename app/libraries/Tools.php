@@ -77,6 +77,7 @@ class Tools {
 
 	public static function displayAllPubExhibits() {
 		$exhibits = array();
+		$exhibits['null'] = "Select Exhibit";
 		foreach(DB::table('exhibits')->where('published', '=', 1)->get() as $exhibit) {
 			$exhibits[$exhibit->id] = $exhibit->title;
 		}

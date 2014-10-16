@@ -22,10 +22,15 @@ class EventController extends BaseController
 
   public function edit($id)
   {
+    $event = Event::find($id);
+    $exhibits = Tools::displayAllPubExhibits();
     $states = Tools::displayUSStates();
+
     return View::make('events.edit')
       ->with('states', $states)
-      ->with('id', $id);
+      ->with('id', $id)
+      ->with('exhibit', $event)
+      ->with('exhibits', $exhibits);
   }
 
   public function postEdit()
