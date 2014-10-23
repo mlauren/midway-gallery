@@ -2,12 +2,18 @@
 
 @section('sidebar')
     <div class="col-md-4">
+        @include('layout.sidebar-events-edit')
     </div>
 @stop
 
 @section('content')
 <div class="col-md-8">
-{{ Form::open(array('url'=>URL::route('exhibits-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
+    <h4>
+        <span class="label label-default pull-right">
+            <i class="fa fa-times"></i><a href="{{ URL::route('events-delete', $event->id)  }}">Delete</a>
+        </span>
+    </h4>
+{{ Form::open(array('url'=>URL::route('events-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
     <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
         {{ Form::label('title', 'Event Title', array('class' => 'control-label')); }}
         {{ Form::text( 'title', $event->title, array('class'=>'form-control') ) }}
@@ -48,20 +54,13 @@
             <div class="col-md-12"><p class="help-block"> Is there is a place for this event?</p></div>
             <div class="col-md-12">
                 {{ Form::label('address_title', 'Name Place:', array('class' => 'control-label')); }}
-                {{ Form::text( 'address_title', null, array('class'=>'form-control') ) }}
-                @if($errors->has('address1'))
-                    @foreach($errors->get('address1') as $error)
-                        <p class="help-block">
-                            <strong>{{ $error }}</strong>
-                        </p>
-                    @endforeach
-                @endif
+                {{ Form::text( 'address_title', $event->address_title, array('class'=>'form-control') ) }}
                 <p class="help-block"> Does this place have a name?</p>
 
             </div>
             <div class="col-md-6">
                 {{ Form::label('address1', 'Street Address:', array('class' => 'control-label')); }}
-                {{ Form::text( 'address1', null, array('class'=>'form-control') ) }}
+                {{ Form::text( 'address1', $address[0], array('class'=>'form-control') ) }}
                 @if($errors->has('address1'))
                     @foreach($errors->get('address1') as $error)
                         <p class="help-block">
@@ -72,7 +71,7 @@
             </div>
             <div class="col-md-3">
                 {{ Form::label('address2', 'City:', array('class' => 'control-label')); }}
-                {{ Form::text( 'address2', null, array('class'=>'form-control') ) }}
+                {{ Form::text( 'address2', $address[1], array('class'=>'form-control') ) }}
                 @if($errors->has('address2'))
                     @foreach($errors->get('address2') as $error)
                         <p class="help-block">
@@ -83,7 +82,7 @@
             </div>
             <div class="col-md-3">
                 {{ Form::label('address3', 'State:', array('class' => 'control-label')); }}
-                {{ Form::select( 'address3', $states, null, array('class'=>'form-control') ) }}
+                {{ Form::select( 'address3', $states, $address[2], array('class'=>'form-control') ) }}
                 @if($errors->has('address3'))
                     @foreach($errors->get('address3') as $error)
                         <p class="help-block">
@@ -97,7 +96,7 @@
     <div class="form-group {{ $errors->has('exhibit_id') ? 'has-error' : '' }}">
         {{ Form::label('exhibit_id', 'Related Exhibit:', array('class' => 'control-label')); }}
         <p class="help-block"> Is there a related exhibit on this site?</p>
-        {{ Form::select('exhibit_id', $exhibits, null, array('class'=>'form-control')) }}
+        {{ Form::select('exhibit_id', $exhibits, $event->exhibit_id, array('class'=>'form-control')) }}
         @if($errors->has('exhibit_id'))
             @foreach($errors->get('exhibit_id') as $error)
                 <p class="help-block">

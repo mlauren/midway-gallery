@@ -192,7 +192,7 @@
       | Form to add exhibit
       */
       Route::post('/events/{id}/edit', array(
-        'as' => 'event-edit-post',
+        'as' => 'events-edit-post',
         'uses' => 'EventController@postEdit'
       ));
 
@@ -356,7 +356,7 @@
     | Form to add artist
     */
     Route::get('/event-add', array(
-      'as' => 'news-add',
+      'as' => 'event-add',
       'uses' => 'EventController@add'
     ));
     /*

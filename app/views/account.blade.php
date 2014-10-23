@@ -12,6 +12,9 @@
 		<div class="col-md-4">
 			@include('layout.sidebar-news-edit')
 		</div>
+		<div class="col-md-4">
+			@include('layout.sidebar-events-edit')
+		</div>
 	@endif
 
 @stop

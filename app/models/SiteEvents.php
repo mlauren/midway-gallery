@@ -17,6 +17,11 @@
       return implode(', ', $address);
     }
 
+    public static function extractAddress($address)
+    {
+      return explode(', ', $address);
+    }
+
     protected $fillable = array(
       'user_id', 'title', 'social', 'details', 'permalink', 'address_title', 'address', 'media', 'exhibit_id', 'created_at'
     );

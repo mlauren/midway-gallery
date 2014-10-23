@@ -2,6 +2,7 @@
 
 @section('sidebar')
 	<div class="col-md-4">
+	    @include('layout.sidebar-events-edit')
 	</div>
 @stop
 
