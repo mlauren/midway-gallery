@@ -22,7 +22,7 @@ class Media extends Eloquent {
         return $this->morphTo();
     }
 
-  public function addMedia($fileName, $objType, $user_id, $route) {
+  public static function addMedia($fileName, $objType, $user_id, $route) {
 		$file = Input::file($fileName);
     $currentMo = date('Y_M');
     $destination = "uploads/$currentMo";

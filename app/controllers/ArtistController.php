@@ -50,12 +50,10 @@ class ArtistController extends BaseController {
       )
     );
     if (Input::hasFile('cover_image')) {
-      $media = new Media;
-      $cover_image = $media->addMedia('cover_image', $artist, $user_id, 'partner-add');
+      $cover_image = Media::addMedia('cover_image', $artist, $user_id, 'partner-add');
     }
     if (Input::hasFile('inside_image')) {
-      $media = new Media;
-      $inside_image = $media->addMedia('inside_image', $artist, $user_id, 'partner-add');
+      $inside_image = Media::addMedia('inside_image', $artist, $user_id, 'partner-add');
     }
     $artist
       ->update(

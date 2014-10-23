@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="col-md-8">
-{{ Form::open(array('url'=>URL::route('exhibits-add-post'), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
+{{ Form::open(array('url'=>URL::route('event-add-post'), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
 	<div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
 		{{ Form::label('title', 'Event Title', array('class' => 'control-label')); }}
 		{{ Form::text( 'title', null, array('class'=>'form-control') ) }}
@@ -19,7 +19,7 @@
 	        @endforeach
         @endif
 	</div>
-	<div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+	<div class="form-group {{ $errors->has('details') ? 'has-error' : '' }}">
         {{ Form::label('details', 'Event Details:', array('class' => 'control-label')); }}
         {{ Form::textarea( 'details', null, array('class'=>'form-control') ) }}
         @if($errors->has('details'))
@@ -30,7 +30,7 @@
             @endforeach
         @endif
     </div>
-    <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
+    <div class="form-group {{ $errors->has('social') ? 'has-error' : '' }}">
         {{ Form::label('social', 'Social Media Link:', array('class' => 'control-label')); }}
         {{ Form::text( 'social', null, array('class'=>'form-control') ) }}
         @if($errors->has('social'))
@@ -49,13 +49,6 @@
             <div class="col-md-12">
                 {{ Form::label('address_title', 'Name Place:', array('class' => 'control-label')); }}
                 {{ Form::text( 'address_title', null, array('class'=>'form-control') ) }}
-                @if($errors->has('address1'))
-                    @foreach($errors->get('address1') as $error)
-                        <p class="help-block">
-                            <strong>{{ $error }}</strong>
-                        </p>
-                    @endforeach
-                @endif
                 <p class="help-block"> Does this place have a name?</p>
 
             </div>

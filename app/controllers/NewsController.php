@@ -82,8 +82,7 @@
         )
       );
       if (Input::hasFile('cover_image')) {
-        $media = new Media;
-        $cover_image = $media->addMedia('cover_image', $newsItem, $user_id, 'back');
+        $cover_image = Media::addMedia('cover_image', $newsItem, $user_id, 'back');
       }
 
       $newsItem
