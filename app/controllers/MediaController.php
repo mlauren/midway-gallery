@@ -10,6 +10,7 @@
       $ownerType = $media->mediable_type;
       $owner = $ownerType::find($owner);
       $isAjax = Request::ajax();
+
       // Disasociate this from its parent exhibit
       foreach ($owner->media as $key => $image) {
         if ($image->id == $id) {
@@ -24,7 +25,9 @@
       if ($isAjax) {
         return json_encode($mediasave);
       } else {
-        return Redirect::back()->with('global', 'Something went wrong!');
+        return Redirect::back()
+          ->with('status', 'alert-danger')
+          ->with('global', 'Something went wrong!');
       }
     }
 

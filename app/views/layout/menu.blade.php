@@ -1,4 +1,4 @@
-<h1>Midway</h1>
+<h1><a href="/">Midway</a></h1>
 <ul class="list-inline">
     <li><a href="/exhibits">Exhibitions</a></li>
     <li><a href="/artists">Artists</a></li>

@@ -23,7 +23,7 @@
     }
 
     protected $fillable = array(
-      'user_id', 'title', 'social', 'details', 'event_time', 'event_time_end', 'permalink', 'address_title', 'address', 'media', 'exhibit_id', 'created_at'
+      'user_id', 'title', 'social', 'details', 'event_time', 'event_time_end', 'permalink', 'address_title', 'address', 'image', 'exhibit_id', 'created_at'
     );
 
     protected $table = 'events';

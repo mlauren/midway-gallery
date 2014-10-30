@@ -7,7 +7,7 @@
 
 @section('content')
 <div class="col-md-8">
-    <h4><span class="label label-default pull-right"><i class="fa fa-times"></i>{{ link_to_route('news-delete', 'Delete', $parameters = array('id' => $id)) }}
+    <h4><span class="label label-default pull-right"><i class="fa fa-times"></i>{{ link_to_route('exhibits-remove-single', 'Delete', $parameters = array('id' => $id)) }}
     </span></h4>
     {{ Form::open(array('route'=>array('exhibits-edit-post', $id), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal', 'id' => 'exhibit-edit')) }}
         <div class="form-group {{ $errors->has('title') ? 'has-error' : '' }}">
@@ -23,7 +23,7 @@
         </div>
         <div class="form-group">
             {{ Form::label('created_at', 'Created At', array('class' => 'control-label')); }}
-            {{ Form::text('created_at', date_format($exhibit->created_at, 'm/d/Y g:i A'), array('class'=>'form-control', 'id'=>'datetimepicker6')) }}
+            {{ Form::text('created_at', date_format($exhibit->created_at, 'm/d/Y g:i A'), array('class'=>'form-control datetimepicker6')) }}
             @if($errors->has('created_at'))
                 @foreach($errors->get('created_at') as $error)
                     <p class="help-block">

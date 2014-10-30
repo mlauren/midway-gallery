@@ -26,13 +26,13 @@ class EventController extends BaseController
       array(
         'title' => Input::get('title'),
         'social' => Input::get('social'),
-        'media' => Input::get('image'),
+        'image' => Input::get('image'),
         'event_time' => Input::get('event_time')
       ),
       array(
         'title'=>'unique:events,title|required|min:3|max:50',
         'social' => 'url',
-        'media'=>'mimes:jpeg,bmp,png|between:0,4000',
+        'image'=>'mimes:jpeg,bmp,png|between:0,4000',
         'event_time' => 'required'
       )
     );
@@ -73,12 +73,12 @@ class EventController extends BaseController
 
     if ( Input::hasFile('image') )
     {
-      $media = Media::addMedia('image', $event, $user_id, 'back');
+      $image = Media::addMedia('image', $event, $user_id, 'back');
     }
     $event
       ->update(
         array(
-          'media' => $media,
+          'image' => $image,
         ));
     $event->save();
     return Redirect::route('events')
@@ -115,13 +115,13 @@ class EventController extends BaseController
       array(
         'title' => Input::get('title'),
         'social' => Input::get('social'),
-        'media' => Input::get('image'),
+        'image' => Input::get('image'),
         'event_time' => Input::get('event_time')
       ),
       array(
         'title'=>'min:3|max:50',
         'social' => 'url',
-        'media'=>'mimes:jpeg,bmp,png|between:0,4000',
+        'image'=>'mimes:jpeg,bmp,png|between:0,4000',
         'event_time' => 'required'
       )
     );
@@ -162,12 +162,12 @@ class EventController extends BaseController
     if ( Input::hasFile('image') )
     {
       // Returns a media id of the media object you just created
-      $media = Media::addMedia('image', $event, $user_id, 'back');
+      $image = Media::addMedia('image', $event, $user_id, 'back');
     }
     $event
       ->update(
         array(
-          'media' => $media,
+          'image' => $image,
         ));
     $event->save();
     return Redirect::route('events')

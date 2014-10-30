@@ -145,7 +145,7 @@
     {{ HTML::script('/bower_resources/moment/moment.js') }}
     {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
 
-    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts  .js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

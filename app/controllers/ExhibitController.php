@@ -128,6 +128,7 @@
         }
       }
       return Redirect::route('exhibits-show-single', $exhibit->permalink)
+        ->with('status', 'alert-success')
         ->with('global', 'You have successfully updated ' . $exhibit->title . '.');
     }
 

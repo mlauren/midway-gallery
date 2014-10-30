@@ -7,7 +7,7 @@
                 {{ link_to_route('artists-show-single', $artist->name, $parameters = array('name' => $artist->permalink)) }}
             </h4>
             <a href="{{ URL::route('artists-show-single', $artist->permalink) }}">
-                <img src="/{{ Media::find($artist->cover_image)->img_min }}" />
+                <img class="img-responsive" src="/{{ Media::find($artist->cover_image)->img_min }}" />
             </a>
         </div>
     @endforeach

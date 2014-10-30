@@ -32,7 +32,7 @@
 		@endforeach
 		@if(isset($assignedGroup))
 			@foreach ($assignedGroup as $image)
-				{{ HTML::image($image->img_big, $exhibit->title) }}
+				{{ HTML::image($image->img_big, $exhibit->title, array('class' => 'img-responsive')) }}
 			@endforeach
 		@endif
 	</div>

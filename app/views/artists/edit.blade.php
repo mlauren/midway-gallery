@@ -27,7 +27,7 @@
 		</div>
 		<div class="form-group">
 			{{ Form::label('created_at', 'Created At', array('class' => 'control-label')); }}
-			{{ Form::text('created_at', date_format($artist->created_at, 'm/d/Y g:i A'), array('class'=>'form-control', 'id'=>'datetimepicker6')) }}
+			{{ Form::text('created_at', date_format($artist->created_at, 'm/d/Y g:i A'), array('class'=>'form-control datetimepicker6')) }}
 			@if($errors->has('created_at'))
 				@foreach($errors->get('created_at') as $error)
 					<p class="help-block">

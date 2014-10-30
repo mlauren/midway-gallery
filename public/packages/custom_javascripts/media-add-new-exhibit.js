@@ -110,7 +110,7 @@
         url : url,
         async: false
       }).fail(function(jqXHR, ajaxOptions, thrownError) {
-          alert('Something went wrong :X');
+          /*alert('Something went wrong :X');*/
       }).done(function(data) {
         el.parent('.img-min-preview').fadeOut(300, function() { 
           $(this).remove(); 

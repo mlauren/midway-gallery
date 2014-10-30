@@ -104,35 +104,26 @@
             </div>
             <div class="col-md-6">
                 {{ Form::label('address1', 'Street Address:', array('class' => 'control-label')); }}
-                {{ Form::text( 'address1', $address[0], array('class'=>'form-control') ) }}
-                @if($errors->has('address1'))
-                    @foreach($errors->get('address1') as $error)
-                        <p class="help-block">
-                            <strong>{{ $error }}</strong>
-                        </p>
-                    @endforeach
+                @if( isset($address[0]) )
+                    {{ Form::text( 'address1', $address[0], array('class'=>'form-control') ) }}
+                @else
+                    {{ Form::text( 'address1', null, array('class'=>'form-control') ) }}
                 @endif
             </div>
             <div class="col-md-3">
                 {{ Form::label('address2', 'City:', array('class' => 'control-label')); }}
-                {{ Form::text( 'address2', $address[1], array('class'=>'form-control') ) }}
-                @if($errors->has('address2'))
-                    @foreach($errors->get('address2') as $error)
-                        <p class="help-block">
-                            <strong>{{ $error }}</strong>
-                        </p>
-                    @endforeach
+                @if( isset($address[1]) )
+                    {{ Form::text( 'address2', $address[1], array('class'=>'form-control') ) }}
+                @else
+                    {{ Form::text( 'address2', null, array('class'=>'form-control') ) }}
                 @endif
             </div>
             <div class="col-md-3">
                 {{ Form::label('address3', 'State:', array('class' => 'control-label')); }}
-                {{ Form::select( 'address3', $states, $address[2], array('class'=>'form-control') ) }}
-                @if($errors->has('address3'))
-                    @foreach($errors->get('address3') as $error)
-                        <p class="help-block">
-                            <strong>{{ $error }}</strong>
-                        </p>
-                    @endforeach
+                @if( isset($address[2]) )
+                    {{ Form::select( 'address3', $states, $address[2], array('class'=>'form-control') ) }}
+                @else
+                    {{ Form::select( 'address3', $states, null, array('class'=>'form-control') ) }}
                 @endif
             </div>
         </div>
@@ -141,20 +132,22 @@
         {{ Form::label('exhibit_id', 'Related Exhibit:', array('class' => 'control-label')); }}
         <p class="help-block"> Is there a related exhibit on this site?</p>
         {{ Form::select('exhibit_id', $exhibits, $event->exhibit_id, array('class'=>'form-control')) }}
-        @if($errors->has('exhibit_id'))
-            @foreach($errors->get('exhibit_id') as $error)
-                <p class="help-block">
-                    <strong>{{ $error }}</strong>
-                </p>
-            @endforeach
-        @endif
-
     </div>
     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-        {{ Form::label('image', 'Image for event', array('class' => 'control-label')); }}
+        {{ Form::label('image', 'Image for event', array('class' => 'control-label')) }}
         {{ Form::file('image', array('multiple' => true, 'class' => 'field')) }}
         <p class="help-block">Image for event</p>
-        <div id="image-preview-exists" data-ex-id=""></div>
+
+
+        <div class="col-xs-6 col-md-3" id="image-preview-exists" data-item-id="{{ $event->id }}">
+            @foreach( $event->media as $media )
+                <div class="thumbnail">
+                    <a class="media-remove" href="/media/{{$media->id}}/remove">X</a>
+                    <img style="margin: 15px 0;" class="img-responsive" src="/{{$media->img_big}}">
+                </div>
+        @endforeach
+
+        </div>
     </div>
 
     {{ Form::hidden('id') }}

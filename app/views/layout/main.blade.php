@@ -11,21 +11,20 @@
 
 	</head>
 	<body>
-		<header>
-			@include('layout.menu')
-		</header>
+
 		<div class="container">
-			<div class="col-md-11">
-				@if(Session::has('global'))
-					<div class="col-md-12">
-						<div class="alert {{ Session::get('status') }}">
-							{{ Session::get('global') }}
-						</div>
+			<header class="col-md-10">
+				@include('layout.menu')
+			</header>
+			@if(Session::has('global'))
+				<div class="col-md-12">
+					<div class="alert {{ Session::get('status') }}">
+						{{ Session::get('global') }}
 					</div>
-				@endif
-				@yield('sidebar')
-				@yield('content')
-			</div>
+				</div>
+			@endif
+			@yield('sidebar')
+			@yield('content')
 		</div>
 		@yield('scripts')
 		@include('layout.footer')
