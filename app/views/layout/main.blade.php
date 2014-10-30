@@ -15,15 +15,17 @@
 			@include('layout.menu')
 		</header>
 		<div class="container">
-			@if(Session::has('global'))
-				<div class="col-md-12">
-					<div class="alert {{ Session::get('status') }}">
-						{{ Session::get('global') }}
+			<div class="col-md-11">
+				@if(Session::has('global'))
+					<div class="col-md-12">
+						<div class="alert {{ Session::get('status') }}">
+							{{ Session::get('global') }}
+						</div>
 					</div>
-				</div>
-			@endif
-			@yield('sidebar')
-			@yield('content')
+				@endif
+				@yield('sidebar')
+				@yield('content')
+			</div>
 		</div>
 		@yield('scripts')
 		@include('layout.footer')

@@ -42,6 +42,32 @@
             @endforeach
         @endif
     </div>
+    <div class="panel panel-default well form-group">
+        <div class="col-md-12"><p class="help-block"> Is there a time for this event?</p></div>
+        <div class="col-md-12">
+
+            {{ Form::label('event_time', 'Event Time Starting', array('class' => 'control-label')); }}
+            {{ Form::text('event_time', null, array('class'=>'form-control datetimepicker6')) }}
+            @if($errors->has('event_time'))
+                @foreach($errors->get('event_time') as $error)
+                    <p class="help-block">
+                        <strong>{{ $error }}</strong>
+                    </p>
+                @endforeach
+            @endif
+        </div>
+        <div class="col-md-12">
+            {{ Form::label('event_time_end', 'Event Time Ending', array('class' => 'control-label')); }}
+            {{ Form::text('event_time_end', null, array('class'=>'form-control datetimepicker6')) }}
+            @if($errors->has('event_time'))
+                @foreach($errors->get('event_time') as $error)
+                    <p class="help-block">
+                        <strong>{{ $error }}</strong>
+                    </p>
+                @endforeach
+            @endif
+        </div>
+    </div>
 
     <div class="panel panel-default well form-group">
         <a href="">Insert Address <i class="fa fa-chevron-down"></i></a>
@@ -116,9 +142,10 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
 
-    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

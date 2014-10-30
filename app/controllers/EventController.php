@@ -3,11 +3,16 @@ class EventController extends BaseController
 {
   public function viewAll()
   {
-    return View::make('events.all');
+    $events = SiteEvents::all();
+
+    return View::make('events.all')
+      ->with('events', $events)
+      ->with('address');
   }
 
   public function add()
   {
+    // Add event with option to display states and exhibits
     $exhibits = Tools::displayAllPubExhibits();
     $states = Tools::displayUSStates();
     return View::make('events.add')
@@ -21,12 +26,14 @@ class EventController extends BaseController
       array(
         'title' => Input::get('title'),
         'social' => Input::get('social'),
-        'media' => Input::get('image')
+        'media' => Input::get('image'),
+        'event_time' => Input::get('event_time')
       ),
       array(
         'title'=>'unique:events,title|required|min:3|max:50',
         'social' => 'url',
-        'media'=>'mimes:jpeg,bmp,png|between:0,4000'
+        'media'=>'mimes:jpeg,bmp,png|between:0,4000',
+        'event_time' => 'required'
       )
     );
     if ( $validator->fails() ) {
@@ -34,9 +41,20 @@ class EventController extends BaseController
         ->withErrors($validator)
         ->withInput();
     }
-    $address = array(Input::get('address1'), Input::get('address2'), Input::get('address3'));
-    $address = SiteEvents::makeAddress($address);
+    if (Input::has('address1') &&  Input::has('address2')) {
+      $address = array(Input::get('address1'), Input::get('address2'), Input::get('address3'));
+      $address = SiteEvents::makeAddress($address);
+    }
+    else {
+      $address = '';
+    }
     $user_id = Auth::user()->id;
+
+    $event_time = strtotime(Input::get('event_time'));
+    $event_time = date('Y-m-d H:i:s', $event_time);
+
+    $event_time_end = strtotime(Input::get('event_time_end'));
+    $event_time_end = date('Y-m-d H:i:s', $event_time_end);
 
     $event = SiteEvents::create(
       array(
@@ -47,7 +65,9 @@ class EventController extends BaseController
         'social' => Input::get('social'),
         'address_title' => Input::get('address_title'),
         'address' => $address,
-        'exhibit_id' => (int)Input::get('exhibit_id')
+        'exhibit_id' => (int)Input::get('exhibit_id'),
+        'event_time' => $event_time,
+        'event_time_end' => $event_time_end
       )
     );
 
@@ -55,6 +75,11 @@ class EventController extends BaseController
     {
       $media = Media::addMedia('image', $event, $user_id, 'back');
     }
+    $event
+      ->update(
+        array(
+          'media' => $media,
+        ));
     $event->save();
     return Redirect::route('events')
       ->with('status', 'alert-success')
@@ -90,12 +115,14 @@ class EventController extends BaseController
       array(
         'title' => Input::get('title'),
         'social' => Input::get('social'),
-        'media' => Input::get('image')
+        'media' => Input::get('image'),
+        'event_time' => Input::get('event_time')
       ),
       array(
         'title'=>'min:3|max:50',
         'social' => 'url',
-        'media'=>'mimes:jpeg,bmp,png|between:0,4000'
+        'media'=>'mimes:jpeg,bmp,png|between:0,4000',
+        'event_time' => 'required'
       )
     );
     if ( $validator->fails() ) {
@@ -103,9 +130,19 @@ class EventController extends BaseController
         ->withErrors($validator)
         ->withInput();
     }
-    $address = array(Input::get('address1'), Input::get('address2'), Input::get('address3'));
-    $address = SiteEvents::makeAddress($address);
+    if (Input::has('address1') &&  Input::has('address2')) {
+      $address = array(Input::get('address1'), Input::get('address2'), Input::get('address3'));
+      $address = SiteEvents::makeAddress($address);
+    }
+    else {
+      $address = null;
+    }
     $user_id = Auth::user()->id;
+
+    $event_time = strtotime(Input::get('event_time'));
+    $event_time = date('Y-m-d H:i:s', $event_time);
+    $event_time_end = strtotime(Input::get('event_time_end'));
+    $event_time_end = date('Y-m-d H:i:s', $event_time_end);
 
     $event->update(
       array(
@@ -116,14 +153,22 @@ class EventController extends BaseController
         'social' => Input::get('social'),
         'address_title' => Input::get('address_title'),
         'address' => $address,
-        'exhibit_id' => (int)Input::get('exhibit_id')
+        'exhibit_id' => (int)Input::get('exhibit_id'),
+        'event_time' => $event_time,
+        'event_time_end' => $event_time_end
       )
     );
 
     if ( Input::hasFile('image') )
     {
+      // Returns a media id of the media object you just created
       $media = Media::addMedia('image', $event, $user_id, 'back');
     }
+    $event
+      ->update(
+        array(
+          'media' => $media,
+        ));
     $event->save();
     return Redirect::route('events')
       ->with('status', 'alert-success')

@@ -47,6 +47,51 @@
             @endforeach
         @endif
     </div>
+    <div class="panel panel-default well form-group">
+        <div class="col-md-12"><p class="help-block"> Is there a time for this event?</p></div>
+        <div class="col-md-12">
+
+            {{ Form::label('event_time', 'Event Time Starting', array('class' => 'control-label')); }}
+            @if( isset($event->event_time) )
+                {{ Form::text('event_time', date('m/d/Y g:i A', strtotime($event->event_time)), array('class'=>'form-control datetimepicker6')) }}
+            @else
+                {{ Form::text('event_time', null, array('class'=>'form-control datetimepicker6')) }}
+            @endif
+            @if($errors->has('event_time'))
+                @foreach($errors->get('event_time') as $error)
+                    <p class="help-block">
+                        <strong>{{ $error }}</strong>
+                    </p>
+                @endforeach
+            @endif
+        </div>
+        <div class="col-md-12">
+            {{ Form::label('event_time_end', 'Event Time Ending', array('class' => 'control-label')); }}
+            @if( isset($event->event_time_end) )
+                {{ Form::text('event_time_end', date('m/d/Y g:i A', strtotime($event->event_time_end)), array('class'=>'form-control datetimepicker6')) }}
+            @else
+                {{ Form::text('event_time_end', null, array('class'=>'form-control datetimepicker6')) }}
+            @endif
+            @if($errors->has('event_time'))
+                @foreach($errors->get('event_time') as $error)
+                    <p class="help-block">
+                        <strong>{{ $error }}</strong>
+                    </p>
+                @endforeach
+            @endif
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('event_time') ? 'has-error' : '' }}">
+        {{ Form::label('social', 'Social Media Link:', array('class' => 'control-label')); }}
+        {{ Form::text( 'social', $event->social, array('class'=>'form-control') ) }}
+        @if($errors->has('social'))
+            @foreach($errors->get('social') as $error)
+                <p class="help-block">
+                    <strong>{{ $error }}</strong>
+                </p>
+            @endforeach
+        @endif
+    </div>
 
     <div class="panel panel-default well form-group">
         <a href="">Insert Address <i class="fa fa-chevron-down"></i></a>
@@ -56,7 +101,6 @@
                 {{ Form::label('address_title', 'Name Place:', array('class' => 'control-label')); }}
                 {{ Form::text( 'address_title', $event->address_title, array('class'=>'form-control') ) }}
                 <p class="help-block"> Does this place have a name?</p>
-
             </div>
             <div class="col-md-6">
                 {{ Form::label('address1', 'Street Address:', array('class' => 'control-label')); }}
@@ -121,9 +165,10 @@
 
 @section('scripts')
     @parent
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
     {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
 
-    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

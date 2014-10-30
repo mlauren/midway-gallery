@@ -5,5 +5,5 @@
   $('.details-wysi').wysihtml5({
     "stylesheets": []
   });
-    $('#datetimepicker6').datetimepicker();
+    $('.datetimepicker6').datetimepicker();
 }(jQuery));
