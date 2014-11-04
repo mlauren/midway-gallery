@@ -141,12 +141,13 @@
 
         <div class="col-xs-6 col-md-3" id="image-preview-exists" data-item-id="{{ $event->id }}">
             @foreach( $event->media as $media )
-                <div class="thumbnail">
-                    <a class="media-remove" href="/media/{{$media->id}}/remove">X</a>
-                    <img style="margin: 15px 0;" class="img-responsive" src="/{{$media->img_big}}">
-                </div>
-        @endforeach
-
+                @if( $event->image == $media->id)
+                   <div class="thumbnail">
+                        <a class="media-remove" href="/media/{{$media->id}}/remove">X</a>
+                        <img style="margin: 15px 0;" class="img-responsive" src="/{{$media->img_big}}">
+                    </div>
+                @endif
+            @endforeach
         </div>
     </div>
 

@@ -4,7 +4,7 @@
     {{-- var_dump($events)  --}}
     @foreach( $events as $event )
         <div class="panel panel-default row">
-            <div class="{{ Media::find( $event->media ) ? 'col-md-8' : 'col-md-12'}}" >
+            <div class="{{ (bool)$event->media ? 'col-md-8' : 'col-md-12'}}" >
                 <h3>{{ $event->title }}
                    @if(Auth::check())
                         <a href="/events/{{$event->id}}/edit"><i class="fa fa-pencil-square-o"></i></a>
@@ -20,15 +20,14 @@
                      </small>
                 </h3>
                 <p>{{ $event->details }}</p>
-                @if($event->address)
-                    <p>{{ $event->address }}</p>
-                @endif
             </div>
-            @if( Media::find( $event->media ) != null )
-                <div class="col-md-4">
-                    <img style="margin: 15px 0;" class="img-responsive img-rounded" src="{{ Media::find( $event->media )->img_big }}">
-                </div>
-            @endif
+            @foreach( $event->media as $key => $image )
+                @if(  $key == 0  )
+                    <div class="col-md-4">
+                        <img style="margin: 15px 0;" class="img-responsive img-rounded" src="{{ $image->img_big }}">
+                    </div>
+                @endif
+            @endforeach
         </div>
     @endforeach
 @stop

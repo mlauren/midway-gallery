@@ -13,8 +13,10 @@
 	<body>
 
 		<div class="container">
-			<header class="col-md-10">
-				@include('layout.menu')
+			<header class="row">
+				<div class="col-md-10">
+					@include('layout.menu')
+				</div>
 			</header>
 			@if(Session::has('global'))
 				<div class="col-md-12">

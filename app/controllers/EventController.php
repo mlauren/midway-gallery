@@ -74,13 +74,21 @@ class EventController extends BaseController
     if ( Input::hasFile('image') )
     {
       $image = Media::addMedia('image', $event, $user_id, 'back');
-    }
-    $event
+      $event
       ->update(
         array(
           'image' => $image,
         ));
+    }
+    if ($event->media) {
+      foreach ($event->media as $media) {
+        if ( $media->id != $event->image ) {
+          $media->remove();
+        }
+      }
+    }
     $event->save();
+
     return Redirect::route('events')
       ->with('status', 'alert-success')
       ->with('global', 'You have successfully added a new event.');
@@ -161,15 +169,23 @@ class EventController extends BaseController
 
     if ( Input::hasFile('image') )
     {
-      // Returns a media id of the media object you just created
       $image = Media::addMedia('image', $event, $user_id, 'back');
-    }
-    $event
+      $event
       ->update(
         array(
           'image' => $image,
         ));
+    }
+    if ($event->media) {
+      foreach ($event->media as $media) {
+        if ( $media->id != $event->image ) {
+          $media->remove();
+        }
+      }
+    }
     $event->save();
+
+
     return Redirect::route('events')
       ->with('status', 'alert-success')
       ->with('global', 'You have successfully updated ' . $event->title . '.');
