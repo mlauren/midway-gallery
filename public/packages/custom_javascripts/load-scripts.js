@@ -28,6 +28,9 @@
               reader.onloadend = function (e) {
                 console.log(e);
                 showUploadedItem(e.target.result);
+
+
+
               };
               reader.readAsDataURL(file);
             }
@@ -36,6 +39,10 @@
         }
       }, false);
     }
+  }
+
+  function removeSiblings() {
+
   }
 
   // Remove a single record
