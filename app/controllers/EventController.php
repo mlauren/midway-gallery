@@ -3,7 +3,7 @@ class EventController extends BaseController
 {
   public function viewAll()
   {
-    $events = SiteEvents::all();
+    $events = DB::table('events')->orderBy('created_at', 'desc')->get();
 
     return View::make('events.all')
       ->with('events', $events)
@@ -179,7 +179,7 @@ class EventController extends BaseController
     if ($event->media) {
       foreach ($event->media as $media) {
         if ( $media->id != $event->image ) {
-          $media->remove();
+          $media->delete();
         }
       }
     }
