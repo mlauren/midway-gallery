@@ -9,17 +9,17 @@
     formdata = new FormData();
   }
   mediable.add = function() {
+    $('.file').each(function(index, value) {
 
-    if (input.addEventListener) {
-      // Add event listener
-      input.addEventListener("change", function(evt) {
+      $(this).bind("change", function(event) {
+        console.log(this.files);
         var len = this.files.length,
+          el = this,
           img,
           reader,
           file;
 
-        // console.log(formdata);
-
+        $(el).siblings('#image-preview-exists').children('.thumbnail').remove();
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
           if (!!file.type.match(/image.*/)) {
@@ -28,20 +28,15 @@
               reader.onloadend = function (e) {
                 console.log(e);
                 showUploadedItem(e.target.result);
-
-
-
               };
               reader.readAsDataURL(file);
             }
 
           }
         }
-      }, false);
-    }
-  }
+      });
+    });
 
-  function removeSiblings() {
 
   }
 
@@ -67,24 +62,18 @@
   }
 
   // Helper function to show the images once the browser has them
-  function showUploadedItem(source, id) {
+  function showUploadedItem(source) {
     var parentDiv = document.getElementById("image-preview-exists"),
       div = document.createElement("div"),
-      img = document.createElement("img"),
-      link = document.createElement("a");
+      img = document.createElement("img");
     img.src = source;
 
     div.className = 'thumbnail';
 
-    link.className = 'media-remove';
-    link.innerHTML = 'X';
-    // link.href = '/media/' + id + '/remove';
-    link.className = "media-remove";
-
     div.appendChild(img);
-    div.insertBefore(link, img);
     parentDiv.insertBefore(div, parentDiv.firstChild);
   }
+
 }( window.mediable = window.mediable || {}, jQuery ));
 
 mediable.remove();

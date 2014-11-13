@@ -22,7 +22,7 @@
 						<li><a href="{{ URL::route('exhibits-add') }}">Add an Exhibit</a></li>
 						<li><a href="{{ URL::route('partner-add') }}">Add An Artist / Affiliate</a></li>
 						<li><a href="{{ URL::route('news-add') }}">Add a News Item</a></li>
-
+						<li><a href="{{ URL::route('event-add') }}">Add an Event Item</a></li>
 					@endif
 				  </ul>
 				</li>

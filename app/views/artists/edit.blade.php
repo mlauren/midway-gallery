@@ -37,8 +37,15 @@
 			@endif
 		</div>
 		<div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
+			<div class="col-xs-6 col-md-3" id="image-preview-exists">
+				@if($artist->cover_image)
+					<div class="thumbnail">
+					    <img style="margin: 15px 0;" class="img-responsive" src="/{{ Media::find($artist->cover_image)->img_big }}">
+					</div>
+				@endif
+			</div>
 			{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
-			{{ Form::file('cover_image', array('class' => 'field')) }}
+			{{ Form::file('cover_image', array('class' => 'file')) }}
 			@if($errors->has('cover_image'))
 				@foreach($errors->get('cover_image') as $error)
 					<p class="help-block">
@@ -70,8 +77,15 @@
 			@endif
 		</div>
 		<div class="form-group {{ $errors->has('inside_image') ? 'has-error' : '' }}">
+			<div class="col-xs-6 col-md-3" id="image-preview-exists">
+				@if($artist->inside_image)
+					<div class="thumbnail">
+					    <img style="margin: 15px 0;" class="img-responsive" src="/{{ Media::find($artist->inside_image)->img_big }}">
+					</div>
+				@endif
+			</div>
 			{{ Form::label('inside_image', 'Inside Image', array('class' => 'control-label')); }}
-			{{ Form::file('inside_image', array('class' => 'field')) }}
+			{{ Form::file('inside_image', array('class' => 'file')) }}
 			@if($errors->has('inside_image'))
 				@foreach($errors->get('inside_image') as $error)
 					<p class="help-block">
