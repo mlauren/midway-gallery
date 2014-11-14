@@ -72,8 +72,8 @@ class ArtistController extends BaseController {
     $validator = Validator::make(
       Input::all(), array(
         'name'=>'required|min:3|max:50',
-        'cover_image'=>'required|mimes:jpeg,bmp,png|between:0,4000',
-        'inside_image'=>'required|mimes:jpeg,bmp,png|between:0,10000',
+        'cover_image'=>'mimes:jpeg,bmp,png|between:0,4000',
+        'inside_image'=>'mimes:jpeg,bmp,png|between:0,10000',
         'credentials'=>'min:3|max:70'
       )
     );
@@ -99,17 +99,21 @@ class ArtistController extends BaseController {
     if (Input::hasFile('cover_image')) {
       $media = new Media;
       $cover_image = $media->addMedia('cover_image', $artist, $user_id, 'partner-add');
+      $artist
+      ->update(
+        array(
+          'cover_image' => $cover_image
+      ));
     }
     if (Input::hasFile('inside_image')) {
       $media = new Media;
       $inside_image = $media->addMedia('inside_image', $artist, $user_id, 'partner-add');
-    }
-    $artist
+      $artist
       ->update(
         array(
-          'cover_image' => $cover_image,
           'inside_image' => $inside_image
-        ));
+      ));
+    }
     $artist->save();
     return Redirect::route('artists-show-single', $artist->permalink)
       ->with('status', 'alert-success')

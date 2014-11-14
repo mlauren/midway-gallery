@@ -27,7 +27,7 @@
               reader = new FileReader();
               reader.onloadend = function (e) {
                 console.log(e);
-                showUploadedItem(e.target.result);
+                showUploadedItem(e.target.result, el);
               };
               reader.readAsDataURL(file);
             }
@@ -36,9 +36,19 @@
         }
       });
     });
-
-
   }
+
+  // Helper function to show the images once the browser has them
+  function showUploadedItem(source, el) {
+    var htmlString = '<div class="thumbnail"><img src="' +  source + '"/></div>';
+    var parentDiv = $(el).siblings(".image-preview-exists");
+    if ( typeof parentDiv == 'undefined' ) {
+      el.parents('.form-group').append('<div class="col-xs-6 col-md-3 image-preview-exists"></div>')
+      var parentDiv = $(".image-preview-exists");
+      console.log(el.parents('.form-group'));
+    }
+    parentDiv.html(htmlString);
+  } 
 
   // Remove a single record
   mediable.remove = function() {
@@ -61,18 +71,6 @@
     });
   }
 
-  // Helper function to show the images once the browser has them
-  function showUploadedItem(source) {
-    var parentDiv = document.getElementById("image-preview-exists"),
-      div = document.createElement("div"),
-      img = document.createElement("img");
-    img.src = source;
-
-    div.className = 'thumbnail';
-
-    div.appendChild(img);
-    parentDiv.insertBefore(div, parentDiv.firstChild);
-  }
 
 }( window.mediable = window.mediable || {}, jQuery ));
 
@@ -87,7 +85,9 @@ mediable.add();
   $('.details-wysi').wysihtml5({
     "stylesheets": []
   });
-  $('.datetimepicker6').datetimepicker();
+  if (typeof datetimepicker == 'function') {
+    $('.datetimepicker6').datetimepicker();
+  }
 }(jQuery));
 
 

@@ -37,7 +37,7 @@
 			@endif
 		</div>
 		<div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
-			<div class="col-xs-6 col-md-3" id="image-preview-exists">
+			<div class="col-xs-6 col-md-3 image-preview-exists">
 				@if($artist->cover_image)
 					<div class="thumbnail">
 					    <img style="margin: 15px 0;" class="img-responsive" src="/{{ Media::find($artist->cover_image)->img_big }}">
@@ -77,7 +77,7 @@
 			@endif
 		</div>
 		<div class="form-group {{ $errors->has('inside_image') ? 'has-error' : '' }}">
-			<div class="col-xs-6 col-md-3" id="image-preview-exists">
+			<div class="col-xs-6 col-md-3 image-preview-exists">
 				@if($artist->inside_image)
 					<div class="thumbnail">
 					    <img style="margin: 15px 0;" class="img-responsive" src="/{{ Media::find($artist->inside_image)->img_big }}">

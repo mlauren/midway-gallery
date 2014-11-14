@@ -185,7 +185,6 @@ class EventController extends BaseController
     }
     $event->save();
 
-
     return Redirect::route('events')
       ->with('status', 'alert-success')
       ->with('global', 'You have successfully updated ' . $event->title . '.');

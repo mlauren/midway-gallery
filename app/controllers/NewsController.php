@@ -38,14 +38,14 @@
       if (Input::hasFile('cover_image')) {
         $media = new Media;
         $cover_image = $media->addMedia('cover_image', $new, $user_id, 'news-add');
-      }
-
-      $new
+        $new
         ->update(
           array(
             'cover_image' => $cover_image,
           ));
+      }
       $new->save();
+
       return Redirect::route('news')
         ->with('status', 'alert-success')
         ->with('global', 'You have successfully added a new artist/partner.');
@@ -83,13 +83,12 @@
       );
       if (Input::hasFile('cover_image')) {
         $cover_image = Media::addMedia('cover_image', $newsItem, $user_id, 'back');
-      }
-
-      $newsItem
+        $newsItem
         ->update(
           array(
             'cover_image' => $cover_image,
           ));
+      }
       $newsItem->save();
       return Redirect::route('news')
         ->with('status', 'alert-success')

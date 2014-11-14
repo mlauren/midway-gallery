@@ -21,8 +21,9 @@
         @endif
 	</div>
 	<div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
+		
 		{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
-        {{ Form::file('cover_image', array('class' => 'field')) }}
+        {{ Form::file('cover_image', array('class' => 'file')) }}
 		@if($errors->has('cover_image'))
 			@foreach($errors->get('cover_image') as $error)
 	            <p class="help-block">
@@ -55,7 +56,7 @@
     </div>
     <div class="form-group {{ $errors->has('inside_image') ? 'has-error' : '' }}">
         {{ Form::label('inside_image', 'Inside Image', array('class' => 'control-label')); }}
-        {{ Form::file('inside_image', array('class' => 'field')) }}
+        {{ Form::file('inside_image', array('class' => 'file')) }}
         @if($errors->has('inside_image'))
             @foreach($errors->get('inside_image') as $error)
                 <p class="help-block">
