@@ -131,7 +131,7 @@
 		{{ Form::label('image', 'Image for event', array('class' => 'control-label')); }}
 		{{ Form::file('image', array('multiple' => true, 'class' => 'field')) }}
 		<p class="help-block">Image for event</p>
-	    <div id="image-preview-exists" data-ex-id=""></div>
+	    <div id="image-preview-exists"></div>
 	</div>
 
 	{{ Form::hidden('id') }}

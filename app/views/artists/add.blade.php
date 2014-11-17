@@ -9,7 +9,7 @@
 @section('content')
 <div class="col-md-8">
 {{ Form::open(array('url'=>URL::route('partner-add-post'), 'files' => true, 'method'=>'post', 'class'=>'form-horizontal')) }}
-	<div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
+	<div class="form-group{{ $errors->has('name') ? ' has-error' : '' }}">
 		{{ Form::label('name', 'Name or Title', array('class' => 'control-label')); }}
 		{{ Form::text('name', null, array('class'=>'form-control')) }}
 		@if($errors->has('name'))
@@ -20,7 +20,7 @@
 	        @endforeach
         @endif
 	</div>
-	<div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
+	<div class="form-group{{ $errors->has('cover_image') ? ' has-error' : '' }}">
 		
 		{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
         {{ Form::file('cover_image', array('class' => 'file')) }}
@@ -31,8 +31,9 @@
 	            </p>
 	        @endforeach
         @endif
+        <div class="col-md-6 image-preview-exists"></div>
 	</div>
-	<div class="form-group {{ $errors->has('credentials') ? 'has-error' : '' }}">
+	<div class="form-group{{ $errors->has('credentials') ? ' has-error' : '' }}">
 		{{ Form::label('credentials', 'Credentials', array('class' => 'control-label')); }}
 		{{ Form::text('credentials', null, array('class'=>'form-control')) }}
 		@if($errors->has('credentials'))
@@ -43,7 +44,7 @@
 	        @endforeach
         @endif
 	</div>
-    <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
+    <div class="form-group{{ $errors->has('description') ? ' has-error' : '' }}">
         {{ Form::label('description', 'Description', array('class' => 'control-label')); }}
         {{ Form::textarea('description', null, array('class'=>'form-control details-wysi')) }}
         @if($errors->has('description'))
@@ -54,7 +55,7 @@
             @endforeach
         @endif
     </div>
-    <div class="form-group {{ $errors->has('inside_image') ? 'has-error' : '' }}">
+    <div class="form-group{{ $errors->has('inside_image') ? ' has-error' : '' }}">
         {{ Form::label('inside_image', 'Inside Image', array('class' => 'control-label')); }}
         {{ Form::file('inside_image', array('class' => 'file')) }}
         @if($errors->has('inside_image'))
@@ -64,6 +65,7 @@
                 </p>
             @endforeach
         @endif
+        <div class="col-md-6 image-preview-exists"></div>
     </div>
 	{{ Form::hidden('id') }}
 	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}

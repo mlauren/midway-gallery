@@ -54,9 +54,21 @@
     	            </p>
     	        @endforeach
             @endif
+            <div class="col-xs-6 col-md-3 image-preview-exists">
+            </div>
     	</div>
     	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}
     {{ Form::close() }}
     </div>
 
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
+
+
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

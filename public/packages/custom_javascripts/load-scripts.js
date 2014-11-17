@@ -42,17 +42,12 @@
   function showUploadedItem(source, el) {
     var htmlString = '<div class="thumbnail"><img src="' +  source + '"/></div>';
     var parentDiv = $(el).siblings(".image-preview-exists");
-    if ( typeof parentDiv == 'undefined' ) {
-      el.parents('.form-group').append('<div class="col-xs-6 col-md-3 image-preview-exists"></div>')
-      var parentDiv = $(".image-preview-exists");
-      console.log(el.parents('.form-group'));
-    }
     parentDiv.html(htmlString);
   } 
 
   // Remove a single record
   mediable.remove = function() {
-    return $('body').on('click', '.media-remove', function (e){
+    return $('body').on('click', '.media-remove ', function (e){
       e.preventDefault();
       var el = $(this),
         url = el.attr('href');
