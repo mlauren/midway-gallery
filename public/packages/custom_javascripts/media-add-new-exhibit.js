@@ -30,16 +30,6 @@
 
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
-
-          /*
-          if ( window.FileReader ) {
-            reader = new FileReader();
-            reader.onloadend = function (e) { 
-              showUploadedItem(e.target.result);
-            };
-            reader.readAsDataURL(file);
-          }*/
-
           if (formdata) {
             // Make sure to add the count into the file[i] array
             formdata.append("file", file);
@@ -117,13 +107,13 @@
         });
         
       }).then(function() {
-        updateMediaOrder('#image-preview-exists', '.img-min-preview');
+        updateMediaOrder('#image-preview-exists', '.img-min-preview', $('input:hidden[name="id"]').val());
       });
     });
   }
   function updateMediaOrder(container, imgPreview, ex_id) {
     var mediaIDs = [];
-
+    console.log(ex_id);
     // Handle the media-ids order and post it when new ones come in.
     $(container).find(imgPreview).each(function(){
       mediaIDs.push( $(this).data('id') );

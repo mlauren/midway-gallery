@@ -46,7 +46,7 @@
         </div>
         <div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
     		{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
-            {{ Form::file('cover_image', array('class' => 'field')) }}
+            {{ Form::file('cover_image', array('class' => 'file')) }}
     		@if($errors->has('cover_image'))
     			@foreach($errors->get('cover_image') as $error)
     	            <p class="help-block">
@@ -54,7 +54,7 @@
     	            </p>
     	        @endforeach
             @endif
-            <div class="col-xs-6 col-md-3 image-preview-exists">
+            <div class="image-preview-exists">
             </div>
     	</div>
     	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}

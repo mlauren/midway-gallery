@@ -251,6 +251,20 @@
     |
     */
     /*
+    | Media removes media and detaches it from news parent:
+    */
+    Route::post('/event-media/{id}/remove', array(
+      'as' => 'event-media-remove-unlink',
+      'uses' => 'EventController@postRemoveMedia'
+    ));
+    /*
+    | Media removes media and detaches it from news parent:
+    */
+    Route::post('/news-media/{id}/remove', array(
+      'as' => 'news-media-remove-unlink',
+      'uses' => 'NewsController@postRemoveMedia'
+    ));
+    /*
     | Media removes media and detaches it from parent:
     */
     Route::post('/media/{id}/remove', array(

@@ -96,10 +96,13 @@
     public function postUpdateMediaIDsOrder()
     {
       // Find and process media Ids
-      $exhibit = DB::table('exhibits')
-        ->where('id', Input::get('ex_id'))
-        ->update(array('media_ids' => json_encode(Input::get('media_ids'))));
+
+      var_dump(Input::get('ex_id'));
       $exhibit = Exhibit::find(Input::get('ex_id'));
+      $exhibit->update(
+        array('media_ids' => json_encode(Input::get('media_ids')))
+      );
+      $exhibit->save();
       return Response::json(
         array(
           'media_ids' => $exhibit->media_ids

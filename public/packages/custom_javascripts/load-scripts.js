@@ -19,7 +19,7 @@
           reader,
           file;
 
-        $(el).siblings('#image-preview-exists').children('.thumbnail').remove();
+        $(el).siblings('.image-preview-exists').children('.thumbnail').remove();
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
           if (!!file.type.match(/image.*/)) {
@@ -28,10 +28,9 @@
               reader.onloadend = function (e) {
                 console.log(e);
                 showUploadedItem(e.target.result, el);
-              };
+              }
               reader.readAsDataURL(file);
             }
-
           }
         }
       });
@@ -42,7 +41,7 @@
   function showUploadedItem(source, el) {
     var htmlString = '<div class="thumbnail"><img src="' +  source + '"/></div>';
     var parentDiv = $(el).siblings(".image-preview-exists");
-    parentDiv.html(htmlString);
+    parentDiv.html(htmlString).addClass('col-md-3');
   } 
 
   // Remove a single record
@@ -59,13 +58,13 @@
         url : url,
         async: false
       }).fail(function(jqXHR, ajaxOptions, thrownError) {
-        /*alert(ajaxOptions);*/
+        /* alert(ajaxOptions); */
       }).done(function(data) {
+        el.closest('.image-preview-exists').removeClass('col-md-3');
         el.parent('.thumbnail').remove();
       });
     });
   }
-
 
 }( window.mediable = window.mediable || {}, jQuery ));
 
@@ -80,9 +79,8 @@ mediable.add();
   $('.details-wysi').wysihtml5({
     "stylesheets": []
   });
-  if (typeof datetimepicker == 'function') {
-    $('.datetimepicker6').datetimepicker();
-  }
+  $('.datetimepicker6').datetimepicker();
+
 }(jQuery));
 
 

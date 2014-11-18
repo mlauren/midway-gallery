@@ -4,12 +4,12 @@ class News extends Eloquent
   public static $rules = array(
     'title'=>'unique:news,title|required|min:3|max:50',
     'url' => 'url',
-    'cover_image'=>'required|mimes:jpeg,bmp,png|between:0,4000',
+    'cover_image'=>'mimes:jpeg,bmp,png|between:0,4000',
   );
   public static $rulesEdit = array(
     'title'=>'required|min:3|max:50',
     'url' => 'url',
-    'cover_image'=>'required|mimes:jpeg,bmp,png|between:0,4000',
+    'cover_image'=>'mimes:jpeg,bmp,png|between:0,4000',
   );
 
   protected $fillable = array(
