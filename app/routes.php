@@ -299,6 +299,20 @@
       'uses' => 'ExhibitController@exhibitAddEmpty'
     ));
 
+    /*
+    |
+    |
+    | Slideshow related edit links
+    |
+    |
+    */
+    /*
+    | Slideshow Edit Form
+    */
+    Route::get('/slideshow-edit', array(
+      'as' => 'slideshow-edit',
+      'uses' => 'SlideshowController@getEditSlides'
+    ));
 
     /*
     |
