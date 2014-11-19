@@ -70,7 +70,7 @@
                     </p>
                 @endforeach
             @endif
-
+            <div class="feedback-container col-md-12"></div>
             <div id="image-preview-exists" data-ex-id="{{ $id }}">
                 @if(!empty($imageGroup))
                     @foreach($imageGroup as $image)
@@ -108,8 +108,6 @@
     {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
 
     {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
-
-    {{ HTML::script('/packages/custom_javascripts/draggable.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 
