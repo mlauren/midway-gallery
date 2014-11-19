@@ -29,6 +29,39 @@
 	color: white;
 }
 
-body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-	/*font-family: Monaco, "Lucida Console", "Courier New", monospace;*/
+body {
+	font: 10.5pt 'Open Sans', sans-serif;
+	line-height: 1.56;
+	font-weight: 400;
+	color: #373737;
+	letter-spacing: 0em;
+	word-spacing: 0.078em;
 }
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-weight: 700;
+	color: #000;
+	letter-spacing: 0em;
+	word-spacing: 0.084em;
+	line-height: 1.2;
+}
+h1 {
+	font-size: 18pt;
+}
+h2 {
+	font-size: 16pt;
+}
+h3 {
+	text-transform: uppercase;
+	font-size: 14pt;
+}
+h4 {
+	font-size: 12pt;
+}
+h5 {
+	font-size: 10pt;
+}
+h6 {
+	font-size: 8pt;
+}
+

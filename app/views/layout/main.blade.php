@@ -10,9 +10,10 @@
 	    {{ HTML::style('/packages/css/styles.css') }}
 	    {{ HTML::style('//maxcdn.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css') }}
 
+	    {{ HTML::link('http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400') }}
+
 	</head>
 	<body>
-
 		<div class="container">
 			<header class="row">
 				<div class="col-md-10">
