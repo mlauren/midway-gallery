@@ -9,17 +9,17 @@
     formdata = new FormData();
   }
   mediable.add = function() {
+    $('.file').each(function(index, value) {
 
-    if (input.addEventListener) {
-      // Add event listener
-      input.addEventListener("change", function(evt) {
+      $(this).bind("change", function(event) {
+        console.log(this.files);
         var len = this.files.length,
+          el = this,
           img,
           reader,
           file;
 
-        // console.log(formdata);
-
+        $(el).siblings('.image-preview-exists').children('.thumbnail').remove();
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
           if (!!file.type.match(/image.*/)) {
@@ -27,27 +27,26 @@
               reader = new FileReader();
               reader.onloadend = function (e) {
                 console.log(e);
-                showUploadedItem(e.target.result);
-
-
-
-              };
+                showUploadedItem(e.target.result, el);
+              }
               reader.readAsDataURL(file);
             }
-
           }
         }
-      }, false);
-    }
+      });
+    });
   }
 
-  function removeSiblings() {
-
-  }
+  // Helper function to show the images once the browser has them
+  function showUploadedItem(source, el) {
+    var htmlString = '<div class="thumbnail"><img src="' +  source + '"/></div>';
+    var parentDiv = $(el).siblings(".image-preview-exists");
+    parentDiv.html(htmlString).addClass('col-md-3');
+  } 
 
   // Remove a single record
   mediable.remove = function() {
-    return $('body').on('click', '.media-remove', function (e){
+    return $('body').on('click', '.media-remove ', function (e){
       e.preventDefault();
       var el = $(this),
         url = el.attr('href');
@@ -59,32 +58,14 @@
         url : url,
         async: false
       }).fail(function(jqXHR, ajaxOptions, thrownError) {
-        /*alert(ajaxOptions);*/
+        /* alert(ajaxOptions); */
       }).done(function(data) {
+        el.closest('.image-preview-exists').removeClass('col-md-3');
         el.parent('.thumbnail').remove();
       });
     });
   }
 
-  // Helper function to show the images once the browser has them
-  function showUploadedItem(source, id) {
-    var parentDiv = document.getElementById("image-preview-exists"),
-      div = document.createElement("div"),
-      img = document.createElement("img"),
-      link = document.createElement("a");
-    img.src = source;
-
-    div.className = 'thumbnail';
-
-    link.className = 'media-remove';
-    link.innerHTML = 'X';
-    // link.href = '/media/' + id + '/remove';
-    link.className = "media-remove";
-
-    div.appendChild(img);
-    div.insertBefore(link, img);
-    parentDiv.insertBefore(div, parentDiv.firstChild);
-  }
 }( window.mediable = window.mediable || {}, jQuery ));
 
 mediable.remove();
@@ -99,6 +80,7 @@ mediable.add();
     "stylesheets": []
   });
   $('.datetimepicker6').datetimepicker();
+
 }(jQuery));
 
 

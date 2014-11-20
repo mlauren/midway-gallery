@@ -20,26 +20,14 @@
           file;
 
         if ( input.val() == 0 || input.val() == "" ) {
-          var ajax = addExhibitDraft();
+          addExhibitDraft();
         }
         addLoadIcon("image-preview-exists");
 
         formdata.append("id", input.val());
 
-        // console.log(formdata);
-
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
-
-          /*
-          if ( window.FileReader ) {
-            reader = new FileReader();
-            reader.onloadend = function (e) { 
-              showUploadedItem(e.target.result);
-            };
-            reader.readAsDataURL(file);
-          }*/
-
           if (formdata) {
             // Make sure to add the count into the file[i] array
             formdata.append("file", file);
@@ -72,7 +60,11 @@
       updateMediaOrder('#image-preview-exists', '.img-min-preview', input.val());
       $('form :file').val('');
     }).fail(function() {
-      alert('Something Went Wrong!');
+      // Put in Error Message if something goes
+      // wrong with removing image
+      var errorTxt = 'Oh snap! Something went wrong with adding one of your images.',
+          htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
+      $('.feedback-container').html(htmlString);
     });
   }
 
@@ -101,7 +93,8 @@
     return $('body').on('click', '.media-remove', function (e){
       e.preventDefault();
       var el = $(this),
-      url = el.attr('href');
+      url = el.attr('href'),
+      input_silent = $('input:hidden[name="id"]').val();
 
       $.ajax({
         type: "POST",
@@ -110,20 +103,21 @@
         url : url,
         async: false
       }).fail(function(jqXHR, ajaxOptions, thrownError) {
-          /*alert('Something went wrong :X');*/
+        // Put in Error Message if something goes
+        // wrong with removing image
+        var errorTxt = 'Oh snap! Something went wrong with removing your images.',
+          htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
+        $('.feedback-container').html(htmlString);
       }).done(function(data) {
         el.parent('.img-min-preview').fadeOut(300, function() { 
-          $(this).remove(); 
+          $(this).remove();
+          updateMediaOrder('#image-preview-exists', '.img-min-preview', input_silent);
         });
-        
-      }).then(function() {
-        updateMediaOrder('#image-preview-exists', '.img-min-preview');
       });
     });
   }
   function updateMediaOrder(container, imgPreview, ex_id) {
     var mediaIDs = [];
-
     // Handle the media-ids order and post it when new ones come in.
     $(container).find(imgPreview).each(function(){
       mediaIDs.push( $(this).data('id') );
@@ -134,7 +128,13 @@
         ex_id : ex_id,
         media_ids: mediaIDs
       }
-    );
+    ).fail(function() {
+      // Put in Error Message if something goes
+      // wrong with removing image
+      var errorTxt = 'Oh snap! Something went wrong with adding one of your images. Please Try Again.',
+          htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
+      $('.feedback-container').html(htmlString);
+    });
   }
 
   // Helper function to show the images once the browser has them
@@ -198,3 +198,16 @@
 mediable.remove();
 mediable.add();
 mediable.sortable();
+
+
+/**
+ * Load dependent libraries.
+ */
+(function ($) {
+  $('.details-wysi').wysihtml5({
+    "stylesheets": []
+  });
+  if ( typeof datetimepicker == 'function' ) {
+    $('.datetimepicker6').datetimepicker();
+  }
+}(jQuery));

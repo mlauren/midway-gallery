@@ -46,7 +46,7 @@
         </div>
         <div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
     		{{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
-            {{ Form::file('cover_image', array('class' => 'field')) }}
+            {{ Form::file('cover_image', array('class' => 'file')) }}
     		@if($errors->has('cover_image'))
     			@foreach($errors->get('cover_image') as $error)
     	            <p class="help-block">
@@ -54,9 +54,21 @@
     	            </p>
     	        @endforeach
             @endif
+            <div class="image-preview-exists">
+            </div>
     	</div>
     	{{ Form::submit('Submit', array('class'=>'btn btn-large btn-default')) }}
     {{ Form::close() }}
     </div>
 
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
+
+
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

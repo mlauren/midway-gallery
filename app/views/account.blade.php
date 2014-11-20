@@ -2,7 +2,7 @@
 
 @section('content')
 	@if(Auth::check())
-		<h2><small>Hello, {{ Auth::user()->username }}.</small></h2>
+		<h2 class="col-md-12"><small>Hello, {{ Auth::user()->username }}.</small></h2>
 		<div class="col-md-4">
 			@include('layout.sidebar')
 		</div>

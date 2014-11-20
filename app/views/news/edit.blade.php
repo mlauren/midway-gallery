@@ -47,8 +47,18 @@
             @endif
         </div>
         <div class="form-group {{ $errors->has('cover_image') ? 'has-error' : '' }}">
+            <div class="{{ !empty($news->cover_image) ? 'col-md-3 ' : '' }}image-preview-exists" data-item-id="{{ $news->id }}">
+                @foreach( $news->media as $media )
+                    @if( $news->cover_image == $media->id)
+                        <div class="thumbnail">
+                            {{ HTML::link(URL::route('news-media-remove-unlink', $media->id), 'X', array('class' => 'media-remove')) }}
+                            <img style="margin: 15px 0;" class="img-responsive" src="/{{$media->img_big}}">
+                        </div>
+                    @endif
+                @endforeach
+            </div>
             {{ Form::label('cover_image', 'Cover Image', array('class' => 'control-label')); }}
-            {{ Form::file('cover_image', array('class' => 'field')) }}
+            {{ Form::file('cover_image', array('class' => 'file')) }}
             @if($errors->has('cover_image'))
                 @foreach($errors->get('cover_image') as $error)
                     <p class="help-block">
@@ -62,4 +72,14 @@
     {{ Form::close() }}
     </div>
 
+@stop
+
+@section('scripts')
+    @parent
+    {{ HTML::script('/bower_resources/moment/moment.js') }}
+    {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
+
+
+    {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

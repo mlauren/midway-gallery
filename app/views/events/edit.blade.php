@@ -134,21 +134,20 @@
         {{ Form::select('exhibit_id', $exhibits, $event->exhibit_id, array('class'=>'form-control')) }}
     </div>
     <div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
-        {{ Form::label('image', 'Image for event', array('class' => 'control-label')) }}
-        {{ Form::file('image', array('multiple' => true, 'class' => 'field')) }}
-        <p class="help-block">Image for event</p>
 
-
-        <div class="col-xs-6 col-md-3" id="image-preview-exists" data-item-id="{{ $event->id }}">
+        <div class="{{ $event->image ? 'col-md-3 ' : '' }}image-preview-exists" data-item-id="{{ $event->id }}">
             @foreach( $event->media as $media )
                 @if( $event->image == $media->id)
                    <div class="thumbnail">
-                        <a class="media-remove" href="/media/{{$media->id}}/remove">X</a>
+                        {{ HTML::link(URL::route('event-media-remove-unlink', $media->id), 'X', array('class' => 'media-remove')) }}
                         <img style="margin: 15px 0;" class="img-responsive" src="/{{$media->img_big}}">
                     </div>
                 @endif
             @endforeach
         </div>
+        {{ Form::label('image', 'Image for event', array('class' => 'control-label')) }}
+        {{ Form::file('image', array('multiple' => true, 'class' => 'file')) }}
+        <p class="help-block">Image for event</p>
     </div>
 
     {{ Form::hidden('id') }}

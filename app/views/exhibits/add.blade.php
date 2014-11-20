@@ -72,7 +72,6 @@
 
 @section('scripts')
     @parent
-    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
 
     {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
 

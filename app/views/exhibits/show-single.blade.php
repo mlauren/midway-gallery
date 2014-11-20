@@ -28,11 +28,11 @@
 		@endif
 		{{-- Display the images --}}
 		@foreach($imageGroup as $image)
-			{{ HTML::image($image->img_big, $exhibit->title) }}
+			<img alt="{{ $exhibit->title }}" class="img-responsive col-md-12" src="/{{ $image->img_big }}" />
 		@endforeach
 		@if(isset($assignedGroup))
 			@foreach ($assignedGroup as $image)
-				{{ HTML::image($image->img_big, $exhibit->title, array('class' => 'img-responsive')) }}
+				<img alt="{{ $exhibit->title }}" class="img-responsive col-md-12" src="/{{ $image->img_big }}" />
 			@endforeach
 		@endif
 	</div>

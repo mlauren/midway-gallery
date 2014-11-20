@@ -128,10 +128,10 @@
 
     </div>
 	<div class="form-group {{ $errors->has('image') ? 'has-error' : '' }}">
+        <div class="image-preview-exists"></div>
 		{{ Form::label('image', 'Image for event', array('class' => 'control-label')); }}
-		{{ Form::file('image', array('multiple' => true, 'class' => 'field')) }}
+		{{ Form::file('image', array('class' => 'file')) }}
 		<p class="help-block">Image for event</p>
-	    <div id="image-preview-exists" data-ex-id=""></div>
 	</div>
 
 	{{ Form::hidden('id') }}
@@ -145,7 +145,7 @@
     {{ HTML::script('/bower_resources/moment/moment.js') }}
     {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
 
-    {{ HTML::script('/packages/custom_javascripts/load-scripts  .js') }}
+    {{ HTML::script('/packages/custom_javascripts/load-scripts.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

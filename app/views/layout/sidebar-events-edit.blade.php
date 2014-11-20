@@ -2,7 +2,7 @@
 <ul class="list-group">
 	@foreach(DB::table('events')->orderBy('created_at', 'desc')->get() as $event)
 		<li class="list-group-item">
-		{{ HTML::link('/events/' . $event->permalink, $event->title) }}
+		{{ $event->title }}
 		<a href="/events/{{ $event->id }}/edit"><span class="pull-right badge">edit</span></a>
 		</li>
 	@endforeach

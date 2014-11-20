@@ -3,7 +3,7 @@ class EventController extends BaseController
 {
   public function viewAll()
   {
-    $events = SiteEvents::all();
+    $events = DB::table('events')->orderBy('created_at', 'desc')->get();
 
     return View::make('events.all')
       ->with('events', $events)
@@ -94,6 +94,37 @@ class EventController extends BaseController
       ->with('global', 'You have successfully added a new event.');
   }
 
+  public function postRemoveMedia($id) {
+    $media = Media::find($id);
+    $media = new Media;
+    $media->delete();
+
+    $media = Media::find($id);
+    $owner = $media->mediable_id;
+    $ownerType = $media->mediable_type;
+    $owner = $ownerType::find($owner);
+    $isAjax = Request::ajax();
+
+    // Disasociate this from its parent exhibit
+    foreach ($owner->media as $key => $image) {
+      if ($image->id == $id) {
+        $owner->media[$key]->update([
+          'mediable_id' => 0,
+          'mediable_type' => null
+        ]);
+        $mediasave = $owner->media[$key]->save();
+      }
+    }
+    if ( $mediasave == true ) {
+      $outcome = $owner
+      ->update(
+        array(
+          'image' => '',
+        ));
+    }
+    return json_encode($outcome);
+  }
+
   /**
    *
    * Function to process existing event types
@@ -179,12 +210,11 @@ class EventController extends BaseController
     if ($event->media) {
       foreach ($event->media as $media) {
         if ( $media->id != $event->image ) {
-          $media->remove();
+          $media->delete();
         }
       }
     }
     $event->save();
-
 
     return Redirect::route('events')
       ->with('status', 'alert-success')

@@ -38,17 +38,48 @@
       if (Input::hasFile('cover_image')) {
         $media = new Media;
         $cover_image = $media->addMedia('cover_image', $new, $user_id, 'news-add');
-      }
-
-      $new
+        $new
         ->update(
           array(
             'cover_image' => $cover_image,
           ));
+      }
       $new->save();
+
       return Redirect::route('news')
         ->with('status', 'alert-success')
         ->with('global', 'You have successfully added a new artist/partner.');
+    }
+
+    public function postRemoveMedia($id) {
+      $media = Media::find($id);
+      $media = new Media;
+      $media->delete();
+
+      $media = Media::find($id);
+      $owner = $media->mediable_id;
+      $ownerType = $media->mediable_type;
+      $owner = $ownerType::find($owner);
+      $isAjax = Request::ajax();
+
+      // Disasociate this from its parent exhibit
+      foreach ($owner->media as $key => $image) {
+        if ($image->id == $id) {
+          $owner->media[$key]->update([
+            'mediable_id' => 0,
+            'mediable_type' => null
+          ]);
+          $mediasave = $owner->media[$key]->save();
+        }
+      }
+      if ( $mediasave == true ) {
+        $outcome = $owner
+        ->update(
+          array(
+            'cover_image' => '',
+          ));
+      }
+      return json_encode($outcome);
     }
 
     public function getEdit($id) {
@@ -83,13 +114,12 @@
       );
       if (Input::hasFile('cover_image')) {
         $cover_image = Media::addMedia('cover_image', $newsItem, $user_id, 'back');
-      }
-
-      $newsItem
+        $newsItem
         ->update(
           array(
             'cover_image' => $cover_image,
           ));
+      }
       $newsItem->save();
       return Redirect::route('news')
         ->with('status', 'alert-success')
