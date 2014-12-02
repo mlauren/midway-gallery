@@ -22,15 +22,32 @@
         $(el).siblings('.image-preview-exists').children('.thumbnail').remove();
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
-          if (!!file.type.match(/image.*/)) {
-            if ( window.FileReader ) {
-              reader = new FileReader();
-              reader.onloadend = function (e) {
-                console.log(e);
-                showUploadedItem(e.target.result, el);
+          if (formdata) {
+
+            // Make sure to add the count into the file[i] array
+            formdata.append("file", this.files[i]);
+          }
+
+          // @todo take this out of the loop.
+          if ( formdata ) {
+            $.ajax({
+              url: "/media-add",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: true
+            }).done(function(response) {
+              removeLoadIcon("image-preview-exists");
+              if ( response.success == true ) {
+                suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
+                $('form :file').val('');
               }
-              reader.readAsDataURL(file);
-            }
+            }).always(function() {
+              updateMediaOrder('#image-preview-exists', '.img-min-preview');
+            });
           }
         }
       });
