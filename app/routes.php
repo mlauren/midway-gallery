@@ -485,6 +485,21 @@
         'uses' => 'PasswordController@postUpdatePwdWithToken'
       ));
 
+      /*
+      |
+      |
+      | Slideshow related POST actions
+      |
+      |
+      */
+      /*
+      | Slideshow Edit Form
+      */
+      Route::post('/slideshow-edit', array(
+        'as' => 'slideshow-edit-post',
+        'uses' => 'SlideshowController@postEditSlides'
+      ));
+
     });
 
     /*
