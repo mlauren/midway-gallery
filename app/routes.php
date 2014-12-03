@@ -110,6 +110,13 @@
     'as' => 'news',
     'uses' => 'NewsController@showAll'
   ));
+  /*
+  |
+  |
+  | Slideshow related GET Routes
+  |
+  |
+  */
 
   /*
   | Authenticated Group
@@ -302,16 +309,16 @@
     /*
     |
     |
-    | Slideshow related edit links
+    | Slideshow related POST AJAX
     |
     |
     */
     /*
-    | Slideshow Edit Form
+    | Slideshow Edit
     */
-    Route::get('/slideshow-edit', array(
-      'as' => 'slideshow-edit',
-      'uses' => 'SlideshowController@getEditSlides'
+    Route::post('/slideshow/{id}/edit', array(
+      'as' => 'slideshow-post-single',
+      'uses' => 'SlideshowController@postEditSlides'
     ));
 
     /*
@@ -431,6 +438,30 @@
       'uses' => 'ExhibitController@postRemoveSingle'
     ));
 
+    /*
+    |
+    |
+    | Slideshow Related GET Routes:
+    |
+    |
+    */
+    /*
+    | Slideshow Edit
+    */
+    Route::get('/slideshow-edit', array(
+      'as' => 'slideshow-edit',
+      'uses' => 'SlideshowController@getEditSlides'
+    ));
+
+    /*
+    | Individual page to be used by ajax in order to add a form
+    */
+    Route::get('/slide-add', array(
+      'as' => 'slide-add',
+      'uses' => 'SlideshowController@getAddSingle'
+    ));
+
+
   });
 
 
@@ -483,21 +514,6 @@
       Route::post('/account/password-reset/{token}', array(
         'as' => 'account-password-update',
         'uses' => 'PasswordController@postUpdatePwdWithToken'
-      ));
-
-      /*
-      |
-      |
-      | Slideshow related POST actions
-      |
-      |
-      */
-      /*
-      | Slideshow Edit Form
-      */
-      Route::post('/slideshow-edit', array(
-        'as' => 'slideshow-edit-post',
-        'uses' => 'SlideshowController@postEditSlides'
       ));
 
     });

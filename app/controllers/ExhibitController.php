@@ -227,6 +227,8 @@
             }
           }
         }
+        // --- Creates Sortable Media Group --- //
+        // -- for non-ajax request --- //
         $exhibit->media_ids = json_encode($mediaIDs);
         $exhibit->save();
         return Redirect::route('exhibits-show-single', $exhibit->permalink)
