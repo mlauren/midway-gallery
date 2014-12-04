@@ -32,15 +32,43 @@ class SlideshowController extends BaseController {
     // --- Create a new object --- //
     $record = Slides::create(
       array(
-        'published' => false,
-        'autodraft' => true
-      )
-    );
+        'slide_order' => Input::get("data-order"),
+        'slide_image' => 'null'
+    ));
+    $record->save();
+    // --- Return object ID response JSON --- //
     if ( $record != null )
       return Response::json(
         array(
           'success' => true,
           'id' => $record->id
+        )
+      );
+    return Response::json(
+      array(
+        'success' => false,
+        'id' => 'Something went wrong'
+      )
+    );
+  }
+
+  /*
+  | Small function to update slide order
+  */
+  public function postUpdateOrder($id) {
+    // --- Create a new object --- //
+    $record = Slides::find($id);
+
+    $record::update(
+      array(
+        'slide_order' => 'null'
+    ));
+    $record->save();
+    // --- Return object ID response JSON --- //
+    if ( $record != null )
+      return Response::json(
+        array(
+          'success' => true,
         )
       );
     return Response::json(

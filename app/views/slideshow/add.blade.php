@@ -26,5 +26,5 @@
       </div>
     </div>
   </div>
-  <hr />
+  <hr class="col-md-12" />
 </div>

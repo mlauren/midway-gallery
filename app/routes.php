@@ -313,10 +313,14 @@
     |
     |
     */
+    Route::post('/slide-add', array(
+      'as' => 'slideshow-add-single',
+      'uses' => 'SlideshowController@postAddAutoSave'
+    ));
     /*
     | Slideshow Edit
     */
-    Route::post('/slideshow/{id}/edit', array(
+    Route::post('/slide/{id}/edit', array(
       'as' => 'slideshow-post-single',
       'uses' => 'SlideshowController@postEditSlides'
     ));

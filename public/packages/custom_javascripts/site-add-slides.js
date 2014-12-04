@@ -4,13 +4,6 @@
 
   slidiable.init = function(el) {
 
-    // Hide the form elements that we dont want to see per form item
-
-    // Add the image to the record
-    el.on('click', el.closest('add-image'), function() {
-
-    });
-
   }
 
   slidiable.addImage = function() {
@@ -25,9 +18,23 @@
     
   }
 
-  slidiable.addSlideObject = function(slideGroup) {
+  slidiable.addSlideFormat = function() {
     // Ajax function to get and append form
     return $.get( "/slide-add" );
+  }
+
+  slidiable.addSlideObject = function(formdata) {
+    // Ajax function to get and append form
+    return $.ajax({
+              url: "/slide-add",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: false
+            });
   }
 
 
@@ -36,7 +43,7 @@
 
 (function($) {
 
-  // ---- Hide The things we don't want ---- //
+  // ---- Hide The things we don't want to see ---- //
 
 
 
@@ -55,24 +62,39 @@
     if ( slides.length < 6 ) {
       // use the slidiable function responsible
       // for returning ajax response
-      slidiable.addSlideObject(slideGroup).done(function(data) {
-        slideGroup.append(data);
-        // update the value of slides
-        slides = slideGroup.children('.slide-container');
+      slidiable.addSlideFormat().done(function(data, textStatus, jqXHR) {
+        var data, result, index, formdata = false ,responseID;
 
-        // add data number order to slides to update value
-        slides.each(function(key, value) {
-          $(this).attr("data-order", key);
+        if ( window.FormData ) {
+          formdata = new FormData();
+        }
+
+        data = $(data);
+        // Append new ajax object to its parent and get its index value
+        result = data.appendTo(slideGroup);
+        index = result.index();
+        // Assign index value to data attrribute
+        $(result).attr("data-order", index);
+
+        formdata.append("data-order", index);
+
+        // ----- Ajax function to add new record ---//
+        // pass data order in and return object ID //
+        slidiable.addSlideObject(formdata).done(function(response) {
+          if ( response.success == true ) {
+            var responseID = response.id;
+            console.log(responseID);
+            // Add ID of object to data-id attr
+            $(result).attr("data-id", index);
+
+            //////
+            // @todo add response id to input as well so we can:
+            // update the draggable sort order in the form
+            // update the images using ajax
+            // process the rest of the form in PHP if we want to 
+            // ~~~~buuuut maybe just keep the whole thing in javascript
+          }
         });
-
-
-
-        // ---- Ajax function to add a new record 
-        // ---- add a data-id for ID in record----- //
-        /// here
-
-
-
       });
     }
     else {
@@ -100,35 +122,18 @@
         cursor: "move",
         opacity: 0.7,
         update: function(event, ui) {
-          console.log(event);
-          console.log(ui);
-
-          var sorted = $( ".slide-group" ).sortable( "serialize", { key: "sort" } );
-          // console.log(sorted);
           // ---- Ajax function update each child in slide group based on order ----- //
-          $( this ).children().each(function () {
+          $( this ).children().each(function (key, value) {
+            // Update data attr
+            $(this).attr("data-order", key);
 
             // get each media id and send it thru a nifty ajax call
-            console.log('hello');
 
           });
 
         }
       }
     );
-  });
-
-
-
-  // ---- click events per each slide container ----
-  $('.slide-container').each( function(key, value) {
-    var el = $(this);
-    //slidiable.init(el);
-  });
-
-  // ---- Handle the function that controls the drag order ----
-  $('body').on('click', 'drag-order', function () {
-
   });
 
   // --- helper function to append add feedback function to top of page
@@ -148,86 +153,4 @@
      window.setTimeout(function() { alert.alert('close') }, delay);
   }
 
-
-
-
 }(jQuery));
-
-
-
-
-
-(function($) {
-
-  var input = $("file"),
-      formdata = false;
-  if ( window.FormData ) {
-    formdata = new FormData();
-  }
-
-  $('.slide_item').each(function() {
-    var el = this,
-        id = $(el).data('id');
-
-// ------------- IMAGE
-    // When the form image upload button changes get the form data
-    if (input.addEventListener) {
-      // Add event listener
-      input.addEventListener("change", function(evt) {
-        var len = this.files.length,
-            img,
-            reader,
-            file;
-        addLoadIcon("image-preview-exists");
-
-        if ($('[name="id"]').val() != '') {
-          formdata.append("id", $('[name="id"]').val());
-        }
-
-        for ( var i = 0; i < len; i++ ) {
-          file = this.files[i];
-          if (formdata) {
-
-            // Make sure to add the count into the file[i] array
-            formdata.append("file", this.files[i]);
-          }
-
-          // @todo take this out of the loop.
-          if ( formdata ) {
-            $.ajax({
-              url: "/media-add",
-              type: "POST",
-              data: formdata,
-              cache: false,
-              processData: false,
-              dataType: 'json',
-              contentType: false,
-              async: true
-            }).done(function(response) {
-              removeLoadIcon("image-preview-exists");
-              if ( response.success == true ) {
-                // suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
-                $('form :file').val('');
-              }
-            }).always(function() {
-              updateMediaOrder('#image-preview-exists', '.img-min-preview');
-            });
-          }
-        }
-      }, false);
-    }
-// ------------- SLIDE TITLE
-    $(el).child('#slide_title').change(function() {
-      $.ajax()
-    });
-// ------------- SLIDE TEXT
-
-
-  }); 
-
-  // Create a function that will allow you to add a new autodraft item 
-
-}(jQuery));
-slidiable.addImage();
-slidiable.addTitle();
-slidiable.addSlideText();
