@@ -9,7 +9,8 @@ class SlideshowController extends BaseController {
   | configure and add new slides
   */
   public function getEditSlides() {
-    $slides = Slides::all();
+    // $slides = Slides::all();
+    $slides = Slides::orderBy('slide_order', 'ASC')->get();
     return View::make('slideshow.configure')
       ->with('page_title', 'Slides')
       ->with('slides', $slides);
@@ -21,6 +22,67 @@ class SlideshowController extends BaseController {
   */
   public function getAddSingle() {
     return View::make('slideshow.add');
+  }
+
+  
+  /*
+  | Function to add an image id to the
+  | slide object
+  */
+  public function postAddMedia() {
+    // functionality to add images to record
+    if (Input::hasFile('file') && Input::has('data-id'))
+    {
+      $id = Input::get('data-id');
+      $record = Slides::find($id);
+
+      // Removes the Media
+      $removePrevMedia = Media::removePrevMedia($record);
+
+      if ( $record != null ) {
+        $file = Input::file('file');
+        // -- static method that validates file -- //
+        $validator = Media::validateMedia($file);
+        if ($validator->fails()) {
+          return Response::json(array(
+            'success' => false,
+            'error_msg' => $file->isValid()
+          ));
+        }
+
+        // -- Move And Save File -- //
+        $user_id = Auth::user()->id;
+        $files_location = Media::moveAndSaveMediaFiles($file);
+
+        if ($files_location != false) {
+          $imageMinDest = $files_location['imageMinDest'];
+          $imgOrigDest = $files_location['imgOrigDest'];
+          // -- Save the media object -- //
+          $mediaSave = Media::saveMediaToObjParent(
+            $record, $user_id, $imageMinDest, $imgOrigDest);
+          // -- Save the media id to the record object local key -- //
+          if ( $mediaSave != false ) {
+            $updateRecord = $record->update(array('slide_image' => $mediaSave->id));
+            if ( $updateRecord != null ) {
+              // ------ return some json ----- //
+              return Response::json(array(
+                'success' => true,
+                'img_min_obj' => $mediaSave->img_min
+              ));
+            }
+          }
+        }
+        // -- Return some specific errors -- //
+        return Response::json(array(
+          'success' => false,
+          'error_msg' => 'Something went wrong with moving or saving your image.'
+        ));
+      }
+      return Response::json(array(
+        'success' => false,
+        'error_msg' => $id
+      ));
+    }
   }
 
   /*

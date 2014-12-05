@@ -13,7 +13,7 @@
     <div class="slide-group col-md-12">
       @if($slides)
         @foreach($slides as $slide)
-          @include('slideshow.add')
+          @include('slideshow.add', array('slide' => $slide))
         @endforeach
       @endif
     </div>

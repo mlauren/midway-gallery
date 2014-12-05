@@ -313,15 +313,34 @@
     |
     |
     */
+    /*
+    | Slideshow Add
+    */
     Route::post('/slide-add', array(
       'as' => 'slideshow-add-single',
       'uses' => 'SlideshowController@postAddAutoSave'
     ));
     /*
+    | Slideshow Reorder
+    */
+    Route::post('/slide-reorder', array(
+      'as' => 'slideshow-reorder',
+      'uses' => 'SlideshowController@postUpdateOrder'
+    ));
+
+    /*
+    | Specific function that deals with adding media
+    */
+    Route::post('/slide-edit-media', array(
+      'as' => 'slideshow-edit-images',
+      'uses' => 'SlideshowController@postAddMedia'
+    ));
+
+    /*
     | Slideshow Edit
     */
-    Route::post('/slide/{id}/edit', array(
-      'as' => 'slideshow-post-single',
+    Route::post('/slide-edit', array(
+      'as' => 'slideshow-edit-single',
       'uses' => 'SlideshowController@postEditSlides'
     ));
 

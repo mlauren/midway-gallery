@@ -15,7 +15,7 @@
 
 	    {{ HTML::style('/bower_resources/slick-carousel/slick/slick.css') }}
 
-	    {{ HTML::style('http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400') }}
+	    {{ HTML::style('http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,500,500italic,700,700italic') }}
 
 <script>
 	$(document).ready(function(){
