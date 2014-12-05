@@ -9,18 +9,84 @@ class Media extends Eloquent {
 		'published'=>'required'
 	);
 	*/
+
 	
 	protected $fillable = array(
-		'user_id', 'img_min', 'img_big', 'mediable_id', 'mediable_type'
+		'user_id', 'img_min', 'img_big', 'mediable_id', 'mediable_type', 'slide_id'
 	);
 
 	/**
-	 * Define my relationship to media 
+	 * Define my relationship to other objects 
 	 */
 	public function mediable()
-    {
-        return $this->morphTo();
+  {
+      return $this->morphTo();
+  }
+
+  /**
+   * Define my relationship to slides 
+   */
+  public function slide()
+  {
+      return $this->belongsTo('Slides');
+  }
+
+  public static function removePrevMedia($obj) {
+    $media = $obj->media()->get();
+    foreach ( $media as $media ) {
+      $media->delete();
     }
+
+  }
+
+  /**
+   * Define my relationship to media 
+   */
+  public static function validateMedia($file) {
+    if ($file->isValid()) {
+      $validator = Validator::make(
+        array('file' => $file),
+        array('file' => 'mimes:png,gif,jpeg|max:50000')
+      );
+      return $validator;
+    }
+  }
+
+  public static function moveAndSaveMediaFiles($file) {
+    // Process the image and return the location for
+    // its small cropped image
+    $currentMo = date('Y_M');
+    $destination = "uploads/$currentMo";
+    $filename = $file->getClientOriginalName();
+    $filename = Exhibit::string_convert($filename);
+
+    $uploadSuccess = $file->move($destination, "$filename");
+    if ($uploadSuccess) {
+      $imgOrigDest = $destination . '/' . $filename;
+      $imageMinDest = $destination . '/min_' . $filename;
+      $imageMin = Image::make($imgOrigDest)->crop(250, 250, 10, 10)->save($imageMinDest);
+
+      // -- return an array that returns the info neccessary to create a media object
+      return array(
+        'imageMinDest' => $imageMinDest,
+        'imgOrigDest' => $imgOrigDest
+      );
+    }
+    return false;
+  }
+
+  public static function saveMediaToObjParent($morphParentObj, $user_id, $imageMinDest, $imgOrigDest) {
+    // Saves the media and adds the appropriate foreign keys for the exhibit
+    $media = $morphParentObj->media()->create([
+      'user_id' => $user_id,
+      'img_min' => $imageMinDest,
+      'img_big' => $imgOrigDest
+    ]);
+    if ( $media )
+      $morphParentObj->media()->save($media);
+      return $media;
+    return false;
+  }
 
   public static function addMedia($fileName, $objType, $user_id, $route) {
 		$file = Input::file($fileName);

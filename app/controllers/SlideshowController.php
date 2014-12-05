@@ -117,13 +117,15 @@ class SlideshowController extends BaseController {
   /*
   | Small function to update slide order
   */
-  public function postUpdateOrder($id) {
+  public function postUpdateOrder() {
+    $id = Input::get("data-id");
+    $order = Input::get("data-order");
     // --- Create a new object --- //
     $record = Slides::find($id);
 
-    $record::update(
+    $record->update(
       array(
-        'slide_order' => 'null'
+        'slide_order' => $order
     ));
     $record->save();
     // --- Return object ID response JSON --- //
@@ -145,13 +147,13 @@ class SlideshowController extends BaseController {
   | Function that saves the automatically created
   | function here
   */
-  public function postEditSlides($id) {
+  public function testEditSlides($id) {
     // If the id is not being sent to the route,
     // return an error
     if ( empty($id) )
       return Response::json(array(
         'success' => false,
-        'error' => 'Something went wrong.'
+        'error_msg' => 'Something went wrong.'
       ));
 
     // --- Validate all the Input Values --- //
@@ -172,14 +174,14 @@ class SlideshowController extends BaseController {
     if ( $slidesNum > 6 )
       return Response::json(array(
         'success' => false,
-        'error' => 'Only 6 slides are allowed'
+        'error_msg' => 'Only 6 slides are allowed'
       ));
     // --- Find Object by ID --- //
     $record = Slides::find($id);
     if ( $record == null || empty($record) )
       return Response::json(array(
         'success' => false,
-        'error' => 'Something went wrong.'
+        'error_msg' => 'Something went wrong.'
       ));
     // --- Update Object --- //
     $updateRecord = $record->update(
@@ -190,15 +192,6 @@ class SlideshowController extends BaseController {
         'success' => true,
         'slide_object' => $updateRecord
       ));
-  }
-
-  /*
-  | Function that saves the updated
-  | order of each slide
-  */
-  public function postEditSlidesOrder($id) {
-    // Take each of the input values based on
-    // Inputs -- data-id and data-order
   }
 
 }

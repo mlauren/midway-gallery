@@ -7,4 +7,9 @@
       'slide_image', 'slide_title', 'slide_text', 'slide_order'
     );
 
+    public function media()
+    {
+        return $this->hasOne('Media', 'slide_id');
+    }
+
   }
