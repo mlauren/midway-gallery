@@ -28,15 +28,21 @@ class Media extends Eloquent {
    */
   public function slide()
   {
-      return $this->belongsTo('Slides');
+    return $this->belongsTo('Slides');
   }
 
+  /**
+   * Remove relationship to media 
+   */
   public static function removePrevMedia($obj) {
     $media = $obj->media()->get();
-    foreach ( $media as $media ) {
-      $media->delete();
+    if (!empty($media)) {
+      foreach ( $media as $media ) {
+        $media = $media->delete();
+      }
+      return true;
     }
-
+    return false;
   }
 
   /**

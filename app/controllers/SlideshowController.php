@@ -24,7 +24,25 @@ class SlideshowController extends BaseController {
     return View::make('slideshow.add');
   }
 
-  
+  /*
+  | Function to remove a slide object
+  */
+  public function postRemove() {
+    $record = Slides::find(Input::get('data-id'));
+    if ($record->media) {
+      $removeMedia = Media::removePrevMedia($record);
+      if ( $removeMedia == false ) {
+        return Response::json(array(
+          'success' => false
+        ));
+      }
+    }
+    $deletion = $record->delete();
+    return Response::json(array(
+      'success' => $deletion
+    ));
+  }
+
   /*
   | Function to add an image id to the
   | slide object
