@@ -313,12 +313,24 @@
     |
     |
     */
+    Route::post('/slide-add-text', array(
+      'as' => 'slideshow-add-text',
+      'uses' => 'SlideshowController@postAddText'
+    ));
     /*
     | Slideshow Add
     */
     Route::post('/slide-add', array(
       'as' => 'slideshow-add-single',
       'uses' => 'SlideshowController@postAddAutoSave'
+    ));
+
+    /*
+    | Slideshow Reorder
+    */
+    Route::post('/slide-remove', array(
+      'as' => 'slide-remove',
+      'uses' => 'SlideshowController@postRemove'
     ));
     /*
     | Slideshow Reorder
@@ -334,6 +346,11 @@
     Route::post('/slide-edit-media', array(
       'as' => 'slideshow-edit-images',
       'uses' => 'SlideshowController@postAddMedia'
+    ));
+
+    Route::post('/slide-remove-media', array(
+      'as' => 'slideshow-remove-media',
+      'uses' => 'SlideshowController@postRemoveMedia'
     ));
 
     /*

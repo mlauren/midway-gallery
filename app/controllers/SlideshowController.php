@@ -104,6 +104,51 @@ class SlideshowController extends BaseController {
   }
 
   /*
+  | Function to delete and remove Media from Slide.
+  */
+  public function postRemoveMedia() {
+    $id = Input::get('data-id');
+    $record = Slides::find($id);
+    // Remove Media Helper Function
+    $removeMedia = Media::removePrevMedia($record);
+    if ( $removeMedia != false ) {
+      return Response::json(array(
+        'success' => true
+      ));
+    }
+    return Response::json(array(
+      'success' => false
+    ));
+  }
+
+  /*
+  | Function to add text data to the
+  | slide object
+  */
+  public function postAddText() {
+    $type = Input::get('txtType');
+    $value = Input::get('txtValue');
+    $id = Input::get('data-id');
+    $record = Slides::find($id);
+
+    if ( $type == 'title' && !empty($value) ) {
+      $record->slide_title = $value;
+      $record->save();
+      return Response::json(array(
+        'success' => true
+      ));
+    }
+
+    if ( $type == 'details' && !empty($value) ) {
+      $record->slide_text = $value;
+      $record->save();
+      return Response::json(array(
+        'success' => true
+      ));
+    }
+  }
+
+  /*
   | Small function to handle the individual 
   | add response and return an id of the new 
   | object we've created
