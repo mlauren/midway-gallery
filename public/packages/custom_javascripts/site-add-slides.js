@@ -2,14 +2,44 @@
 // Adds ajax functions
 (function( slidiable, $, undefined ) {
 
-  slidiable.addImage = function() {
-    // update function to preview and save the images
-
-
+  slidiable.addImage = function(formdata) {
+    return $.ajax({
+              url: "/slide-edit-media",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: true
+            });
   }
 
-  slidiable.addSlideText = function() {
+  slidiable.removeImage = function(formdata) {
+    return $.ajax({
+              url: "/slide-remove-media",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: true
+            });
+  }
+
+  slidiable.addSlideText = function(formdata) {
     // Ajax function to update any of the input fields
+    return $.ajax({
+              url: "/slide-add-text",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: true
+        });
   }
 
   slidiable.reorderSlides = function(formdata) {
@@ -22,7 +52,7 @@
               processData: false,
               dataType: 'json',
               contentType: false,
-              async: false
+              async: true
             });
   }
 
@@ -41,7 +71,21 @@
               processData: false,
               dataType: 'json',
               contentType: false,
-              async: false
+              async: true
+            });
+  }
+
+  slidiable.removeSlide = function(formdata) {
+    // Ajax function to update data order for slides
+    return $.ajax({
+              url: "/slide-remove",
+              type: "POST",
+              data: formdata,
+              cache: false,
+              processData: false,
+              dataType: 'json',
+              contentType: false,
+              async: true
             });
   }
 
@@ -50,13 +94,8 @@
 
 (function($) {
   ///  ~~~~~ @todo wrap all this functionality in a class and call it in one big init function
-  // ---- Hide The things we don't want to see when document is loaded ---- //
 
-  // ---- Call the class that does everything ---- //
-
-  $(document.body).on('load', function() {})
-
-  // ---- Add the slide form into the page ----- //
+  // ---- Add the slide forms into the page ----- //
   // ------------------------------------------ //
   $(document.body).on('click', '.add-slide-object', function(e) {
     var slideGroup, slides, el;
@@ -67,8 +106,7 @@
     slides = slideGroup.children('.slide-container');
 
     if ( slides.length < 6 ) {
-      // use the slidiable function responsible
-      // for returning ajax response
+      // ---- Uses slidiable Ajax Method  ---- //
       slidiable.addSlideFormat().done(function(data, textStatus, jqXHR) {
         var data, result, index, formdata = false ,responseID;
         // Define the formdata to pass into the ajax
@@ -77,13 +115,14 @@
         }
         data = $(data);
         // Append new ajax object to its parent and get its index value
-        result = data.appendTo(slideGroup);
+        result = data.prependTo(slideGroup);
         index = result.index();
         // Assign index value to data attrribute and send it to formdata
         $(result).attr("data-order", index);
         formdata.append("data-order", index);
         // ----- Ajax function to add new record ---//
         // pass data order in and return object ID //
+        // ---- Uses slidiable Ajax Method  ---- //
         slidiable.addSlideObject(formdata).done(function(response) {
           if ( response.success == true ) {
             var responseID = response.id;
