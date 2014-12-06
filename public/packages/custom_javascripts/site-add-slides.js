@@ -130,7 +130,15 @@
             // Add ID of object to data-id attr
             $(result).attr("data-id", responseID);
             $(result).find("input:hidden").val(responseID);
+
+            /// Make sure the sort order is being refreshed and completed now
+            refreshReorderSlides( '.slide-group' );
           }
+        }).fail(function() {
+          var type = 'danger', feedbackMsg = 'Something went wrong!';
+          feedBackResponse = addFeedbackMsg(type, feedbackMsg);
+          $('.feedback-container').append(feedBackResponse);
+          autoCloseAlert('.alert', 2000);
         });
       });
     }
@@ -159,74 +167,55 @@
         cursor: "move",
         opacity: 0.7,
         update: function(event, ui) {
-          // ---- Ajax function update each child in slide group based on order ----- //
-          $( this ).children().each(function (key, value) {
-            var formdata;
-            if ( window.FormData ) {
-              formdata = new FormData();
-            }
-            // Update data attr
-            $(this).attr("data-order", key);
-            // Pass the relevant values into ajaxable object
-            formdata.append("data-id", $(this).attr("data-id"));
-            formdata.append("data-order", key);
-            // get each media id and send it thru a nifty ajax call
-            slidiable.reorderSlides(formdata).fail(function(response) {
-              if (response.success == false) {
-                var type = 'danger', feedbackMsg = response.error_msg;
-                feedBackResponse = addFeedbackMsg(type, feedbackMsg);
-                $('.feedback-container').append(feedBackResponse);
-                autoCloseAlert('.alert', 2000);
-              }
-            });
-          });
+          refreshReorderSlides( this );
         }
       }
     );
   });
+  
+  $('.slide-group').on('change', 'input#file', function(e) {
+    var el, dataID, formdata, parent, fileInput = this, file, form_submitting = false, loadingIcon, imgFormat, txtValue, txtType;
 
-  // ---- Adding and Dealing with the images in each form ----- //
-  // ------------------------------------------ //
-  $('.slide-container').each(function(e) {
-    var fileUpload, formdata, el;
-    var form_submitting = false;
     el = $(this);
+    dataID = el.attr('data-id');
     formdata = false;
+    parent = el.closest('.slide-container');
+    dataID = el.closest('.slide-container').attr('data-id');
 
     if ( window.FormData ) {
       formdata = new FormData();
     }
-    fileUpload = $(this).find('input#file');
+    file = fileInput.files[0];
 
-    // ---- Deal with the file upload ---- //
+    parent.find('#img-preview').remove();
 
-    fileUpload.on('change', function(e) {
-      var fileInput = this
-          file = fileInput.files[0],
-          dataID = $(el).attr('data-id');
+    addLoadIcon("#img-preview-container", parent);
+    loadingIcon = $(parent).find('.fa-spinner');
 
-      el.find('#img-preview').remove();
-
-      if (formdata) {
-        formdata.append("data-id", dataID);
-        formdata.append("file", file);
-        if(form_submitting == false){
-          form_submitting = true;
-          $.ajax({
-            url: "/slide-edit-media",
-            type: "POST",
-            data: formdata,
-            cache: false,
-            processData: false,
-            dataType: 'json',
-            contentType: false,
-            async: true
-          }).done(function(response) { // success callback
+    if (formdata) {
+      formdata.append("data-id", dataID);
+      formdata.append("file", file);
+      if(form_submitting == false){
+        form_submitting = true;
+        // ---- Uses Slidiable Ajax Method  ---- //
+        slidiable.addImage(formdata)
+          .done(function(response) { // success callback
             form_submitting = false;
             if (response.success == true) {
-              el.find('.col-md-4').append('<img id="img-preview" src="/' + response.img_min_obj + '" />')
+              imgFormat = document.createElement('img');
+              imgFormat.className = 'img-responsive';
+              imgFormat.id = 'img-preview';
+              imgFormat.src = '/' + response.img_min_obj;
+
+              // --- Remove Loading Icon --- //
+              loadingIcon.remove();
+              // -- Append all of the gross HTML -- //
+              parent.find('#img-preview-container').append(imgFormat)
+                .append('<h4 class="img-preview-remove"><a href="" >X</a></h4>')
+                .append('<h4 class="img-preview-overlay">Preview</h4>');
             }
           }).fail(function(response) {
+            // Renders Feedback for Errors
             if (response.success == false) {
               var type = 'danger', feedbackMsg = response.error_msg;
               feedBackResponse = addFeedbackMsg(type, feedbackMsg);
@@ -234,16 +223,115 @@
               autoCloseAlert('.alert', 2000);
             }
           });
-        }
       }
+    }
+  });
+  
+  $('.slide-group').on('click', '.img-preview-remove a', function(e) {
+    var el, dataID, formdata, parent;
+    e.preventDefault();
+    el = $(this);
+    formdata = false;
+    parent = el.closest('.slide-container');
+    dataID = el.closest('.slide-container').attr('data-id');
+    if ( window.FormData ) {
+      formdata = new FormData();
+      formdata.append('data-id', dataID);
+    }
+    // --- Updating Slide Record Remove --- //
+    slidiable.removeImage(formdata).done(function() {
+      // --- Remove the old image --- //
+      parent.find("#img-preview-container").children().remove();
     });
   });
 
-  // ---- Remove individual slide records ----- //
-  // ------------------------------------------ //
-  $(document.body).on('click', '.remove-slide', function(e) {
-    e.preventDefault;
+  $('.slide-group').on('click', '.remove-slide', function(e) {
+    var el, dataID, formdata, parent;
+
+    e.preventDefault();
+    el = $(this);
+    formdata = false;
+    parent = el.closest('.slide-container');
+    dataID = el.closest('.slide-container').attr('data-id');
+    if ( window.FormData ) {
+      formdata = new FormData();
+      formdata.append('data-id', dataID);
+    }
+
+    $.ajax({
+      url: "/slide-remove",
+      type: "POST",
+      data: formdata,
+      cache: false,
+      processData: false,
+      dataType: 'json',
+      contentType: false,
+      async: true
+    }).done(function() {
+      parent.remove();
+      $('.add-slide-object').show();
+    });
+
   });
+
+  // ----- Update Text Fields ----- //
+  // ------------------------------ //
+  $('.slide-group').on('focusout', '.slide-container .form-group.info-add input', function(e) {
+    console.log('hello');
+    var el, dataID, formdata, parent, txtType, txtValue;
+
+    e.preventDefault();
+    el = $(this);
+    formdata = false;
+    parent = el.closest('.slide-container');
+    dataID = el.closest('.slide-container').attr('data-id');
+    if ( window.FormData ) {
+      formdata = new FormData();
+      formdata.append('data-id', dataID);
+    }
+    txtType = $(this).attr('name');
+    txtValue = $(this).val();
+    formdata.append('txtType', txtType);
+    formdata.append('txtValue', txtValue);
+    // ----- Add Slide Text AJAX ----- //
+    slidiable.addSlideText(formdata);
+
+  });
+
+  // ----- Function to save the order of slides ----- //
+  // ------------------------------ //
+  function refreshReorderSlides( parent ) {
+    // ---- Ajax function update each child in slide group based on order ----- //
+    $( parent ).children().each(function (key, value) {
+      var formdata;
+      if ( window.FormData ) {
+        formdata = new FormData();
+      }
+      // Update data attr
+      $(this).attr("data-order", key);
+      // Pass the relevant values into ajaxable object
+      formdata.append("data-id", $(this).attr("data-id"));
+      formdata.append("data-order", key);
+      // get each media id and send it thru a nifty ajax call
+      // ---- Uses slidiable Ajax Method  ---- //
+      slidiable.reorderSlides(formdata).fail(function(response) {
+        if (response.success == false) {
+          var type = 'danger', feedbackMsg = response.error_msg;
+          feedBackResponse = addFeedbackMsg(type, feedbackMsg);
+          $('.feedback-container').append(feedBackResponse);
+          autoCloseAlert('.alert', 2000);
+        }
+      });
+    });
+  }
+
+
+  function addLoadIcon(element, el) {
+    var element = $(el).find(element);
+    element.append($('<i></i>')
+        .addClass("fa fa-spinner fa-spin fa-3x"));
+        icon = document.createElement("i");
+  }
 
   // --- helper function to append add feedback function to top of page
   function addFeedbackMsg(type, feedbackMsg) {
