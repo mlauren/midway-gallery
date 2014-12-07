@@ -138,10 +138,10 @@
      */
     public function postAdd()
     {
-      // Validate form fields
+      // --- Find Object by ID --- //
       $exhibit = Exhibit::find(Input::get('id'));
 
-
+      // --- Validate Input Values --- //
       $validator = Validator::make(
         array(
           'title' => Input::get('title'),
@@ -159,7 +159,9 @@
             ->withInput();
         }
       }
-      // Validate images
+
+      // --- Validate Images if being sent --- //
+      // -- per non-ajax request --- //
       if (Input::hasFile('file')) {
         $files = Input::file('file');
         foreach ($files as $file) {
@@ -174,6 +176,7 @@
           }
         }
       }
+      // --- Update Object --- //
       $user_id = Auth::user()->id;
       $cleanTitle = Exhibit::permalink(Input::get('title'));
 
@@ -191,6 +194,8 @@
       );
       $mediaIDs = array();
 
+      // --- Creates Media for the Object --- //
+      // -- for non-ajax request --- //
       if ($exhibit) {
         $exhibit->save();
         if (Input::hasFile('file')) {
@@ -222,6 +227,8 @@
             }
           }
         }
+        // --- Creates Sortable Media Group --- //
+        // -- for non-ajax request --- //
         $exhibit->media_ids = json_encode($mediaIDs);
         $exhibit->save();
         return Redirect::route('exhibits-show-single', $exhibit->permalink)

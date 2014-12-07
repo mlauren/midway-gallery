@@ -110,6 +110,13 @@
     'as' => 'news',
     'uses' => 'NewsController@showAll'
   ));
+  /*
+  |
+  |
+  | Slideshow related GET Routes
+  |
+  |
+  */
 
   /*
   | Authenticated Group
@@ -302,16 +309,56 @@
     /*
     |
     |
-    | Slideshow related edit links
+    | Slideshow related POST AJAX
     |
     |
     */
+    Route::post('/slide-add-text', array(
+      'as' => 'slideshow-add-text',
+      'uses' => 'SlideshowController@postAddText'
+    ));
     /*
-    | Slideshow Edit Form
+    | Slideshow Add
     */
-    Route::get('/slideshow-edit', array(
-      'as' => 'slideshow-edit',
-      'uses' => 'SlideshowController@getEditSlides'
+    Route::post('/slide-add', array(
+      'as' => 'slideshow-add-single',
+      'uses' => 'SlideshowController@postAddAutoSave'
+    ));
+
+    /*
+    | Slideshow Reorder
+    */
+    Route::post('/slide-remove', array(
+      'as' => 'slide-remove',
+      'uses' => 'SlideshowController@postRemove'
+    ));
+    /*
+    | Slideshow Reorder
+    */
+    Route::post('/slide-reorder', array(
+      'as' => 'slideshow-reorder',
+      'uses' => 'SlideshowController@postUpdateOrder'
+    ));
+
+    /*
+    | Specific function that deals with adding media
+    */
+    Route::post('/slide-edit-media', array(
+      'as' => 'slideshow-edit-images',
+      'uses' => 'SlideshowController@postAddMedia'
+    ));
+
+    Route::post('/slide-remove-media', array(
+      'as' => 'slideshow-remove-media',
+      'uses' => 'SlideshowController@postRemoveMedia'
+    ));
+
+    /*
+    | Slideshow Edit
+    */
+    Route::post('/slide-edit', array(
+      'as' => 'slideshow-edit-single',
+      'uses' => 'SlideshowController@postEditSlides'
     ));
 
     /*
@@ -430,6 +477,30 @@
       'as' => 'exhibits-remove-single',
       'uses' => 'ExhibitController@postRemoveSingle'
     ));
+
+    /*
+    |
+    |
+    | Slideshow Related GET Routes:
+    |
+    |
+    */
+    /*
+    | Slideshow Edit
+    */
+    Route::get('/slideshow-edit', array(
+      'as' => 'slideshow-edit',
+      'uses' => 'SlideshowController@getEditSlides'
+    ));
+
+    /*
+    | Individual page to be used by ajax in order to add a form
+    */
+    Route::get('/slide-add', array(
+      'as' => 'slide-add',
+      'uses' => 'SlideshowController@getAddSingle'
+    ));
+
 
   });
 

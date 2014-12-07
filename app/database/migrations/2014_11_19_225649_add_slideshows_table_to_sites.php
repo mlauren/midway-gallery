@@ -18,7 +18,7 @@ class AddSlideshowsTableToSites extends Migration {
 			$table->integer('slide_image');
 			$table->string('slide_title', 30);
 			$table->string('slide_text', 300);
-			$table->integer('slide_order')->unique();
+			$table->integer('slide_order');
 			$table->timestamps();
 		});
 	}

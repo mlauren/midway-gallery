@@ -48,6 +48,7 @@
             array('file' => $file),
             array('file' => 'mimes:png,gif,jpeg|max:20000')
           );
+          // @todo why return a true value when we already know the file is valid
           if ($validator->fails()) {
             return Response::json(array(
               'success' => false,
