@@ -113,7 +113,7 @@
         if ( window.FormData ) {
           formdata = new FormData();
         }
-        data = $(data);
+        data = $(data).fadeIn(900);
         // Append new ajax object to its parent and get its index value
         result = data.prependTo(slideGroup);
         index = result.index();
@@ -137,7 +137,7 @@
         }).fail(function() {
           var type = 'danger', feedbackMsg = 'Something went wrong!';
           feedBackResponse = addFeedbackMsg(type, feedbackMsg);
-          $('.feedback-container').append(feedBackResponse);
+          feedBackResponse.appendTo('.feedback-container');
           autoCloseAlert('.alert', 2000);
         });
       });
@@ -219,6 +219,7 @@
             if (response.success == false) {
               var type = 'danger', feedbackMsg = response.error_msg;
               feedBackResponse = addFeedbackMsg(type, feedbackMsg);
+              feedBackResponse = $(feedBackResponse).hide().fadeIn(2000);
               $('.feedback-container').append(feedBackResponse);
               autoCloseAlert('.alert', 2000);
             }
@@ -247,28 +248,23 @@
 
   $('.slide-group').on('click', '.remove-slide', function(e) {
     var el, dataID, formdata, parent;
-
+    console.log(e);
     e.preventDefault();
-    el = $(this);
+    el = this;
     formdata = false;
-    parent = el.closest('.slide-container');
-    dataID = el.closest('.slide-container').attr('data-id');
+    parent = $(el).closest('.slide-container');
+    grandParent = parent.closest('.slide-group');
+    dataID = parent.attr('data-id');
     if ( window.FormData ) {
       formdata = new FormData();
       formdata.append('data-id', dataID);
     }
-
-    $.ajax({
-      url: "/slide-remove",
-      type: "POST",
-      data: formdata,
-      cache: false,
-      processData: false,
-      dataType: 'json',
-      contentType: false,
-      async: true
-    }).done(function() {
-      parent.remove();
+    // ----- Remove Slide Record AJAX ----- //
+    slidiable.removeSlide(formdata).done(function() {
+      parent.fadeOut(500, function() {
+        $(this).remove();
+        refreshReorderSlides( grandParent );
+      })
       $('.add-slide-object').show();
     });
 
@@ -325,7 +321,7 @@
     });
   }
 
-
+  // --- helper function to add loading signal for images
   function addLoadIcon(element, el) {
     var element = $(el).find(element);
     element.append($('<i></i>')
