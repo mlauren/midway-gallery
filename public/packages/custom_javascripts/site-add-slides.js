@@ -1,4 +1,3 @@
-// 
 // Adds ajax functions
 (function( slidiable, $, undefined ) {
 
