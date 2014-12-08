@@ -4,9 +4,11 @@
 
 <div class="home-slides col-md-12">
   @foreach( $slides as $slide )
-    <div class="slick-slide">
-      <img src="{{ $slide->media->img_big }}" />
-    </div>
+    @if($slide->media)
+      <div class="slick-slide">
+        <img src="{{ $slide->media->img_big }}" />
+      </div>
+    @endif
   @endforeach
 </div>
 

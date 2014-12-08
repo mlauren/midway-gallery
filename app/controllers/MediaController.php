@@ -31,74 +31,78 @@
       }
     }
 
-    // Add media to edit form
-    public function postAddMedia()
-    {
-      $isAjax = Request::ajax();
-      $parentId = Input::get('id');
-      $exhibit = Exhibit::find((int)$parentId);
-      $exhibit->save();
 
-      if (Input::hasFile('file')) {
+    /*
+    | Function to add an image to a specific exhibit object
+    */
+    public function postAddExhibitMedia() {
+      // functionality to add images to record
+      if (Input::hasFile('file') && Input::has('data-id') && Input::has('data-type'))
+      {
+        $type = Input::get('data-type');
+        $id = Input::get('data-id');
+        // Retrieve the object type
+        $type = new $type;
+        $record = $type::find($id);
 
-        $file = Input::file('file');
+        // --- Make sure that the class passed into the formdata exists --- //
+        if ( null != $record ) {
 
-        if ($file->isValid()) {
-          $validator = Validator::make(
-            array('file' => $file),
-            array('file' => 'mimes:png,gif,jpeg|max:20000')
-          );
-          // @todo why return a true value when we already know the file is valid
-          if ($validator->fails()) {
+          if ( $record != null ) {
+            $file = Input::file('file');
+            // -- static method that validates file -- //
+            $validator = Media::validateMedia($file);
+            if ($validator->fails()) {
+              return Response::json(array(
+                'success' => false,
+                'error_msg' => $file->isValid()
+              ));
+            }
+
+            // -- Move And Save File -- //
+            $user_id = Auth::user()->id;
+            $files_location = Media::moveAndSaveMediaFiles($file);
+
+            if ($files_location != false) {
+              $imageMinDest = $files_location['imageMinDest'];
+              $imgOrigDest = $files_location['imgOrigDest'];
+              // -- Save the media object -- //
+              $mediaSave = Media::saveMediaToObjParent(
+                $record, $user_id, $imageMinDest, $imgOrigDest);
+              // -- Save the media id to the record object local key -- //
+              if ( $mediaSave != false ) {
+                return Response::json(array(
+                  'success' => true,
+                  'img_min_dest' => $imageMinDest,
+                  'media_id' => $mediaSave->id
+                ));
+              }
+              return Response::json(array(
+                'success' => false,
+                'error_msg' => 'Your image was not saved.'
+              ));
+            }
+            // -- Return some specific errors -- //
             return Response::json(array(
               'success' => false,
-              'error' => $file->isValid()
+              'error_msg' => 'Something went wrong with moving your image.'
             ));
           }
         }
-
-        $user_id = Auth::user()->id;
-        // Process the image and return the location for
-        // its small cropped image
-        $currentMo = date('Y_M');
-        $destination = "uploads/$currentMo";
-        $filename = $file->getClientOriginalName();
-        $filename = Exhibit::string_convert($filename);
-
-        $uploadSuccess = $file->move($destination, "$filename");
-        $imgOrigDestination = $destination . '/' . $filename;
-        $imageMinDestination = $destination . '/min_' . $filename;
-        $imageMin = Image::make($imgOrigDestination)->crop(250, 250, 10, 10)->save($imageMinDestination);
-
-        // Saves the media and adds the appropriate foreign keys for the exhibit
-        $media = $exhibit->media()->create([
-          'user_id' => $user_id,
-          'img_min' => $imageMinDestination,
-          'img_big' => $imgOrigDestination
-        ]);
-        $exhibit->media()->save($media);
-        if (!$media) {
-          return Response::json(array(
-            'success' => false,
-            'error' => 'Uploading and saving your image failed'
-          ));
-        }
-        return Response::json(
-          array(
-            'success' => true,
-            'img_min_dest' => $imageMinDestination,
-            'media_id' => $media->id,
-            'exhibit_id' => $exhibit->id
-          )
-        );
+        return Response::json(array(
+          'success' => false,
+          'error_msg' => 'Something went wrong.'
+        ));
       }
+      return Response::json(array(
+        'success' => false,
+        'error_msg' => 'Something went wrong with adding an image.'
+      ));
     }
 
     public function postUpdateMediaIDsOrder()
     {
       // Find and process media Ids
-
-      var_dump(Input::get('ex_id'));
       $exhibit = Exhibit::find(Input::get('ex_id'));
       $exhibit->update(
         array('media_ids' => json_encode(Input::get('media_ids')))

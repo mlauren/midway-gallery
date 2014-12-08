@@ -97,9 +97,13 @@ class SlideshowController extends BaseController {
       }
       return Response::json(array(
         'success' => false,
-        'error_msg' => $id
+        'error_msg' => 'Something went wrong.'
       ));
     }
+    return Response::json(array(
+      'success' => false,
+      'error_msg' => 'Something went wrong with adding an image.'
+    ));
   }
 
   /*

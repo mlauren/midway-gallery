@@ -286,6 +286,14 @@
       'uses' => 'MediaController@postAddMedia'
     ));
 
+   /*
+    | Media adds media and attaches it to parent id:
+    */
+    Route::post('/exhibit-media-add', array(
+      'as' => 'media-add-link',
+      'uses' => 'MediaController@postAddExhibitMedia'
+    ));
+
     /*
     | Media adds media and attaches it to parent id:
     */

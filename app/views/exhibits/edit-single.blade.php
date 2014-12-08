@@ -72,16 +72,8 @@
             @endif
             <div class="feedback-container col-md-12"></div>
             <div id="image-preview-exists" data-ex-id="{{ $id }}">
-                @if(!empty($imageGroup))
-                    @foreach($imageGroup as $image)
-                        <div class="img-min-preview" data-id="{{ $image->id }}">
-                            {{ HTML::image($image->img_min, $exhibit->title) }}
-                            {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
-                        </div>
-                    @endforeach
-                @endif
-                @if(!empty($assignedGroup))
-                    @foreach($assignedGroup as $image)
+                @if($exhibit->media)
+                    @foreach($exhibit->media as $image)
                         <div class="img-min-preview" data-id="{{ $image->id }}">
                             {{ HTML::image($image->img_min, $exhibit->title) }}
                             {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
