@@ -17,19 +17,6 @@
 
 	    {{ HTML::style('http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,500,500italic,700,700italic') }}
 
-<script>
-	$(document).ready(function(){
-		$('.home-slides').slick({
-			dots: true,
-			infinite: true,
-			speed: 300,
-			slidesToShow: 1,
-			adaptiveHeight: true
-		});
-	});
-</script>
-
-
 	</head>
 	<body>
 		<div class="container">

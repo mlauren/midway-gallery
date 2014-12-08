@@ -9,7 +9,6 @@ class SlideshowController extends BaseController {
   | configure and add new slides
   */
   public function getEditSlides() {
-    // $slides = Slides::all();
     $slides = Slides::orderBy('slide_order', 'ASC')->get();
     return View::make('slideshow.configure')
       ->with('page_title', 'Slides')
