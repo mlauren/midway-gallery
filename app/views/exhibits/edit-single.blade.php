@@ -56,9 +56,9 @@
             @endif
         </div>
         <div class="form-group {{ $errors->has('file') || $errors->has('media') ? 'has-error' : '' }}">
-            {{ Form::label('file[]', 'Edit Files', array('class' => 'control-label')); }}
+            {{ Form::label('file', 'Edit Files', array('class' => 'control-label')); }}
             <p class="help-block">Add additional files.</p>
-            {{ Form::file('file[]', ['multiple' => true], ['class' => 'field']) }}
+            {{ Form::file('file', ['multiple' => true], ['class' => 'field']) }}
             <p class="help-block">Upload some images associated with the exhibit.</p>
             {{-- Adds an ajaxable image preview element --}}
             <ul id="image-list">
@@ -99,7 +99,7 @@
     {{ HTML::script('/bower_resources/moment/moment.js') }}
     {{ HTML::script('/bower_resources/eonasdan-bootstrap-datetimepicker/src/js/bootstrap-datetimepicker.js') }}
 
-    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
+    {{ HTML::script('/packages/custom_javascripts/site-add-exhibit.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 

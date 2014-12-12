@@ -62,8 +62,6 @@
 
 
 (function($) {
-
-
   /*
    * Add a class to return responses
    * from the ajax functions
@@ -89,13 +87,22 @@
     exID: false,
     mediaSrc: new ExhibitMedia(), // Add this class as a property for the class
     initialize: function() {
+      request.getExIDFromUrl();
       this.mediaAdd();
       this.sortable();
       this.removeMedia()
     },
+    getExIDFromUrl: function() {
+      var el = this,
+          loc = window.location.pathname.split('/');
+      if ( loc[1] == "exhibit-add" )
+        el.exID = false;
+      el.exID = loc[2];
+    },
     mediaAdd: function() {
-      var el = this;
-      var input = document.getElementById("file");
+      var el = this,
+        input = document.getElementById("file"),
+        urlVal = el.getExIDFromUrl();
 
       if (input.addEventListener) {
         // Add event listener
@@ -112,17 +119,15 @@
           if ( window.FormData ) {
             formdata = new FormData();
           }
+
           // Define the id of the new exhibit draft that's being created
-
-          if (el.exID == false) {
-            requestdraft = el.mediaSrc.addExhibitDraft();
-            el.exID = requestdraft;
+          if ( el.exID == false) {
+            el.exID = el.mediaSrc.addExhibitDraft();
           }
-
           // get this id and add it to dom elements
-          if (el.exID != false) {
+          if ( el.exID != false ) {
             input.val(el.exID);
-                      // -- Adds a loading icon before preview -- //
+            // -- Adds a loading icon before preview -- //
             el.addLoadIcon("image-preview-exists");
 
             for ( var i = 0; i < len; i++ ) {
@@ -133,7 +138,6 @@
                 formdata.append("file", file);
                 formdata.append("data-id", el.exID);
                 formdata.append("data-type", "Exhibit");
-
                 // Call async AJAX function
                 el.mediaSrc.addExhibitMedia(formdata).done(function(response) {
                   el.removeLoadIcon("image-preview-exists");
@@ -209,6 +213,9 @@
       $(container).find(imgPreview).each(function(){
         mediaIDs.push( $(this).data('id') );
       });
+
+
+      //// --- @todo fix the order of the way these are displayed on the page.... 
       $.post(
         '/media-add-id-order',
         {
@@ -231,7 +238,8 @@
             cursor: "move",
             opacity: 0.7,
             update: function(event, ui) {
-              el.updateMediaOrder(this, '.img-min-preview', $('input:hidden[name="id"]').val());
+              console.log(el.exID);
+              el.updateMediaOrder(this, '.img-min-preview', el.exID);
             }
           }
         );
@@ -275,7 +283,7 @@
   }
 
   var request = new EffectDomElements();
-  var requestdraft = request.initialize();
+  request.initialize();
 
 } (jQuery));
 

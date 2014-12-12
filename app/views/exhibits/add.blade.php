@@ -56,6 +56,7 @@
 	            </p>
 	        @endforeach
 	    @endif
+	    <div class="feedback-container col-md-12"></div>
 	    <div id="image-preview-exists" data-ex-id="">
 		</div>
 	</div>
