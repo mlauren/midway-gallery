@@ -73,7 +73,7 @@
 @section('scripts')
     @parent
 
-    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
+    {{ HTML::script('/packages/custom_javascripts/site-add-exhibit.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

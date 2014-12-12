@@ -55,9 +55,13 @@
 
 }( window.ajaxable = window.ajaxable || {}, jQuery ));
 
-
-
 (function( mediable, $, undefined ) {
+
+  var callbackForFormData = function() {
+
+    
+
+  }
 
   mediable.add = function() {
     // --- add jQuery listener to input --- //
@@ -75,51 +79,17 @@
       if ( window.FormData ) {
         formdata = new FormData();
       }
+      // make sure a condition is met then run another function after
       if ( input.val() == 0 || input.val() == "" ) {
 
         // --- Ajaxable AutoDraft Form function --- //
-        ajaxable.addDraft().done(function(response) {
+        ajaxable.addDraft().done( function(response) {
           formdata.append("id", response.id);
           input.val(response.id);
           ex_id = response.id;
           $('image-preview-exists').attr('data-ex-id', ex_id);
-          // --- add a loading icon --- //
-          addLoadIcon("image-preview-exists");
-
-          formdata.append("data-id", ex_id);
-          formdata.append("data-type", 'Exhibit');
-
-          for ( var i = 0; i < len; i++ ) {
-            file = el.files[i];
-            if (formdata) {
-              // Make sure to aådd the count into the file[i] array
-              formdata.append("file", file);
-
-              // --- Ajax Form function --- //
-              ajaxable.addImage(formdata)
-                .done(function(response) {
-                  removeLoadIcon("image-preview-exists");
-                  if ( response.success == true ) {
-                    suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
-                  }
-                }).always(function(response) {
-                  updateMediaOrder('#image-preview-exists', '.img-min-preview', input.val());
-                  // Remove the value of the form
-                  $('form :file').val('');
-                }).fail(function(response) {
-                  // Put in Error Message if something goes
-                  // wrong with adding the image
-                  var errorTxt = 'Oh snap! Something went wrong with adding one of your images.',
-                      htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
-                  $('.feedback-container').html(htmlString);
-                  removeLoadIcon("image-preview-exists");
-
-
-                  /// ---- Remove the html feedback container ---- ///
-                });
-            }
-          }
-        }).fail(function() {
+          
+        }).fail( function() {
           // Put in Error Message if something goes
           // wrong with adding the image
           var errorTxt = 'Oh snap! Something went wrong with adding an exhibit.',
@@ -129,7 +99,51 @@
 
 
           /// ---- Remove the html feedback container ---- ///
+        }).then(function() {
+          // --- add a loading icon --- //
+          addLoadIcon("image-preview-exists");
+
+          formdata.append("data-id", ex_id);
+          formdata.append("data-type", 'Exhibit');
+
         });
+      }
+      ex_id = $('image-preview-exists').attr('data-ex-id');
+      console.log(formdata);
+
+      // Then loop through all the files
+
+      for ( var i = 0; i < len; i++ ) {
+
+        console.log(formdata);
+        file = el.files[i];
+        if (formdata) {
+          // Make sure to aådd the count into the file[i] array
+          formdata.append("file", file);
+
+          // --- Ajax Form function --- //
+          ajaxable.addImage(formdata)
+            .done(function(response) {
+              removeLoadIcon("image-preview-exists");
+              if ( response.success == true ) {
+                suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
+              }
+            }).always(function(response) {
+              updateMediaOrder('#image-preview-exists', '.img-min-preview', input.val());
+              // Remove the value of the form
+              $('form :file').val('');
+            }).fail(function(response) {
+              // Put in Error Message if something goes
+              // wrong with adding the image
+              var errorTxt = 'Oh snap! Something went wrong with adding one of your images.',
+                  htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
+              $('.feedback-container').html(htmlString);
+              removeLoadIcon("image-preview-exists");
+
+
+              /// ---- Remove the html feedback container ---- ///
+            });
+        }
       }
     });
   }

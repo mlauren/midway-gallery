@@ -64,7 +64,7 @@ class Media extends Eloquent {
     $currentMo = date('Y_M');
     $destination = "uploads/$currentMo";
     $filename = $file->getClientOriginalName();
-    $filename = Exhibit::string_convert($filename);
+    $filename = Tools::string_convert($filename);
 
     $uploadSuccess = $file->move($destination, "$filename");
     if ($uploadSuccess) {
