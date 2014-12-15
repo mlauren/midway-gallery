@@ -21,9 +21,15 @@
 
       if ($exhibit->count()) {
         // Get the order of media_ids and pass it in to assigned image group
-        $media_group = array();
-        foreach (json_decode($exhibit->media_ids) as $key => $image_id) {
-          $media_group[$key] = Media::find($image_id);
+        if ( $exhibit->media ) {
+          $media_group = array();
+          $media_ids = json_decode($exhibit->media_ids);
+
+          if ($media_ids != null) {
+            foreach (json_decode($exhibit->media_ids) as $key => $image_id) {
+              $media_group[$key] = Media::find($image_id);
+            }
+          }
         }
         return View::make('exhibits.edit-single')
           ->with('id', $id)
