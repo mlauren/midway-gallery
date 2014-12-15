@@ -18,40 +18,31 @@
     public function editSingle($id)
     {
       $exhibit = Exhibit::find($id);
-      $mediaIDs = json_decode($exhibit->media_ids);
-      $assignedGroup = array();
-      $imageGroup = array();
+
       if ($exhibit->count()) {
         // Get the order of media_ids and pass it in to assigned image group
-        if (!is_null($mediaIDs)) {
-          foreach ($mediaIDs as $mediaID) {
-            $media = Media::find($mediaID);
-            $imageGroup[] = $media;
-          }
-        }
-        $assignedImageGroup = DB::table('media')
-          ->where('mediable_id', '=', $exhibit->id)
-          ->where('mediable_type', '=', 'Exhibit')
-          ->orderBy('updated_at', 'desc')
-          ->get();
-        if (isset($assignedImageGroup) && !is_null($mediaIDs)) {
-          foreach ($assignedImageGroup as $media) {
-            if (!in_array($media->id, $mediaIDs)) {
-              $assignedGroup[] = $media;
+        if ( $exhibit->media ) {
+          $media_group = array();
+          $media_ids = json_decode($exhibit->media_ids);
+
+          if ($media_ids != null) {
+            foreach (json_decode($exhibit->media_ids) as $key => $image_id) {
+              $media_group[$key] = Media::find($image_id);
             }
           }
         }
         return View::make('exhibits.edit-single')
           ->with('id', $id)
           ->with('exhibit', $exhibit)
-          ->with('imageGroup', $imageGroup)
-          ->with('assignedGroup', $assignedGroup)
+          ->with('media_group', $media_group)
           ->with('page_title', 'Edit ' . $exhibit->title);
       }
       return App::abort(404);
-
     }
 
+    /**
+     * Post a single Edit Exhibit.
+     */
     public function postEditSingle()
     {
       // Validate form fields
@@ -78,7 +69,7 @@
           }
         }
       }
-      //2014-09-30 15:19:05
+
       $created_at = strtotime(Input::get('created_at'));
       $created_at = date('Y-m-d H:i:s', $created_at);
 
@@ -138,10 +129,10 @@
      */
     public function postAdd()
     {
-      // Validate form fields
+      // --- Find Object by ID --- //
       $exhibit = Exhibit::find(Input::get('id'));
 
-
+      // --- Validate Input Values --- //
       $validator = Validator::make(
         array(
           'title' => Input::get('title'),
@@ -159,7 +150,9 @@
             ->withInput();
         }
       }
-      // Validate images
+
+      // --- Validate Images if being sent --- //
+      // -- per non-ajax request --- //
       if (Input::hasFile('file')) {
         $files = Input::file('file');
         foreach ($files as $file) {
@@ -174,6 +167,7 @@
           }
         }
       }
+      // --- Update Object --- //
       $user_id = Auth::user()->id;
       $cleanTitle = Exhibit::permalink(Input::get('title'));
 
@@ -191,6 +185,8 @@
       );
       $mediaIDs = array();
 
+      // --- Creates Media for the Object --- //
+      // -- for non-ajax request --- //
       if ($exhibit) {
         $exhibit->save();
         if (Input::hasFile('file')) {
@@ -222,6 +218,8 @@
             }
           }
         }
+        // --- Creates Sortable Media Group --- //
+        // -- for non-ajax request --- //
         $exhibit->media_ids = json_encode($mediaIDs);
         $exhibit->save();
         return Redirect::route('exhibits-show-single', $exhibit->permalink)

@@ -46,8 +46,8 @@
 	</div>
 	<div id="image-list" class="row"></div>
 	<div class="form-group {{ $errors->has('file') || $errors->has('media') ? 'has-error' : '' }}">
-		{{ Form::label('file[]', 'Image Files', array('class' => 'control-label')); }}
-		{{ Form::file('file[]', array('multiple' => true, 'class' => 'field')) }}
+		{{ Form::label('file', 'Image Files', array('class' => 'control-label')); }}
+		{{ Form::file('file', array('multiple' => true, 'class' => 'field')) }}
 		<p class="help-block">Upload some images associated with the exhibit.</p>
 		@if($errors->has('file'))
 			@foreach($errors->get('file') as $error)
@@ -56,6 +56,7 @@
 	            </p>
 	        @endforeach
 	    @endif
+	    <div class="feedback-container col-md-12"></div>
 	    <div id="image-preview-exists" data-ex-id="">
 		</div>
 	</div>
@@ -73,7 +74,7 @@
 @section('scripts')
     @parent
 
-    {{ HTML::script('/packages/custom_javascripts/media-add-new-exhibit.js') }}
+    {{ HTML::script('/packages/custom_javascripts/site-add-exhibit.js') }}
 
     {{ HTML::script('//ajax.googleapis.com/ajax/libs/jqueryui/1.11.1/jquery-ui.min.js') }}
 @stop

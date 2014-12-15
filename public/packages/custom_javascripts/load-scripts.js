@@ -1,32 +1,27 @@
 // Javascript to preview images on pages other than exhibits
 (function( mediable, $, undefined ) {
-  // Get our form file input element and set formdata to false in order
-  // to display errors for crappy browsers.
-  var input = document.getElementById("image"),
-    formdata = false,
-    ex_id;
-  if ( window.FormData ) {
-    formdata = new FormData();
-  }
+
+  // Class to add an image
   mediable.add = function() {
     $('.file').each(function(index, value) {
 
       $(this).bind("change", function(event) {
-        console.log(this.files);
         var len = this.files.length,
+          files = this.files,
           el = this,
           img,
           reader,
           file;
 
+        // Remove any of the remaining images
         $(el).siblings('.image-preview-exists').children('.thumbnail').remove();
         for ( var i = 0; i < len; i++ ) {
           file = this.files[i];
+          // Match the image and read the file in order to show an image preview.
           if (!!file.type.match(/image.*/)) {
             if ( window.FileReader ) {
               reader = new FileReader();
               reader.onloadend = function (e) {
-                console.log(e);
                 showUploadedItem(e.target.result, el);
               }
               reader.readAsDataURL(file);
@@ -36,7 +31,6 @@
       });
     });
   }
-
   // Helper function to show the images once the browser has them
   function showUploadedItem(source, el) {
     var htmlString = '<div class="thumbnail"><img src="' +  source + '"/></div>';
@@ -50,7 +44,6 @@
       e.preventDefault();
       var el = $(this),
         url = el.attr('href');
-
       $.ajax({
         type: "POST",
         cache: false,
@@ -59,6 +52,7 @@
         async: false
       }).fail(function(jqXHR, ajaxOptions, thrownError) {
         /* alert(ajaxOptions); */
+        el.closest('.image-preview-exists').removeClass('col-md-3');
       }).done(function(data) {
         el.closest('.image-preview-exists').removeClass('col-md-3');
         el.parent('.thumbnail').remove();
@@ -79,7 +73,9 @@ mediable.add();
   $('.details-wysi').wysihtml5({
     "stylesheets": []
   });
-  $('.datetimepicker6').datetimepicker();
+  if ( typeof datetimepicker == 'function' ) {
+    $('.datetimepicker6').datetimepicker();
+  }
 
 }(jQuery));
 

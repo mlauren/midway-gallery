@@ -1,67 +1,152 @@
-.thumbnail.small {
-	height: 75px;
-	max-width: 100%;
-	box-sizing: border-box;
-}
-#img-preview-exists {
-	margin: 0;
-	padding: 0;
-	
+
+/* --- Artists Pages --- */
+.artists-container {
+  position: relative;
+  padding-top: 20px;
 }
 
+a.artists-container-permalink {
+  bottom: 0;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  margin-right: 10px;
+}
+
+/* --- Slideshow Front Page --- */
+.slide-prev:before, .slide-next:before {
+  font-size: 20px;
+  line-height: 1;
+  color: black;
+  opacity: 0.75;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.slide-prev {
+  left: -10px;
+}
+
+.slide-next {
+  right: -10px;
+}
+
+.slide-prev, .slide-next {
+  position: absolute;
+  display: block;
+  height: 20px;
+  width: 20px;
+  line-height: 0;
+  font-size: 0;
+  cursor: pointer;
+  background: transparent;
+  color: black;
+  top: 50%;
+  margin-top: -10px;
+  padding: 0;
+  border: none;
+  outline: none;
+}
+
+/* --- Slideshow Content --- */
+.icon-column-padding {
+  padding-top: 50px;
+}
+.img-preview-remove {
+  position: absolute;
+  top: 0;
+  right: -100px;
+  width: 140px;
+  z-index: 1;
+  color: white;
+  margin: 0;
+  padding: 5px;
+}
+.img-preview-remove a {color: white;}
+.img-preview-overlay {
+  position: absolute;
+  height: 140px;
+  width: 140px;
+  top: 0;
+  color: #C5C5C5;
+  margin: 0;
+  padding: 5px;
+  background: white;
+  opacity: .6;
+}
+/* --- Helper Classes --- */
+.border-left {
+  border-left: 1px solid #eee;
+}
+.border-right {
+  border-right: 1px solid #eee;
+}
+
+.thumbnail.small {
+  height: 75px;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* --- Exhibit Add / Edit --- */
+#img-preview-exists {
+  margin: 0;
+  padding: 0;
+}
 .img-min-preview {
-	margin: 3px 3px 3px 0;
-	padding: 1px;
-	float: left;
-	width: 200px;
-	height: 200px;
-	text-align: center;
-	position: relative;
+  margin: 3px 3px 3px 0;
+  padding: 1px;
+  float: left;
+  width: 200px;
+  height: 200px;
+  text-align: center;
+  position: relative;
 
 }
 .img-min-preview img {
-	width: 200px;
+  width: 200px;
 }
 .img-min-preview a {
-	position: absolute;
-	top: 0;
-	right: 2px;
-	color: white;
+  position: absolute;
+  top: 0;
+  right: 2px;
+  color: white;
 }
 
+/* Generic Site Classes */
 body {
-	font: 10.5pt 'Open Sans', sans-serif;
-	line-height: 1.56;
-	font-weight: 400;
-	color: #373737;
-	letter-spacing: 0em;
-	word-spacing: 0.078em;
+  font: 10.5pt 'Roboto', sans-serif;
+  font-weight: 300;
+  line-height: 1.625;
+  color: #373737;
+  letter-spacing: 0em;
+  word-spacing: 0.078em;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-	font-weight: 700;
-	color: #000;
-	letter-spacing: 0em;
-	word-spacing: 0.084em;
-	line-height: 1.2;
+  font-weight: 700;
+  color: #000;
+  letter-spacing: 0em;
+  word-spacing: 0.084em;
+  line-height: 1.2;
 }
 h1 {
-	font-size: 18pt;
+  font-size: 18pt;
 }
 h2 {
-	font-size: 16pt;
+  font-size: 16pt;
 }
 h3 {
-	text-transform: uppercase;
-	font-size: 14pt;
+  text-transform: uppercase;
+  font-size: 14pt;
 }
 h4 {
-	font-size: 12pt;
+  font-size: 12pt;
 }
 h5 {
-	font-size: 10pt;
+  font-size: 10pt;
 }
 h6 {
-	font-size: 8pt;
+  font-size: 8pt;
 }
 

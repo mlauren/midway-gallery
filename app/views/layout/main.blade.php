@@ -15,20 +15,7 @@
 
 	    {{ HTML::style('/bower_resources/slick-carousel/slick/slick.css') }}
 
-	    {{ HTML::style('http://fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,600italic,700italic,800italic,700,300,600,800,400') }}
-
-<script>
-	$(document).ready(function(){
-		$('.home-slides').slick({
-			dots: true,
-			infinite: true,
-			speed: 300,
-			slidesToShow: 1,
-			adaptiveHeight: true
-		});
-	});
-</script>
-
+	    {{ HTML::style('http://fonts.googleapis.com/css?family=Roboto:400,300italic,300,500,500italic,700,700italic') }}
 
 	</head>
 	<body>
@@ -41,7 +28,7 @@
 					<hr />
 				</header>
 				@if(Session::has('global'))
-					<div class="col-md-10 feedback-container">
+					<div class="col-md-12 feedback-container">
 						<div class="alert {{ Session::get('status') }}">
 							{{ Session::get('global') }}
 						</div>
