@@ -1,4 +1,18 @@
 
+/* --- Artists Pages --- */
+.artists-container {
+  position: relative;
+  padding-top: 20px;
+}
+
+a.artists-container-permalink {
+  bottom: 0;
+  position: absolute;
+  background: rgba(255, 255, 255, 0.9);
+  padding: 10px;
+  margin-right: 10px;
+}
+
 /* --- Slideshow Front Page --- */
 .slide-prev:before, .slide-next:before {
   font-size: 20px;
