@@ -28,7 +28,7 @@
 					<hr />
 				</header>
 				@if(Session::has('global'))
-					<div class="col-md-10 feedback-container">
+					<div class="col-md-12 feedback-container">
 						<div class="alert {{ Session::get('status') }}">
 							{{ Session::get('global') }}
 						</div>

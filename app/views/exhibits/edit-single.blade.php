@@ -72,7 +72,7 @@
       @endif
       <div class="feedback-container col-md-12"></div>
       <div id="image-preview-exists" data-ex-id="{{ $id }}">
-        @if(!empty($media_group))
+        @if($media_group != null)
           @foreach($media_group as $image)
             <div class="img-min-preview" data-id="{{ $image->id }}">
               {{ HTML::image($image->img_min, $image->img_big) }}
