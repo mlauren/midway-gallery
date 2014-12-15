@@ -1,8 +1,13 @@
-// Adds ajax functions in a Class
-(function( ajaxable, $, undefined ) {
+(function($) {
+  /*
+   * Add a class to return responses
+   * from ajax
+   */
+  var ExhibitMedia = function() {}
 
-  ajaxable.addImage = function(formdata) { 
-    return $.ajax({
+  ExhibitMedia.prototype = {
+    addImage: function(formdata) {
+      return $.ajax({
               url: "/exhibit-media-add",
               type: "POST",
               data: formdata,
@@ -12,10 +17,9 @@
               contentType: false,
               async: true
             });
-  }
-
-  ajaxable.removeImage = function(formdata) {
-    return $.ajax({
+    },
+    removeImage: function(formdata) {
+      return $.ajax({
               url: "/slide-remove-media",
               type: "POST",
               data: formdata,
@@ -25,28 +29,25 @@
               contentType: false,
               async: true
             });
-  }
-
-  ajaxable.addDraft = function() {
-    var ajaxResponse;
-    $.ajax({
-      url: "/exhibit-add-empty",
-      type: "POST",
-      cache: false,
-      processData: false,
-      dataType: 'json',
-      contentType: false,
-      async: false,
-      success: function(data) {
-        ajaxResponse = data.id;
-      },
-    }).fail(function(response){});
-    return ajaxResponse;
-  }
-
-  ajaxable.reorderImages = function(formdata) {
-    // Ajax function to update data order for slides
-    return $.ajax({
+    },
+    addDraft: function(data) {
+      var ajaxResponse;
+      $.ajax({
+        url: "/exhibit-add-empty",
+        type: "POST",
+        cache: false,
+        processData: false,
+        dataType: 'json',
+        contentType: false,
+        async: false,
+        success: function(data) {
+          ajaxResponse = data.id;
+        },
+      }).fail(function(response){});
+      return ajaxResponse;
+    },
+    reorderImages: function(formdata) {
+      return $.ajax({
               url: "/slide-reorder",
               type: "POST",
               data: formdata,
@@ -56,32 +57,13 @@
               contentType: false,
               async: true
             });
-  }
-
-}( window.ajaxable = window.ajaxable || {}, jQuery ));
-
-
-(function($) {
-  /*
-   * Add a class to return responses
-   * from the ajax functions
-   */
-  var ExhibitMedia = function() {}
-
-  ExhibitMedia.prototype = {
-    addExhibitDraft: function() {
-      return ajaxable.addDraft();
-    },
-    addExhibitMedia: function(formdata) {
-      return ajaxable.addImage(formdata);
     }
   }
 
   /*
    * Add a class to handle the procedural dom manipulations
    */
-  var EffectDomElements = function() {
-  }
+  var EffectDomElements = function() {}
 
   EffectDomElements.prototype = {
     exID: false,
@@ -122,7 +104,7 @@
 
           // Define the id of the new exhibit draft that's being created
           if ( el.exID == false) {
-            el.exID = el.mediaSrc.addExhibitDraft();
+            el.exID = el.mediaSrc.addDraft();
           }
           // get this id and add it to dom elements
           if ( el.exID != false ) {
@@ -139,7 +121,7 @@
                 formdata.append("data-id", el.exID);
                 formdata.append("data-type", "Exhibit");
                 // Call async AJAX function
-                el.mediaSrc.addExhibitMedia(formdata).done(function(response) {
+                el.mediaSrc.addImage(formdata).done(function(response) {
                   el.removeLoadIcon("image-preview-exists");
                   // check the response and load the preview
                   if ( response.success == true ) {
@@ -170,22 +152,6 @@
       div.appendChild(icon);
       element.insertBefore(div, element.firstChild);
     },
-    doActionInsideLoop: function(i, formdata) {
-      return ajaxable.addImage(formdata).done(function(response) {
-        el.removeLoadIcon("image-preview-exists");
-        if ( response.success == true ) {
-          el.suckInUploadedItem('/' + response.img_min_dest, "New Image " + i, response.media_id);
-        }
-        el.updateMediaOrder('#image-preview-exists', '.img-min-preview', el.exID);
-        $('form :file').val('');
-      }).fail(function() {
-        // Put in Error Message if something goes
-        // wrong with removing image
-        var errorTxt = 'Oh snap! Something went wrong with adding one of your images.',
-            htmlString = '<div class="alert alert-danger" role="alert">' + errorTxt + '</div>';
-        $('.feedback-container').html(htmlString);
-      });
-    },
     removeLoadIcon: function(element) {
       var element = $("#" + element),
           icon = element.children(".icon");
@@ -213,9 +179,7 @@
       $(container).find(imgPreview).each(function(){
         mediaIDs.push( $(this).data('id') );
       });
-
-
-      //// --- @todo fix the order of the way these are displayed on the page.... 
+      // -- Post all of the media IDs to the url -- //
       $.post(
         '/media-add-id-order',
         {
@@ -274,9 +238,6 @@
             $(this).remove();
             mediaClass.updateMediaOrder('#image-preview-exists', '.img-min-preview', mediaClass.exID);
           });
-
-          //// --- @create a function that removes draft if there are no items.
-
         });
       });
     }
