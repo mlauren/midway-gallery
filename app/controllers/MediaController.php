@@ -24,7 +24,8 @@
       $mediasave = $mediasave ? true : false;
       if ($isAjax) {
         return json_encode($mediasave);
-      } else {
+      }
+      else {
         return Redirect::back()
           ->with('status', 'alert-danger')
           ->with('global', 'Something went wrong!');
