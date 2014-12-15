@@ -72,10 +72,10 @@
             @endif
             <div class="feedback-container col-md-12"></div>
             <div id="image-preview-exists" data-ex-id="{{ $id }}">
-                @if($exhibit->media)
-                    @foreach($exhibit->media as $image)
+                @if(!empty($media_group))
+                    @foreach($media_group as $image)
                         <div class="img-min-preview" data-id="{{ $image->id }}">
-                            {{ HTML::image($image->img_min, $exhibit->title) }}
+                            {{ HTML::image($image->img_min, $image->img_big) }}
                             {{ HTML::link(URL::route('media-remove-unlink', $image->id), 'X', array('class' => 'media-remove')) }}
                         </div>
                     @endforeach

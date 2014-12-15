@@ -18,40 +18,25 @@
     public function editSingle($id)
     {
       $exhibit = Exhibit::find($id);
-      $mediaIDs = json_decode($exhibit->media_ids);
-      $assignedGroup = array();
-      $imageGroup = array();
+
       if ($exhibit->count()) {
         // Get the order of media_ids and pass it in to assigned image group
-        if (!is_null($mediaIDs)) {
-          foreach ($mediaIDs as $mediaID) {
-            $media = Media::find($mediaID);
-            $imageGroup[] = $media;
-          }
-        }
-        $assignedImageGroup = DB::table('media')
-          ->where('mediable_id', '=', $exhibit->id)
-          ->where('mediable_type', '=', 'Exhibit')
-          ->orderBy('updated_at', 'desc')
-          ->get();
-        if (isset($assignedImageGroup) && !is_null($mediaIDs)) {
-          foreach ($assignedImageGroup as $media) {
-            if (!in_array($media->id, $mediaIDs)) {
-              $assignedGroup[] = $media;
-            }
-          }
+        $media_group = array();
+        foreach (json_decode($exhibit->media_ids) as $key => $image_id) {
+          $media_group[$key] = Media::find($image_id);
         }
         return View::make('exhibits.edit-single')
           ->with('id', $id)
           ->with('exhibit', $exhibit)
-          ->with('imageGroup', $imageGroup)
-          ->with('assignedGroup', $assignedGroup)
+          ->with('media_group', $media_group)
           ->with('page_title', 'Edit ' . $exhibit->title);
       }
       return App::abort(404);
-
     }
 
+    /**
+     * Post a single Edit Exhibit.
+     */
     public function postEditSingle()
     {
       // Validate form fields
@@ -78,7 +63,7 @@
           }
         }
       }
-      //2014-09-30 15:19:05
+
       $created_at = strtotime(Input::get('created_at'));
       $created_at = date('Y-m-d H:i:s', $created_at);
 
